@@ -1,8 +1,8 @@
 
 package com.didistore.model;
 
-import com.didistore.config.Conexion;
-import javax.jms.Connection;
+import com.didistore.dao.ProductoDAO;
+import java.util.List;
 
 /**
  *
@@ -10,12 +10,16 @@ import javax.jms.Connection;
  */
 public class TestDB {
     public static void main(String[] args) {
-        Connection cn = (Connection) Conexion.getConexion();
+        ProductoDAO dao = new ProductoDAO();
+        List<Producto> productos = dao.listar();
         
-        if (cn != null) {
-            System.err.println("¡Prueba superada! El Backend reconoce la base de datos. ");
+        if (productos.isEmpty()) {
+            System.err.println("Conexión exitosa, pero la tabla productos está vacía. ");
         } else {
-            System.err.println("Fallo la prueba: Revisa los parámetros. ");
+            System.err.println("==== LISTADO DE PRODUCTOS DIDISTORE ====");
+            for (Producto p : productos) {
+                System.out.println("ID: " + p.getid_Producto() + " | Nombre producto: " + p.getnombre_Producto() + " | Precio producto: $" + p.getprecio());
+            }
         }
     }
 }

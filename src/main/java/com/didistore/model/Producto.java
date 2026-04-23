@@ -1,7 +1,7 @@
 
 package com.didistore.model;
 
-import javax.faces.convert.DateTimeConverter;
+import java.sql.Timestamp;
 
 /**
  *
@@ -12,15 +12,15 @@ public class Producto {
     private String nombre_Producto;
     private String descripcion_Corta;
     private String descripcion_Larga;
-    private double precio;
+    private float precio;
     private String sku;
-    private Enum talla;
+    private String talla;
     private String color;
     private int categoria_Id;
-    private Enum estado;
+    private String estado;
     private int es_Destacado;
-    private DateTimeConverter fecha_Creacion;
-    private DateTimeConverter fecha_Actualizacion;
+    private Timestamp fecha_Creacion;
+    private Timestamp fecha_Actualizacion;
     
     public Producto() {}
     
@@ -30,13 +30,13 @@ public class Producto {
             String descripcion_Larga, 
             float precio, 
             String sku, 
-            Enum talla, 
+            String talla, 
             String color,
             int categoria_Id,
-            Enum estado, 
+            String estado, 
             int es_Destacado,
-            DateTimeConverter fecha_Creacion,
-            DateTimeConverter fecha_Actualizacion) {
+            Timestamp fecha_Creacion,
+            Timestamp fecha_Actualizacion) {
     
         this.id_Producto = id_Producto;
         this.nombre_Producto = nombre_Producto;
@@ -64,14 +64,14 @@ public class Producto {
     public String getdescripcion_Larga() { return descripcion_Larga; }
     public void setdescripcion_Larga(String descripcion_Larga) { this.descripcion_Larga = descripcion_Larga; }
     
-    public double getprecio() { return precio; }
+    public float getprecio() { return precio; }
     public void setprecio(float precio) { this.precio = precio; }
     
     public String getsku() { return sku; }
     public void setsku(String sku) { this.sku = sku; }
     
-    public Enum gettalla() { return talla; }
-    public void settalla(Enum talla) { this.talla = talla; }
+    public String gettalla() { return talla; }
+    public void settalla(String talla) { this.talla = talla; }
     
     public String getcolor() { return color; }
     public void setcolor(String color) { this.color = color; }
@@ -79,15 +79,15 @@ public class Producto {
     public int getcategoria_Id() { return categoria_Id; }
     public void setcategoria_Id(int categoria_Id) { this.categoria_Id = categoria_Id; }
     
-    public Enum getestado() { return estado; }
-    public void setestado(Enum estado) { this.estado = estado; }
+    public String getestado() { return estado; }
+    public void setestado(String estado) { this.estado = estado; }
     
     public int getes_Destacado() { return es_Destacado; }
     public void setes_Destacado(int es_Destacado) { this.es_Destacado = es_Destacado; }
     
-    public DateTimeConverter getfecha_Creacion() { return fecha_Creacion; }
-    public void setfecha_Creacion(DateTimeConverter fecha_creacion) { this.fecha_Creacion = fecha_creacion; }
+    public Timestamp getfecha_Creacion() { return fecha_Creacion; }
+    public void setfecha_Creacion(Timestamp fecha_creacion) { this.fecha_Creacion = fecha_creacion; }
     
-    public DateTimeConverter getfecha_Actualizacion() { return fecha_Actualizacion; }
-    public void setfecha_Actualizacion(DateTimeConverter fecha_Actualizacion) { this.fecha_Actualizacion = fecha_Actualizacion; }
+    public Timestamp getfecha_Actualizacion() { return fecha_Actualizacion; }
+    public void setfecha_Actualizacion(Timestamp fecha_Actualizacion) { this.fecha_Actualizacion = fecha_Actualizacion; }
 }
