@@ -1,4 +1,6 @@
+com\didistore\dao\UsuariosDAO.class
+com\didistore\config\Conexion.class
+com\didistore\model\Usuarios.class
 com\didistore\model\TestDB.class
 com\didistore\model\Producto.class
-com\didistore\config\Conexion.class
 com\didistore\dao\ProductoDAO.class
