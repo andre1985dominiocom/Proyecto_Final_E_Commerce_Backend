@@ -14,7 +14,7 @@ public class Conexion {
     private static final String DATABASE = "db_e_commerce_didistore";
     private static final String URL = "jdbc:mysql://localhost:3306/" + DATABASE;
     private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "6719980";
     
     private static Connection conexion = null;
     
@@ -23,7 +23,7 @@ public class Conexion {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
-            if (conexion == null || conexion.isClosed()) {       
+            if (conexion == null || conexion.isClosed()) {
             conexion = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Conexión exitosa a: " + DATABASE);
             }
@@ -32,6 +32,6 @@ public class Conexion {
         } catch (SQLException e) {
         System.err.println("Error de conexión: " + e.getMessage());
         }
-        return conexion;    
+        return conexion;
     }
 }

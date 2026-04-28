@@ -22,18 +22,18 @@ public class Usuarios {
     private Timestamp fecha_Actualizacion;
     private Timestamp fecha_Ultimo_Login;
     
-     public Usuarios() {}
+    public Usuarios() {}
     
-    public Usuarios (int id_Usuario, 
-            String email, 
-            String contraseña, 
-            String nombre, 
-            String apellido, 
-            String documento, 
-            String tipo_Documento, 
+    public Usuarios (int id_Usuario,
+            String email,
+            String contraseña,
+            String nombre,
+            String apellido,
+            String documento,
+            String tipo_Documento,
             int perfil_Id,
             String estado,
-            int email_Verificado, 
+            int email_Verificado,
             Timestamp fecha_Creacion,
             Timestamp fecha_Actualizacion,
             Timestamp fecha_Ultimo_Login) {
@@ -84,11 +84,11 @@ public class Usuarios {
     public void setemail_Verificado(int email_Verificado) { this.email_Verificado = email_Verificado; }
     
     public Timestamp getfecha_Creacion() { return fecha_Creacion; }
-    public void setfecha_Creacion(Timestamp fecha_creacion) { this.fecha_Creacion = fecha_creacion; }
+    public void setfecha_Creacion(Timestamp fecha_Creacion) { this.fecha_Creacion = fecha_Creacion; }
     
     public Timestamp getfecha_Actualizacion() { return fecha_Actualizacion; }
     public void setfecha_Actualizacion(Timestamp fecha_Actualizacion) { this.fecha_Actualizacion = fecha_Actualizacion; }
     
     public Timestamp getfecha_Ultimo_Login() { return fecha_Ultimo_Login; }
-    public void setfecha_Ultimo_Login(Timestamp fecha_Ultimo_Login) { this.fecha_Ultimo_Login = this.fecha_Ultimo_Login; }
+    public void setfecha_Ultimo_Login(Timestamp fecha_Ultimo_Login) { this.fecha_Ultimo_Login = fecha_Ultimo_Login; }
 }

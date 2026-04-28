@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
-public class Producto {
+public class Productos {
     private int id_Producto;
     private String nombre_Producto;
     private String descripcion_Corta;
@@ -22,18 +22,18 @@ public class Producto {
     private Timestamp fecha_Creacion;
     private Timestamp fecha_Actualizacion;
     
-    public Producto() {}
+    public Productos() {}
     
-    public Producto (int id_Producto, 
-            String nombre_Producto, 
-            String descripcion_corta, 
-            String descripcion_Larga, 
-            float precio, 
-            String sku, 
-            String talla, 
+    public Productos (int id_Producto,
+            String nombre_Producto,
+            String descripcion_corta,
+            String descripcion_Larga,
+            float precio,
+            String sku,
+            String talla,
             String color,
             int categoria_Id,
-            String estado, 
+            String estado,
             int es_Destacado,
             Timestamp fecha_Creacion,
             Timestamp fecha_Actualizacion) {
@@ -49,7 +49,7 @@ public class Producto {
         this.estado = estado;
         this.es_Destacado = es_Destacado;
         this.fecha_Creacion = fecha_Creacion;
-        this.fecha_Actualizacion = fecha_Actualizacion;    
+        this.fecha_Actualizacion = fecha_Actualizacion;
 }
     
     public int getid_Producto() { return id_Producto; }

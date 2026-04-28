@@ -11,13 +11,13 @@ import java.util.List;
 public class TestDB {
     public static void main(String[] args) {
         ProductoDAO dao = new ProductoDAO();
-        List<Producto> productos = dao.listar();
+        List<Productos> productos = dao.listar();
         
         if (productos.isEmpty()) {
             System.err.println("Conexión exitosa, pero la tabla productos está vacía. ");
         } else {
             System.err.println("==== LISTADO DE PRODUCTOS DIDISTORE ====");
-            for (Producto p : productos) {
+            for (Productos p : productos) {
                 System.out.println("ID: " + p.getid_Producto() + " | Nombre producto: " + p.getnombre_Producto() + " | Precio producto: $" + p.getprecio());
             }
         }
