@@ -39,7 +39,7 @@ public class UsuariosDAO {
                 lista.add(u);
             }
         } catch (SQLException e) {
-            System.err.println("Error al listar: " + e.getMessage());
+            System.err.println("Error al listar usuarios: " + e.getMessage());
                     }
         
         return lista;

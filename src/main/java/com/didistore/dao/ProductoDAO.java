@@ -17,9 +17,40 @@ import com.didistore.model.Productos;
  */
 public class ProductoDAO {
     
+    public void insertarProductos(Productos producto) {
+        
+        String sql = "INSERT INTO Productos (nombre_Producto, "
+                + "descripcion_corta, "
+                + "descripcion_Larga, "
+                + "precio, "
+                + "sku, "
+                + "talla, "
+                + "color, "
+                + "categoria_Id, "
+                + "estado, "
+                + "es_Destacado, "
+                + "fecha_Creacion, "
+                + "fecha_Actualizacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    }
+    
+    
+    
     public List<Productos> listar() {
         List<Productos> lista = new ArrayList<>();
-        String sql = "SELECT id_Producto, nombre_Producto, descripcion_corta, descripcion_Larga, precio, sku, talla, color, categoria_Id, estado, es_Destacado, fecha_Creacion, fecha_Actualizacion FROM productos";
+        String sql = "SELECT id_Producto, "
+                + "nombre_Producto, "
+                + "descripcion_corta, "
+                + "descripcion_Larga, "
+                + "precio, "
+                + "sku, "
+                + "talla, "
+                + "color, "
+                + "categoria_"
+                + "Id, "
+                + "estado, "
+                + "es_Destacado, "
+                + "fecha_Creacion, "
+                + "fecha_Actualizacion FROM productos";
         
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -44,7 +75,7 @@ public class ProductoDAO {
                 lista.add(p);
             }
         } catch (SQLException e) {
-            System.err.println("Error al listar: " + e.getMessage());
+            System.err.println("Error al listar productos: " + e.getMessage());
                     }
             
         return lista;

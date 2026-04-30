@@ -1,7 +1,7 @@
 
 package com.didistore.model;
 
-import com.didistore.dao.ProductoDAO;
+import com.didistore.dao.CategoriasDAO;
 import java.util.List;
 
 /**
@@ -10,15 +10,15 @@ import java.util.List;
  */
 public class TestDB {
     public static void main(String[] args) {
-        ProductoDAO dao = new ProductoDAO();
-        List<Productos> productos = dao.listar();
+        CategoriasDAO dao = new CategoriasDAO();
+        List<Categorias> categorias = dao.listar();
         
-        if (productos.isEmpty()) {
-            System.err.println("Conexión exitosa, pero la tabla productos está vacía. ");
+        if (categorias.isEmpty()) {
+            System.err.println("Conexión exitosa, pero la tabla categorias está vacía. ");
         } else {
-            System.err.println("==== LISTADO DE PRODUCTOS DIDISTORE ====");
-            for (Productos p : productos) {
-                System.out.println("ID: " + p.getid_Producto() + " | Nombre producto: " + p.getnombre_Producto() + " | Precio producto: $" + p.getprecio());
+            System.err.println("==== LISTADO DE CATEGORÍAS DIDISTORE ====");
+            for (Categorias c : categorias) {
+                System.out.println("ID: " + c.getid_Categoria() + " | Nombre Categoria: " + c.getnombre_Categoria() + " | Descripción: " + c.getdescripcion() + " | Categoria_Padre_ID: " + c.getcategoria_padre_Id() + " | Fecha Creación: " + c.getfecha_Creacion() );
             }
         }
     }
