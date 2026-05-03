@@ -15,7 +15,7 @@ import com.didistore.model.Productos;
  *
  * @author Sergio Andrés Álvarez Lache
  */
-public class ProductoDAO {
+public class ProductosDAO {
     
     public void insertarProductos(Productos producto) {
         

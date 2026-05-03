@@ -1,8 +1,11 @@
 com\didistore\model\Categorias.class
 com\didistore\dao\UsuariosDAO.class
+com\didistore\model\Departamentos.class
 com\didistore\config\Conexion.class
 com\didistore\model\Productos.class
 com\didistore\model\Usuarios.class
-com\didistore\model\TestDB.class
-com\didistore\dao\ProductoDAO.class
+com\didistore\dao\CiudadesDAO.class
+com\didistore\model\Ciudades.class
+com\didistore\dao\ProductosDAO.class
 com\didistore\dao\CategoriasDAO.class
+com\didistore\dao\DepartamentosDAO.class
