@@ -51,7 +51,7 @@ public class Usuarios {
         this.fecha_Creacion = fecha_Creacion;
         this.fecha_Actualizacion = fecha_Actualizacion;
         this.fecha_Ultimo_Login = fecha_Ultimo_Login;
-}
+    }
     
     public int getid_Usuario() { return id_Usuario; }
     public void setid_Usuario(int id_Usuario) { this.id_Usuario = id_Usuario; }
