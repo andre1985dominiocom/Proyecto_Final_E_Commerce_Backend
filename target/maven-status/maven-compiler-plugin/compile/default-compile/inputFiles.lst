@@ -1,9 +1,11 @@
+D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\moduleinventory\Imagenes_Productos.java
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\Perfiles.java
-D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\Productos.java
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\Categorias.java
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\Sesiones.java
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\dao\DepartamentosDAO.java
+D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\moduleinventory\Inventarios.java
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\Ciudades.java
+D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\Envios.java
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\dao\UsuariosDAO.java
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\Perfil_Permiso.java
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\Departamentos.java
@@ -15,4 +17,5 @@ D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\co
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\dao\CiudadesDAO.java
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\dao\CategoriasDAO.java
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\dao\ProductosDAO.java
+D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\moduleinventory\Productos.java
 D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\src\main\java\com\didistore\model\Tokens_Recuperacion.java

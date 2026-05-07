@@ -1,7 +1,7 @@
 package com.didistore.test;
 
 import com.didistore.dao.CategoriasDAO;
-import com.didistore.model.Categorias;
+import com.didistore.model.moduleinventoryfeedback.Categorias;
 import java.util.Map;
 import java.sql.SQLException;
 

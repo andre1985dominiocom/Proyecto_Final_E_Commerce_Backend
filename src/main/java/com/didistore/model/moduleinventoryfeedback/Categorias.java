@@ -1,5 +1,5 @@
 
-package com.didistore.model;
+package com.didistore.model.moduleinventoryfeedback;
 
 import java.sql.Timestamp;
 

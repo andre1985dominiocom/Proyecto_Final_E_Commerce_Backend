@@ -2,7 +2,7 @@
 package com.didistore.dao;
 
 import com.didistore.config.Conexion;
-import com.didistore.model.Categorias;
+import com.didistore.model.moduleinventoryfeedback.Categorias;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,7 +43,7 @@ public class CategoriasDAO {
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs.next()) {
                         idGenerado = rs.getInt(1);
-                        // System.out.println("DEBUG: ID generado en DB: " + idGenerado);
+                        
                         categoria.setid_Categoria(idGenerado);
                     }
                 } 

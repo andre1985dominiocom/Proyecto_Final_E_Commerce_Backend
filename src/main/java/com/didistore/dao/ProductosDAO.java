@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.didistore.config.Conexion;
-import com.didistore.model.Productos;
+import com.didistore.model.moduleinventoryfeedback.Productos;
 
 /**
  *

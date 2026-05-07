@@ -2,7 +2,7 @@
 package com.didistore.dao;
 
 import com.didistore.config.Conexion;
-import com.didistore.model.Usuarios;
+import com.didistore.model.modulesecurityaccess.Usuarios;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

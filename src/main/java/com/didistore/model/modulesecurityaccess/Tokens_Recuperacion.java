@@ -1,5 +1,5 @@
 
-package com.didistore.model;
+package com.didistore.model.modulesecurityaccess;
 
 import java.sql.Timestamp;
 

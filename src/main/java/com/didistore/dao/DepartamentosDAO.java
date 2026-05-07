@@ -2,7 +2,7 @@
 package com.didistore.dao;
 
 import com.didistore.config.Conexion;
-import com.didistore.model.Departamentos;
+import com.didistore.model.modulelogisticslocation.Departamentos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
