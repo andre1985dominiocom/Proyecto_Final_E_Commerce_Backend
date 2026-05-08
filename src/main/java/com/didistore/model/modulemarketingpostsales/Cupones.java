@@ -1,10 +1,11 @@
 
+ 
 package com.didistore.model.modulemarketingpostsales;
 
 /**
  *
  * @author Sergio Andrés Álvarez Lache
  */
-public class Promocion {
+public class Cupones {
     
 }
