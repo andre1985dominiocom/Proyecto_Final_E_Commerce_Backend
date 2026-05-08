@@ -8,47 +8,47 @@ import java.sql.Timestamp;
  * @author Sergio Andrés Álvarez Lache
  */
 public class Direcciones {
-    private int id_Direccion;
+    private int idDireccion;
     private String direccion;
-    private int es_Principal;
+    private int esPrincipal;
     private String barrio;
     private String referencia;
-    private int ciudad_Id;
-    private int usuario_Id;
+    private int ciudadId;
+    private int usuarioId;
     private String estado;
-    private Timestamp fecha_Creacion;
+    private Timestamp fechaCreacion;
     
     public Direcciones() {}
     
-    public Direcciones (int id_Direccion,
+    public Direcciones (int idDireccion,
             String direccion,
-            int es_Principal,
+            int esPrincipal,
             String barrio,
             String referencia,
-            int ciudad_Id,
-            int usuario_Id,
+            int ciudadId,
+            int usuarioId,
             String estado,
-            Timestamp fecha_Creacion) {
+            Timestamp fechaCreacion) {
         
-        this.id_Direccion = id_Direccion;
+        this.idDireccion = idDireccion;
         this.direccion = direccion;
-        this.es_Principal = es_Principal;
+        this.esPrincipal = esPrincipal;
         this.barrio = barrio;
         this.referencia = referencia;
-        this.ciudad_Id = ciudad_Id;
-        this.usuario_Id = usuario_Id;
+        this.ciudadId = ciudadId;
+        this.usuarioId = usuarioId;
         this.estado = estado;
-        this.fecha_Creacion = fecha_Creacion;
+        this.fechaCreacion = fechaCreacion;
     }
     
-    public int getid_Direccion() { return id_Direccion; }
-    public void setid_Direccion(int id_Direccion) { this.id_Direccion = id_Direccion; }
+    public int getidDireccion() { return idDireccion; }
+    public void setidDireccion(int idDireccion) { this.idDireccion = idDireccion; }
     
     public String getdireccion() { return direccion; }
     public void setdireccion(String direccion) { this.direccion = direccion; }
     
-    public int getes_Principal() { return es_Principal; }
-    public void setes_Principal(int es_Principal) { this.es_Principal = es_Principal; }
+    public int getesPrincipal() { return esPrincipal; }
+    public void setesPrincipal(int esPrincipal) { this.esPrincipal = esPrincipal; }
     
     public String getbarrio() { return barrio; }
     public void setbarrio(String barrio) { this.barrio = barrio; }
@@ -56,15 +56,15 @@ public class Direcciones {
     public String getreferencia() { return referencia; }
     public void setreferencia(String referencia) { this.referencia = referencia; }
     
-    public int getciudad_Id() { return ciudad_Id; }
-    public void setciudad_Id(int ciudad_Id) { this.ciudad_Id = ciudad_Id; }
+    public int getciudadId() { return ciudadId; }
+    public void setciudadId(int ciudadId) { this.ciudadId = ciudadId; }
     
-    public int getusuario_Id() { return usuario_Id; }
-    public void setusuario_Id(int usuario_Id) { this.usuario_Id = usuario_Id; }
+    public int getusuarioId() { return usuarioId; }
+    public void setusuarioId(int usuarioId) { this.usuarioId = usuarioId; }
     
     public String getestado() { return estado; }
     public void setestado(String estado) { this.estado = estado; }
     
-    public Timestamp getfecha_Creacion() { return fecha_Creacion; }
-    public void setfecha_Creacion(Timestamp fecha_Creacion) { this.fecha_Creacion = fecha_Creacion; }
+    public Timestamp getfechaCreacion() { return fechaCreacion; }
+    public void setfechaCreacion(Timestamp fechaCreacion) { this.fechaCreacion = fechaCreacion; }
 }

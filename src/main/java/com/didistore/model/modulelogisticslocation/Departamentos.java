@@ -7,20 +7,20 @@ package com.didistore.model.modulelogisticslocation;
  */
 public class Departamentos {
     
-    private int id_Departamento;
+    private int idDepartamento;
     private String departamento;
     
     public Departamentos() {}
     
-    public Departamentos (int id_Departamento,
+    public Departamentos (int idDepartamento,
             String departamento) {
         
-        this.id_Departamento = id_Departamento;
+        this.idDepartamento = idDepartamento;
         this.departamento = departamento;
     }
     
-    public int getid_Departamento() { return id_Departamento; }
-    public void setid_Departamento(int id_Departamento) { this.id_Departamento = id_Departamento; }
+    public int getidDepartamento() { return idDepartamento; }
+    public void setidDepartamento(int idDepartamento) { this.idDepartamento = idDepartamento; }
     
     public String getdepartamento() { return departamento; }
     public void setdepartamento(String departamento) { this.departamento = departamento; }    

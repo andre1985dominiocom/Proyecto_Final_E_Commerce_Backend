@@ -25,11 +25,11 @@ public class CategoriasDAO {
         try (Connection conexion = Conexion.getConexion();
              PreparedStatement ps = conexion.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             
-            ps.setString(1, categoria.getnombre_Categoria());
+            ps.setString(1, categoria.getnombreCategoria());
             ps.setString(2, categoria.getdescripcion());
             
-            if (categoria.getcategoria_padre_Id() != null && categoria.getcategoria_padre_Id() > 0) {
-                ps.setObject(3, categoria.getcategoria_padre_Id());
+            if (categoria.getcategoriaPadreId() != null && categoria.getcategoriaPadreId() > 0) {
+                ps.setObject(3, categoria.getcategoriaPadreId());
             } else {
                 ps.setNull(3, java.sql.Types.INTEGER);
             }
@@ -44,7 +44,7 @@ public class CategoriasDAO {
                     if (rs.next()) {
                         idGenerado = rs.getInt(1);
                         
-                        categoria.setid_Categoria(idGenerado);
+                        categoria.setidCategoria(idGenerado);
                     }
                 } 
             }

@@ -26,10 +26,10 @@ public class CiudadesDAO {
                 
             while (rs.next()) {
                 Ciudades city = new Ciudades();
-                city.setid_Ciudad(rs.getInt("id_Ciudad"));
-                city.setnombre_Ciudad(rs.getString("nombre_Ciudad"));
-                city.setdepartamento_Id(rs.getInt("departamento_Id"));
-                city.setcodigo_Postal(rs.getString("codigo_Postal"));
+                city.setidCiudad(rs.getInt("id_Ciudad"));
+                city.setnombreCiudad(rs.getString("nombre_Ciudad"));
+                city.setdepartamentoId(rs.getInt("departamento_Id"));
+                city.setcodigoPostal(rs.getString("codigo_Postal"));
                      
                 lista.add(city);
             }

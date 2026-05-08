@@ -6,38 +6,38 @@ package com.didistore.model.moduleinventoryfeedback;
  * @author Sergio Andrés Álvarez Lache
  */
 public class Resenas {
-    private int id_Resena;
-    private int usuario_Id;
-    private int producto_Id;
+    private int idResena;
+    private int usuarioId;
+    private int productoId;
     private int calificacion;
     private String comentario;
     private String estado;
     
     public Resenas() {}
     
-    public Resenas(int id_Resena,
-            int usuario_Id,
-            int producto_Id,
+    public Resenas(int idResena,
+            int usuarioId,
+            int productoId,
             int calificacion,
             String comentario,
             String estado) {
         
-        this.id_Resena = id_Resena;
-        this.usuario_Id = usuario_Id;
-        this.producto_Id = producto_Id;
+        this.idResena = idResena;
+        this.usuarioId = usuarioId;
+        this.productoId = productoId;
         this.calificacion = calificacion;
         this.comentario = comentario;
         this.estado = estado;        
     }
     
-    public int getid_Resena() { return id_Resena; }
-    public void setid_Resena(int id_Resena) { this.id_Resena = id_Resena; }
+    public int getidResena() { return idResena; }
+    public void setidResena(int idResena) { this.idResena = idResena; }
     
-    public int getusuario_Id() { return usuario_Id; }
-    public void setusuario_Id(int usuario_Id) { this.usuario_Id = usuario_Id; }
+    public int getusuarioId() { return usuarioId; }
+    public void setusuarioId(int usuarioId) { this.usuarioId = usuarioId; }
     
-    public int getproducto_Id() { return producto_Id; }
-    public void setproducto_Id(int producto_Id) { this.producto_Id = producto_Id; }
+    public int getproductoId() { return productoId; }
+    public void setproductoId(int productoId) { this.productoId = productoId; }
     
     public int getcalificacion() { return calificacion; }
     public void setcalificacion(int calificacion) { this.calificacion = calificacion; }

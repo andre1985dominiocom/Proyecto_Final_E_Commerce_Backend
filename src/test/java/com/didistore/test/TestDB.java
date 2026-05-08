@@ -3,7 +3,6 @@ package com.didistore.test;
 import com.didistore.dao.CategoriasDAO;
 import com.didistore.model.moduleinventoryfeedback.Categorias;
 import java.util.Map;
-import java.sql.SQLException;
 
 /**
  *, 
@@ -24,9 +23,9 @@ public class TestDB {
         
             for (Map.Entry<String, String[]> entrada : estructura.entrySet()) {
                 Categorias raiz = new Categorias();
-                raiz.setnombre_Categoria(entrada.getKey());
+                raiz.setnombreCategoria(entrada.getKey());
                 raiz.setdescripcion("Categoría principal de " + entrada.getKey());
-                raiz.setcategoria_padre_Id(null);
+                raiz.setcategoriaPadreId(null);
             
                 int idRaizGenerado = dao.insertarCategorias(raiz);
             
@@ -34,10 +33,10 @@ public class TestDB {
                 
                     for (String nombreSub : entrada.getValue()) {
                         Categorias sub = new Categorias();
-                        sub.setnombre_Categoria(nombreSub);
+                        sub.setnombreCategoria(nombreSub);
                         sub.setdescripcion("Subcategoría de " + entrada.getKey());
                           
-                        sub.setcategoria_padre_Id(idRaizGenerado); 
+                        sub.setcategoriaPadreId(idRaizGenerado); 
                         
                         dao.insertarCategorias(sub);
                     }

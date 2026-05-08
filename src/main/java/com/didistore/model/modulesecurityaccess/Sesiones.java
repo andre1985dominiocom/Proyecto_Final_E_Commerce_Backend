@@ -8,56 +8,56 @@ import java.sql.Timestamp;
  * @author Sergio Andrés Álvarez Lache
  */
 public class Sesiones {
-    private int id_Sesion;
-    private int usuario_Id;
-    private String token_Sesion;
-    private Timestamp fecha_Creacion;
-    private Timestamp fecha_Expiracion;
+    private int idSesion;
+    private int usuarioId;
+    private String tokenSesion;
+    private Timestamp fechaCreacion;
+    private Timestamp fechaExpiracion;
     private String ip;
-    private String user_Agent;
+    private String userAgent;
     private int revocada;
     
     public Sesiones() {}
     
-    public Sesiones (int id_Sesion,
-            int usuario_Id,
-            String token_Sesion,
-            Timestamp fecha_Creacion,
-            Timestamp fecha_Expiracion,
+    public Sesiones (int idSesion,
+            int usuarioId,
+            String tokenSesion,
+            Timestamp fechaCreacion,
+            Timestamp fechaExpiracion,
             String ip,
-            String user_Agent,
+            String userAgent,
             int revocada) {
         
-        this.id_Sesion = id_Sesion;
-        this.usuario_Id = usuario_Id;
-        this.token_Sesion = token_Sesion;
-        this.fecha_Creacion = fecha_Creacion;
-        this.fecha_Expiracion = fecha_Expiracion;
+        this.idSesion = idSesion;
+        this.usuarioId = usuarioId;
+        this.tokenSesion = tokenSesion;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaExpiracion = fechaExpiracion;
         this.ip = ip;
-        this.user_Agent = user_Agent;
+        this.userAgent = userAgent;
         this.revocada = revocada;
     }
     
-    public int getid_Sesion() { return id_Sesion; }
-    public void setid_Sesion (int id_Sesion) { this.id_Sesion = id_Sesion; }
+    public int getidSesion() { return idSesion; }
+    public void setidSesion (int idSesion) { this.idSesion = idSesion; }
     
-    public int getusuario_Id() { return usuario_Id; }
-    public void setusuario_Id (int usuario_Id) { this.usuario_Id = usuario_Id; }
+    public int getusuarioId() { return usuarioId; }
+    public void setusuarioId (int usuarioId) { this.usuarioId = usuarioId; }
     
-    public String gettoken_Sesion() { return token_Sesion; }
-    public void settoken_Sesion (String token_Sesion) { this.token_Sesion = token_Sesion; }
+    public String gettokenSesion() { return tokenSesion; }
+    public void settokenSesion (String tokenSesion) { this.tokenSesion = tokenSesion; }
     
-    public Timestamp getfecha_Creacion() { return fecha_Creacion; }
-    public void setfecha_Creacion (Timestamp fecha_Creacion) { this.fecha_Creacion = fecha_Creacion; }
+    public Timestamp getfechaCreacion() { return fechaCreacion; }
+    public void setfechaCreacion (Timestamp fecha_Creacion) { this.fechaCreacion = fecha_Creacion; }
     
-    public Timestamp getfecha_Expiracion() { return fecha_Expiracion; }
-    public void setfecha_Expiracion (Timestamp fecha_Expiracion) { this.fecha_Expiracion = fecha_Expiracion; }
+    public Timestamp getfechaExpiracion() { return fechaExpiracion; }
+    public void setfechaExpiracion (Timestamp fechaExpiracion) { this.fechaExpiracion = fechaExpiracion; }
     
     public String getip() { return ip; }
     public void setip (String ip) { this.ip = ip; } 
     
-    public String getuser_Agent() { return user_Agent; }
-    public void setuser_Agent (String user_Agent) { this.user_Agent = user_Agent; }  
+    public String getuserAgent() { return userAgent; }
+    public void setuserAgent (String userAgent) { this.userAgent = userAgent; }  
     
     public int getrevocada() { return revocada; }
     public void setrevocada (int revocada) { this.revocada = revocada; }    

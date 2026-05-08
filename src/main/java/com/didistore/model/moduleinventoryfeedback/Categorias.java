@@ -8,43 +8,39 @@ import java.sql.Timestamp;
  * @author Sergio Andrés Álvarez Lache
  */
 public class Categorias {
-    private int id_Categoria;
-    private String nombre_Categoria;
+    private int idCategoria;
+    private String nombreCategoria;
     private String descripcion;
-    private Integer categoria_padre_Id;
-    private Timestamp fecha_Creacion;
+    private Integer categoriaPadreId;
+    private Timestamp fechaCreacion;
     
     public Categorias() {}
     
-    public Categorias (int id_Categoria,
-            String nombre_Categoria,
+    public Categorias (int idCategoria,
+            String nombreCategoria,
             String descripcion,
-            Integer categoria_padre_Id,
-            Timestamp fecha_creacion) {
+            Integer categoriaPadreId,
+            Timestamp fechaCreacion) {
         
-        this.id_Categoria = id_Categoria;
-        this.nombre_Categoria = nombre_Categoria;
+        this.idCategoria = idCategoria;
+        this.nombreCategoria = nombreCategoria;
         this.descripcion = descripcion;
-        this.categoria_padre_Id = categoria_padre_Id;
-        this.fecha_Creacion = fecha_creacion;
+        this.categoriaPadreId = categoriaPadreId;
+        this.fechaCreacion = fechaCreacion;
     }
     
-    public int getid_Categoria() { return id_Categoria; }
-    public void setid_Categoria(int id_Categoria) { this.id_Categoria = id_Categoria; }
+    public int getidCategoria() { return idCategoria; }
+    public void setidCategoria(int id_Categoria) { this.idCategoria = id_Categoria; }
     
-    public String getnombre_Categoria() { return nombre_Categoria; }
-    public void setnombre_Categoria(String nombre_Categoria) { this.nombre_Categoria = nombre_Categoria; }
+    public String getnombreCategoria() { return nombreCategoria; }
+    public void setnombreCategoria(String nombreCategoria) { this.nombreCategoria = nombreCategoria; }
     
     public String getdescripcion() { return  descripcion; }
     public void setdescripcion(String descripcion) { this.descripcion = descripcion; }
     
-    public Integer getcategoria_padre_Id() { return categoria_padre_Id; }
-    public void setcategoria_padre_id(Integer categoria_padre_Id) { this.categoria_padre_Id = categoria_padre_Id; }
+    public Integer getcategoriaPadreId() { return categoriaPadreId; }
+    public void setcategoriaPadreId(Integer categoriaPadreId) { this.categoriaPadreId = categoriaPadreId; }
     
-    public Timestamp getfecha_Creacion() { return fecha_Creacion; }
-    public void setfecha_Creacion(Timestamp fecha_creacion) { this.fecha_Creacion = fecha_Creacion; }
-
-    public void setcategoria_padre_Id(Integer categoria_padre_Id) {
-        this.categoria_padre_Id = categoria_padre_Id;
-    }
+    public Timestamp getfechaCreacion() { return fechaCreacion; }
+    public void setfechaCreacion(Timestamp fechaCreacion) { this.fechaCreacion = fechaCreacion; }
 }

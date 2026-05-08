@@ -26,7 +26,7 @@ public class DepartamentosDAO {
                 
             while (rs.next()) {
                 Departamentos d = new Departamentos();
-                d.setid_Departamento(rs.getInt("id_Departamento"));
+                d.setidDepartamento(rs.getInt("id_Departamento"));
                 d.setdepartamento(rs.getString("departamento"));
                      
                 lista.add(d);

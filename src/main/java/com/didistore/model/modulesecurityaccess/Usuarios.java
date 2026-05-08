@@ -8,53 +8,53 @@ import java.sql.Timestamp;
  * @author Sergio Andrés Álvarez Lache
  */
 public class Usuarios {
-    private int id_Usuario;
+    private int idUsuario;
     private String email;
     private String contraseña;
     private String nombre;
     private String apellido;
     private String documento;
-    private String tipo_Documento;
-    private int perfil_Id;
+    private String tipoDocumento;
+    private int perfilId;
     private String estado;
-    private int email_Verificado;
-    private Timestamp fecha_Creacion;
-    private Timestamp fecha_Actualizacion;
-    private Timestamp fecha_Ultimo_Login;
+    private int emailVerificado;
+    private Timestamp fechaCreacion;
+    private Timestamp fechaActualizacion;
+    private Timestamp fechaUltimoLogin;
     
     public Usuarios() {}
     
-    public Usuarios (int id_Usuario,
+    public Usuarios (int idUsuario,
             String email,
             String contraseña,
             String nombre,
             String apellido,
             String documento,
-            String tipo_Documento,
-            int perfil_Id,
+            String tipoDocumento,
+            int perfilId,
             String estado,
-            int email_Verificado,
-            Timestamp fecha_Creacion,
-            Timestamp fecha_Actualizacion,
-            Timestamp fecha_Ultimo_Login) {
+            int emailVerificado,
+            Timestamp fechaCreacion,
+            Timestamp fechaActualizacion,
+            Timestamp fechaUltimoLogin) {
     
-        this.id_Usuario = id_Usuario;
+        this.idUsuario = idUsuario;
         this.email = email;
         this.contraseña = contraseña;
         this.nombre = nombre;
         this.apellido = apellido;
         this.documento = documento;
-        this.tipo_Documento = tipo_Documento;
-        this.perfil_Id = perfil_Id;
+        this.tipoDocumento = tipoDocumento;
+        this.perfilId = perfilId;
         this.estado = estado;
-        this.email_Verificado = email_Verificado;
-        this.fecha_Creacion = fecha_Creacion;
-        this.fecha_Actualizacion = fecha_Actualizacion;
-        this.fecha_Ultimo_Login = fecha_Ultimo_Login;
+        this.emailVerificado = emailVerificado;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaActualizacion = fechaActualizacion;
+        this.fechaUltimoLogin = fechaUltimoLogin;
     }
     
-    public int getid_Usuario() { return id_Usuario; }
-    public void setid_Usuario(int id_Usuario) { this.id_Usuario = id_Usuario; }
+    public int getidUsuario() { return idUsuario; }
+    public void setidUsuario(int idUsuario) { this.idUsuario = idUsuario; }
     
     public String getemail() { return email; }
     public void setemail(String email) { this.email = email; }
@@ -71,24 +71,24 @@ public class Usuarios {
     public String getdocumento() { return documento; }
     public void setdocumento(String documento) { this.documento = documento; }
     
-    public String gettipo_Documento() { return tipo_Documento; }
-    public void settipo_Documento(String tipo_Documento) { this.tipo_Documento = tipo_Documento; }
+    public String gettipoDocumento() { return tipoDocumento; }
+    public void settipoDocumento(String tipoDocumento) { this.tipoDocumento = tipoDocumento; }
     
-    public int getperfil_Id() { return perfil_Id; }
-    public void setperfil_Id(int perfil_Id) { this.perfil_Id = perfil_Id; }
+    public int getperfilId() { return perfilId; }
+    public void setperfilId(int perfilId) { this.perfilId = perfilId; }
     
     public String getestado() { return estado; }
     public void setestado(String estado) { this.estado = estado; }
     
-    public int getemail_Verificado() { return email_Verificado; }
-    public void setemail_Verificado(int email_Verificado) { this.email_Verificado = email_Verificado; }
+    public int getemailVerificado() { return emailVerificado; }
+    public void setemailVerificado(int emailVerificado) { this.emailVerificado = emailVerificado; }
     
-    public Timestamp getfecha_Creacion() { return fecha_Creacion; }
-    public void setfecha_Creacion(Timestamp fecha_Creacion) { this.fecha_Creacion = fecha_Creacion; }
+    public Timestamp getfechaCreacion() { return fechaCreacion; }
+    public void setfechaCreacion(Timestamp fechaCreacion) { this.fechaCreacion = fechaCreacion; }
     
-    public Timestamp getfecha_Actualizacion() { return fecha_Actualizacion; }
-    public void setfecha_Actualizacion(Timestamp fecha_Actualizacion) { this.fecha_Actualizacion = fecha_Actualizacion; }
+    public Timestamp getfechaActualizacion() { return fechaActualizacion; }
+    public void setfechaActualizacion(Timestamp fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
     
-    public Timestamp getfecha_Ultimo_Login() { return fecha_Ultimo_Login; }
-    public void setfecha_Ultimo_Login(Timestamp fecha_Ultimo_Login) { this.fecha_Ultimo_Login = fecha_Ultimo_Login; }
+    public Timestamp getfechaUltimoLogin() { return fechaUltimoLogin; }
+    public void setfechaUltimoLogin(Timestamp fechaUltimoLogin) { this.fechaUltimoLogin = fechaUltimoLogin; }
 }

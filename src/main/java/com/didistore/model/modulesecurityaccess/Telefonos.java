@@ -8,35 +8,35 @@ import java.sql.Timestamp;
  * @author Sergio Andrés Álvarez Lache
  */
 public class Telefonos {
-    private int id_Telefono;
-    private int usuario_Id;
+    private int idTelefono;
+    private int usuarioId;
     private String tipo;
     private String numero;
-    private int es_Verificado;
-    private Timestamp fecha_Agregado;
+    private int esVerificado;
+    private Timestamp fechaAgregado;
     
     public Telefonos() {}
     
-    public Telefonos (int id_Telefono,
-            int usuario_Id,
+    public Telefonos (int idTelefono,
+            int usuarioId,
             String tipo,
             String numero,
-            int es_Verificado,
-            Timestamp fecha_Agregado) {
+            int esVerificado,
+            Timestamp fechaAgregado) {
         
-        this.id_Telefono = id_Telefono;
-        this.usuario_Id = usuario_Id;
+        this.idTelefono = idTelefono;
+        this.usuarioId = usuarioId;
         this.tipo = tipo;
         this.numero = numero;
-        this.es_Verificado = es_Verificado;
-        this.fecha_Agregado = fecha_Agregado;
+        this.esVerificado = esVerificado;
+        this.fechaAgregado = fechaAgregado;
     }
     
-    public int getid_Telefono() { return id_Telefono; }
-    public void setid_Telefono (int id_Telefono) { this.id_Telefono = id_Telefono; }
+    public int getidTelefono() { return idTelefono; }
+    public void setidTelefono (int idTelefono) { this.idTelefono = idTelefono; }
     
-    public int getusuario_Id() { return usuario_Id; }
-    public void setusuario_Id (int usuario_Id) { this.usuario_Id = usuario_Id; }
+    public int getusuarioId() { return usuarioId; }
+    public void setusuarioId (int usuarioId) { this.usuarioId = usuarioId; }
     
     public String gettipo() { return tipo; }
     public void settipo (String tipo) { this.tipo = tipo; }
@@ -44,9 +44,9 @@ public class Telefonos {
     public String getnumero() { return numero; }
     public void setnumero (String numero) { this.numero = numero; }
     
-    public int getes_Verificado() { return es_Verificado; }
-    public void setes_Verificado (int es_Verificado) { this.es_Verificado = es_Verificado; }
+    public int getesVerificado() { return esVerificado; }
+    public void setesVerificado (int esVerificado) { this.esVerificado = esVerificado; }
     
-    public Timestamp getfecha_Agregado() { return fecha_Agregado; }
-    public void setfecha_Agregado (Timestamp fecha_Agregado) { this.fecha_Agregado = fecha_Agregado; }   
+    public Timestamp getfechaAgregado() { return fechaAgregado; }
+    public void setfechaAgregado (Timestamp fechaAgregado) { this.fechaAgregado = fechaAgregado; }   
 }

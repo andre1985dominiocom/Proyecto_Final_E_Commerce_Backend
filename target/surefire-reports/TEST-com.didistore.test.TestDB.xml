@@ -15,7 +15,7 @@
     <property name="user.country" value="CO"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-23\bin"/>
-    <property name="sun.java.command" value="C:\Users\Propietario\AppData\Local\Temp\surefire10975640000504182458\surefirebooter-20260507094859759_3.jar C:\Users\Propietario\AppData\Local\Temp\surefire10975640000504182458 2026-05-07T09-48-59_652-jvmRun1 surefire-20260507094859759_1tmp surefire_0-20260507094859759_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Propietario\AppData\Local\Temp\surefire8429166868537243608\surefirebooter-20260508102647530_3.jar C:\Users\Propietario\AppData\Local\Temp\surefire8429166868537243608 2026-05-08T10-26-47_425-jvmRun1 surefire-20260508102647530_1tmp surefire_0-20260508102647530_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\target\test-classes;D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\target\classes;C:\Users\Propietario\.m2\repository\com\mysql\mysql-connector-j\8.0.33\mysql-connector-j-8.0.33.jar;C:\Users\Propietario\.m2\repository\com\google\protobuf\protobuf-java\3.21.9\protobuf-java-3.21.9.jar;C:\Users\Propietario\.m2\repository\jakarta\platform\jakarta.jakartaee-api\8.0.0\jakarta.jakartaee-api-8.0.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Propietario\AppData\Local\Temp\surefire10975640000504182458\surefirebooter-20260507094859759_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Propietario\AppData\Local\Temp\surefire8429166868537243608\surefirebooter-20260508102647530_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="23.0.1+11-39"/>

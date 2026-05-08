@@ -7,33 +7,33 @@ package com.didistore.model.modulelogisticslocation;
  */
 public class Ciudades {
     
-    private int id_Ciudad;
-    private String nombre_Ciudad;
-    private int departamento_Id;
-    private String codigo_Postal;
+    private int idCiudad;
+    private String nombreCiudad;
+    private int departamentoId;
+    private String codigoPostal;
     
     public Ciudades() {}
     
-    public Ciudades (int id_Ciudad,
-            String nombre_Ciudad,
-            int departamento_Id,
-            String codigo_Postal) {
+    public Ciudades (int idCiudad,
+            String nombreCiudad,
+            int departamentoId,
+            String codigoPostal) {
         
-        this.id_Ciudad = id_Ciudad;
-        this.nombre_Ciudad = nombre_Ciudad;
-        this.departamento_Id = departamento_Id;
-        this.codigo_Postal = codigo_Postal;
+        this.idCiudad = idCiudad;
+        this.nombreCiudad = nombreCiudad;
+        this.departamentoId = departamentoId;
+        this.codigoPostal = codigoPostal;
     }
     
-    public int getid_Ciudad() { return id_Ciudad; }
-    public void setid_Ciudad(int id_Ciudad) { this.id_Ciudad = id_Ciudad; }
+    public int getidCiudad() { return idCiudad; }
+    public void setidCiudad(int idCiudad) { this.idCiudad = idCiudad; }
     
-    public String getnombre_Ciudad() { return nombre_Ciudad; }
-    public void setnombre_Ciudad(String nombre_Ciudad) { this.nombre_Ciudad = nombre_Ciudad; }
+    public String getnombreCiudad() { return nombreCiudad; }
+    public void setnombreCiudad(String nombreCiudad) { this.nombreCiudad = nombreCiudad; }
     
-    public int getdepartamento_Id() { return departamento_Id; }
-    public void setdepartamento_Id(int departamento_Id) { this.departamento_Id = departamento_Id; }
+    public int getdepartamentoId() { return departamentoId; }
+    public void setdepartamentoId(int departamentoId) { this.departamentoId = departamentoId; }
     
-    public String getcodigo_Postal() { return codigo_Postal; }
-    public void setcodigo_Postal(String codigo_Postal) { this.codigo_Postal = codigo_Postal; }
+    public String getcodigoPostal() { return codigoPostal; }
+    public void setcodigoPostal(String codigoPostal) { this.codigoPostal = codigoPostal; }
 }

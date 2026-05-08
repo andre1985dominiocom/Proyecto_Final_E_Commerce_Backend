@@ -6,27 +6,27 @@ package com.didistore.model.modulesecurityaccess;
  * @author Sergio Andrés Álvarez Lache
  */
 public class Permisos {
-    private int id_Permiso;
-    private String nombre_Permiso;
-    private String descripcion_Permiso;
+    private int idPermiso;
+    private String nombrePermiso;
+    private String descripcionPermiso;
     
     public Permisos() {}
     
-    public Permisos (int id_Permiso,
-            String nombre_Permiso,
-            String descripcion_Permido) {
+    public Permisos (int idPermiso,
+            String nombrePermiso,
+            String descripcionPermido) {
         
-        this.id_Permiso = id_Permiso;
-        this.nombre_Permiso = nombre_Permiso;
-        this.descripcion_Permiso = descripcion_Permido;
+        this.idPermiso = idPermiso;
+        this.nombrePermiso = nombrePermiso;
+        this.descripcionPermiso = descripcionPermido;
     }
     
-    public int getid_Permiso() { return id_Permiso; }
-    public void setid_Permiso (int id_Permiso) { this.id_Permiso = id_Permiso; }
+    public int getidPermiso() { return idPermiso; }
+    public void setidPermiso (int idPermiso) { this.idPermiso = idPermiso; }
     
-    public String getnombre_Permiso() { return nombre_Permiso; }
-    public void setnombre_Permiso (String nombre_Permiso) { this.nombre_Permiso = nombre_Permiso; }
+    public String getnombrePermiso() { return nombrePermiso; }
+    public void setnombrePermiso (String nombrePermiso) { this.nombrePermiso = nombrePermiso; }
     
-    public String getdescripcion_Permiso() { return descripcion_Permiso; }
-    public void setdescripcion_Permiso ( String descripcion_Permiso) { this.descripcion_Permiso = descripcion_Permiso; }
+    public String getdescripcionPermiso() { return descripcionPermiso; }
+    public void setdescripcionPermiso ( String descripcionPermiso) { this.descripcionPermiso = descripcionPermiso; }
 }

@@ -20,7 +20,7 @@ public class ProductosDAO {
     public void insertarProductos(Productos producto) {
         
         String sql = "INSERT INTO Productos (nombre_Producto, "
-                + "descripcion_corta, "
+                + "descripcion_Corta, "
                 + "descripcion_Larga, "
                 + "precio, "
                 + "sku, "
@@ -58,19 +58,19 @@ public class ProductosDAO {
                 
             while (rs.next()) {
                 Productos p = new Productos();
-                p.setid_Producto(rs.getInt("id_Producto"));
-                p.setnombre_Producto(rs.getString("nombre_Producto"));
-                p.setdescripcion_Corta(rs.getString("descripcion_Corta"));
-                p.setdescripcion_Larga(rs.getString("descripcion_Larga"));
+                p.setidProducto(rs.getInt("id_Producto"));
+                p.setnombreProducto(rs.getString("nombre_Producto"));
+                p.setdescripcionCorta(rs.getString("descripcion_Corta"));
+                p.setdescripcionLarga(rs.getString("descripcion_Larga"));
                 p.setprecio(rs.getFloat("precio"));
                 p.setsku(rs.getString("sku"));
                 p.settalla(rs.getString("talla"));
                 p.setcolor(rs.getString("color"));
-                p.setcategoria_Id(rs.getInt("categoria_Id"));
+                p.setcategoriaId(rs.getInt("categoria_Id"));
                 p.setestado(rs.getString("estado"));
-                p.setes_Destacado(rs.getInt("es_Destacado"));
-                p.setfecha_Creacion(rs.getTimestamp("fecha_creacion"));
-                p.setfecha_Actualizacion(rs.getTimestamp("fecha_Actualizacion"));
+                p.setesDestacado(rs.getInt("es_Destacado"));
+                p.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
+                p.setfechaActualizacion(rs.getTimestamp("fecha_Actualizacion"));
                 
                 lista.add(p);
             }
