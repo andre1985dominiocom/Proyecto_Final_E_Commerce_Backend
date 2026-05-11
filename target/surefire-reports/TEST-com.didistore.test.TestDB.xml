@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.didistore.test.TestDB" time="0.008" tests="0" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.didistore.test.TestDB" time="0.007" tests="0" errors="0" skipped="0" failures="0">
   <properties>
+    <property name="netbeans.deploy" value="true"/>
     <property name="java.specification.version" value="23"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
@@ -8,6 +9,7 @@
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
+    <property name="exec.appArgs" value=""/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
     <property name="user.timezone" value="America/Bogota"/>
     <property name="os.name" value="Windows 11"/>
@@ -15,8 +17,9 @@
     <property name="user.country" value="CO"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-23\bin"/>
-    <property name="sun.java.command" value="C:\Users\Propietario\AppData\Local\Temp\surefire8429166868537243608\surefirebooter-20260508102647530_3.jar C:\Users\Propietario\AppData\Local\Temp\surefire8429166868537243608 2026-05-08T10-26-47_425-jvmRun1 surefire-20260508102647530_1tmp surefire_0-20260508102647530_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Propietario\AppData\Local\Temp\surefire4288828375790335468\surefirebooter-20260511071227442_3.jar C:\Users\Propietario\AppData\Local\Temp\surefire4288828375790335468 2026-05-11T07-12-27_331-jvmRun1 surefire-20260511071227442_1tmp surefire_0-20260511071227442_2tmp"/>
     <property name="jdk.debug" value="release"/>
+    <property name="exec.vmArgs" value=""/>
     <property name="surefire.test.class.path" value="D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\target\test-classes;D:\3065369\Proyecto_Final_E-Commerce_DidiStore\didistorebackend\target\classes;C:\Users\Propietario\.m2\repository\com\mysql\mysql-connector-j\8.0.33\mysql-connector-j-8.0.33.jar;C:\Users\Propietario\.m2\repository\com\google\protobuf\protobuf-java\3.21.9\protobuf-java-3.21.9.jar;C:\Users\Propietario\.m2\repository\jakarta\platform\jakarta.jakartaee-api\8.0.0\jakarta.jakartaee-api-8.0.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\Propietario"/>
@@ -30,7 +33,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Propietario\AppData\Local\Temp\surefire8429166868537243608\surefirebooter-20260508102647530_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Propietario\AppData\Local\Temp\surefire4288828375790335468\surefirebooter-20260511071227442_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="23.0.1+11-39"/>

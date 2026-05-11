@@ -83,7 +83,6 @@ public class Pedidos {
     public int getcuponId() { return cuponId; }
     public void setcuponId(int cuponId) { this.cuponId = cuponId; }
     
-    
     public Timestamp getfechaPedido() { return fechaPedido; }
     public void setfechaPedido(Timestamp fechaPedido) { this.fechaPedido = fechaPedido; }
 }

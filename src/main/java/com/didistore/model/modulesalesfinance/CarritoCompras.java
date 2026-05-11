@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public class CarritoCompras {
     private int idCarrito;
     private int usuarioId;
-    private String sesion;
+    private String sesionId;
     private Timestamp fechaCreacion;
     private Timestamp fechaActualizacion;
     private Timestamp fechaExpiracion;
@@ -19,14 +19,14 @@ public class CarritoCompras {
     
     public CarritoCompras(int idCarrito,
             int usuarioId,
-            String sesion,
+            String sesionId,
             Timestamp fechaCreacion,
             Timestamp fechaActualizacion,
             Timestamp fechaExpiracion) {
         
         this.idCarrito = idCarrito;
         this.usuarioId = usuarioId;
-        this.sesion = sesion;
+        this.sesionId = sesionId;
         this.fechaCreacion = fechaCreacion;
         this.fechaActualizacion = fechaActualizacion;
         this.fechaExpiracion = fechaExpiracion;
@@ -38,8 +38,8 @@ public class CarritoCompras {
     public int usuarioId() { return usuarioId; }
     public void setusuarioId(int usuarioId) { this.usuarioId = usuarioId; }
     
-    public String getsesion() { return sesion; }
-    public void setsesion(String sesion) { this.sesion = sesion; }
+    public String getsesionId() { return sesionId; }
+    public void setsesionId(String sesionId) { this.sesionId = sesionId; }
     
     public Timestamp getfechaCreacion() { return fechaCreacion; }
     public void setfechaCreacion(Timestamp fechaCreacion) { this.fechaCreacion = fechaCreacion; }
