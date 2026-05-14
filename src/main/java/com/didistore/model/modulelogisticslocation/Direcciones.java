@@ -1,6 +1,7 @@
 
 package com.didistore.model.modulelogisticslocation;
 
+import com.didistore.util.EstadoDirecciones;
 import java.sql.Timestamp;
 
 /**
@@ -15,7 +16,7 @@ public class Direcciones {
     private String referencia;
     private int ciudadId;
     private int usuarioId;
-    private String estado;
+    private EstadoDirecciones estado;
     private Timestamp fechaCreacion;
     
     public Direcciones() {}
@@ -27,7 +28,7 @@ public class Direcciones {
             String referencia,
             int ciudadId,
             int usuarioId,
-            String estado,
+            EstadoDirecciones estado,
             Timestamp fechaCreacion) {
         
         this.idDireccion = idDireccion;
@@ -62,8 +63,8 @@ public class Direcciones {
     public int getusuarioId() { return usuarioId; }
     public void setusuarioId(int usuarioId) { this.usuarioId = usuarioId; }
     
-    public String getestado() { return estado; }
-    public void setestado(String estado) { this.estado = estado; }
+    public EstadoDirecciones getestado() { return estado; }
+    public void setestado(EstadoDirecciones estado) { this.estado = estado; }
     
     public Timestamp getfechaCreacion() { return fechaCreacion; }
     public void setfechaCreacion(Timestamp fechaCreacion) { this.fechaCreacion = fechaCreacion; }

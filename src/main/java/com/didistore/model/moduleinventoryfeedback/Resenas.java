@@ -1,6 +1,8 @@
 
 package com.didistore.model.moduleinventoryfeedback;
 
+import com.didistore.util.EstadoResenas;
+
 /**
  *
  * @author Sergio Andrés Álvarez Lache
@@ -11,7 +13,7 @@ public class Resenas {
     private int productoId;
     private int calificacion;
     private String comentario;
-    private String estado;
+    private EstadoResenas estado;
     
     public Resenas() {}
     
@@ -20,7 +22,7 @@ public class Resenas {
             int productoId,
             int calificacion,
             String comentario,
-            String estado) {
+            EstadoResenas estado) {
         
         this.idResena = idResena;
         this.usuarioId = usuarioId;
@@ -45,6 +47,6 @@ public class Resenas {
     public String getcomentario() { return comentario; }
     public void setcomentario(String comentario) { this.comentario = comentario; }
     
-    public String getestado() { return estado; }
-    public void setestado(String estado) { this.estado =  estado; }
+    public EstadoResenas getestado() { return estado; }
+    public void setestado(EstadoResenas estado) { this.estado =  estado; }
 }

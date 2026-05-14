@@ -6,6 +6,8 @@ import com.didistore.model.modulesecurityaccess.Usuarios;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import com.didistore.util.TipoDocumentos;
+import com.didistore.util.EstadoUsuarios;
 
 
 /**
@@ -29,9 +31,11 @@ public class UsuariosDAO {
                 u.setnombre(rs.getString("nombre"));
                 u.setapellido(rs.getString("apellido"));
                 u.setdocumento(rs.getString("documento"));
-                u.settipoDocumento(rs.getString("tipo_Documento"));
+                String tipoDocumentoStr = rs.getString("tipo_Documento");
+                u.settipoDocumento(TipoDocumentos.valueOf(tipoDocumentoStr));
                 u.setperfilId(rs.getInt("perfil_Id"));
-                u.setestado(rs.getString("estado"));
+                String estadoStr = rs.getString("estado");
+                u.setestado(EstadoUsuarios.valueOf(estadoStr));
                 u.setemailVerificado(rs.getInt("email_Verificado"));
                 u.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
                 u.setfechaActualizacion(rs.getTimestamp("fecha_Actualizacion"));

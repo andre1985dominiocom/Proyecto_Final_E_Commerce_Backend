@@ -1,6 +1,7 @@
 
 package com.didistore.model.modulesalesfinance;
 
+import com.didistore.util.EstadoPedidos;
 import java.sql.Timestamp;
 
 /**
@@ -10,8 +11,8 @@ import java.sql.Timestamp;
 public class HistorialEstadoPedidos {
     private int idHistorial;
     private int pedidoId;
-    private String estadoAnterior;
-    private String estadoNuevo;
+    private EstadoPedidos estadoAnterior;
+    private EstadoPedidos estadoNuevo;
     private int usuarioId;
     private Timestamp fechaCambio;
     private String notas;
@@ -20,8 +21,8 @@ public class HistorialEstadoPedidos {
     
     public HistorialEstadoPedidos(int idHistorial,
             int pedidoId,
-            String estadoAnterior,
-            String estadoNuevo,
+            EstadoPedidos estadoAnterior,
+            EstadoPedidos estadoNuevo,
             int usuarioId,
             Timestamp fechaCambio,
             String notas) {
@@ -41,11 +42,11 @@ public class HistorialEstadoPedidos {
     public int getpedidoId() { return pedidoId; }
     public void setpedidoId(int pedidoId) { this.pedidoId = pedidoId; }
     
-    public String getestadoAnterior() { return estadoAnterior; }
-    public void setestadoAnterior(String estadoAnterior) { this.estadoAnterior = estadoAnterior; }
+    public EstadoPedidos getestadoAnterior() { return estadoAnterior; }
+    public void setestadoAnterior(EstadoPedidos estadoAnterior) { this.estadoAnterior = estadoAnterior; }
     
-    public String getestadoNuevo() { return estadoNuevo; }
-    public void setestadoNuevo(String estadoNuevo) { this.estadoNuevo = estadoNuevo; }
+    public EstadoPedidos getestadoNuevo() { return estadoNuevo; }
+    public void setestadoNuevo(EstadoPedidos estadoNuevo) { this.estadoNuevo = estadoNuevo; }
     
     public int getusuarioId() { return usuarioId; }
     public void setusuarioId(int usuarioId) { this.usuarioId = usuarioId; }

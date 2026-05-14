@@ -10,6 +10,8 @@ import java.util.List;
 
 import com.didistore.config.Conexion;
 import com.didistore.model.moduleinventoryfeedback.Productos;
+import com.didistore.util.TallaProductos;
+import com.didistore.util.EstadoProductos;
 
 /**
  *
@@ -64,10 +66,12 @@ public class ProductosDAO {
                 p.setdescripcionLarga(rs.getString("descripcion_Larga"));
                 p.setprecio(rs.getFloat("precio"));
                 p.setsku(rs.getString("sku"));
-                p.settalla(rs.getString("talla"));
+                String tallaStr = rs.getString("talla");
+                p.settalla(TallaProductos.valueOf(tallaStr));
                 p.setcolor(rs.getString("color"));
                 p.setcategoriaId(rs.getInt("categoria_Id"));
-                p.setestado(rs.getString("estado"));
+                String estadoStr = rs.getString("estado");
+                p.setestado(EstadoProductos.valueOf(estadoStr));
                 p.setesDestacado(rs.getInt("es_Destacado"));
                 p.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
                 p.setfechaActualizacion(rs.getTimestamp("fecha_Actualizacion"));

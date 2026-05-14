@@ -1,6 +1,8 @@
 
 package com.didistore.model.moduleinventoryfeedback;
 
+import com.didistore.util.EstadoProductos;
+import com.didistore.util.TallaProductos;
 import java.sql.Timestamp;
 
 /**
@@ -14,10 +16,10 @@ public class Productos {
     private String descripcionLarga;
     private float precio;
     private String sku;
-    private String talla;
+    private TallaProductos talla;
     private String color;
     private int categoriaId;
-    private String estado;
+    private EstadoProductos estado;
     private int esDestacado;
     private Timestamp fechaCreacion;
     private Timestamp fechaActualizacion;
@@ -30,10 +32,10 @@ public class Productos {
             String descripcionLarga,
             float precio,
             String sku,
-            String talla,
+            TallaProductos talla,
             String color,
             int categoriaId,
-            String estado,
+            EstadoProductos estado,
             int esDestacado,
             Timestamp fechaCreacion,
             Timestamp fechaActualizacion) {
@@ -71,8 +73,8 @@ public class Productos {
     public String getsku() { return sku; }
     public void setsku(String sku) { this.sku = sku; }
     
-    public String gettalla() { return talla; }
-    public void settalla(String talla) { this.talla = talla; }
+    public TallaProductos gettalla() { return talla; }
+    public void settalla(TallaProductos talla) { this.talla = talla; }
     
     public String getcolor() { return color; }
     public void setcolor(String color) { this.color = color; }
@@ -80,8 +82,8 @@ public class Productos {
     public int getcategoriaId() { return categoriaId; }
     public void setcategoriaId(int categoriaId) { this.categoriaId = categoriaId; }
     
-    public String getestado() { return estado; }
-    public void setestado(String estado) { this.estado = estado; }
+    public EstadoProductos getestado() { return estado; }
+    public void setestado(EstadoProductos estado) { this.estado = estado; }
     
     public int getesDestacado() { return esDestacado; }
     public void setesDestacado(int esDestacado) { this.esDestacado = esDestacado; }

@@ -1,6 +1,7 @@
 
 package com.didistore.model.modulesecurityaccess;
 
+import com.didistore.util.TipoTelefonos;
 import java.sql.Timestamp;
 
 /**
@@ -10,7 +11,7 @@ import java.sql.Timestamp;
 public class Telefonos {
     private int idTelefono;
     private int usuarioId;
-    private String tipo;
+    private TipoTelefonos tipo;
     private String numero;
     private int esVerificado;
     private Timestamp fechaAgregado;
@@ -19,7 +20,7 @@ public class Telefonos {
     
     public Telefonos (int idTelefono,
             int usuarioId,
-            String tipo,
+            TipoTelefonos tipo,
             String numero,
             int esVerificado,
             Timestamp fechaAgregado) {
@@ -38,8 +39,8 @@ public class Telefonos {
     public int getusuarioId() { return usuarioId; }
     public void setusuarioId (int usuarioId) { this.usuarioId = usuarioId; }
     
-    public String gettipo() { return tipo; }
-    public void settipo (String tipo) { this.tipo = tipo; }
+    public TipoTelefonos gettipo() { return tipo; }
+    public void settipo (TipoTelefonos tipo) { this.tipo = tipo; }
     
     public String getnumero() { return numero; }
     public void setnumero (String numero) { this.numero = numero; }

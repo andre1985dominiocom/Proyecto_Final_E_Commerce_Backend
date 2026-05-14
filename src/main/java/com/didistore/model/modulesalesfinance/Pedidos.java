@@ -1,6 +1,7 @@
 
 package com.didistore.model.modulesalesfinance;
 
+import com.didistore.util.EstadoPedidos;
 import java.sql.Timestamp;
 
 /**
@@ -12,7 +13,7 @@ public class Pedidos {
     private String numeroPedido;
     private int usuarioId;
     private int direccionEnvioId;
-    private String estadoPedido;
+    private EstadoPedidos estadoPedido;
     private double subTotal;
     private double descuento;
     private double iva;
@@ -27,7 +28,7 @@ public class Pedidos {
             String numeroPedido,
             int usuarioId,
             int direccionEnvioId,
-            String estadoPedido,
+            EstadoPedidos estadoPedido,
             double subTotal,
             double descuento,
             double iva,
@@ -62,8 +63,8 @@ public class Pedidos {
     public int getdireccionEnvioId() { return direccionEnvioId; }
     public void setdireccionEnvioId(int direccionEnvioId) { this.direccionEnvioId = direccionEnvioId; }
     
-    public String getestadoPedido() { return estadoPedido; }
-    public void setestadoPedido(String estadoPedido) { this.estadoPedido = estadoPedido; }
+    public EstadoPedidos getestadoPedido() { return estadoPedido; }
+    public void setestadoPedido(EstadoPedidos estadoPedido) { this.estadoPedido = estadoPedido; }
     
     public double getsubTotal() { return subTotal; }
     public void setsubTotal(double subTotal) { this.subTotal = subTotal; }

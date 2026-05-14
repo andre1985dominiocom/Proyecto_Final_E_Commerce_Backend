@@ -1,6 +1,8 @@
 
 package com.didistore.model.modulesalesfinance;
 
+import com.didistore.util.EstadoPagos;
+import com.didistore.util.MetodoPagos;
 import java.sql.Timestamp;
 
 /**
@@ -10,8 +12,8 @@ import java.sql.Timestamp;
 public class Pagos {
     private int idPago;
     private int pedidoId;
-    private String metodoPago;
-    private String estadoPago;
+    private MetodoPagos metodoPago;
+    private EstadoPagos estadoPago;
     private double monto;
     private String referenciaTransaccion;
     private String referenciaInterna;
@@ -23,8 +25,8 @@ public class Pagos {
     
     public Pagos(int idPago,
             int pedidoId,
-            String metodoPago,
-            String estadoPago,
+            MetodoPagos metodoPago,
+            EstadoPagos estadoPago,
             double monto,
             String referenciaTransaccion,
             String referenciaInterna,
@@ -50,11 +52,11 @@ public class Pagos {
     public int getpedidoId() { return pedidoId; }
     public void setpedidoId(int pedidoId) { this.pedidoId = pedidoId; }
     
-    public String getmetodoPago() { return metodoPago; }
-    public void setmetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
+    public MetodoPagos getmetodoPago() { return metodoPago; }
+    public void setmetodoPago(MetodoPagos metodoPago) { this.metodoPago = metodoPago; }
     
-    public String getestadoPago() { return estadoPago; }
-    public void setestadoPago(String estadoPago) { this.estadoPago = estadoPago; }
+    public EstadoPagos getestadoPago() { return estadoPago; }
+    public void setestadoPago(EstadoPagos estadoPago) { this.estadoPago = estadoPago; }
     
     public double getmonto() { return monto; }
     public void setmonto(double monto) { this.monto = monto; }

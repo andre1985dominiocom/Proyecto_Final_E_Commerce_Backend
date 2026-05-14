@@ -1,6 +1,8 @@
 
 package com.didistore.model.modulesecurityaccess;
 
+import com.didistore.util.EstadoUsuarios;
+import com.didistore.util.TipoDocumentos;
 import java.sql.Timestamp;
 
 /**
@@ -14,9 +16,9 @@ public class Usuarios {
     private String nombre;
     private String apellido;
     private String documento;
-    private String tipoDocumento;
+    private TipoDocumentos tipoDocumento;
     private int perfilId;
-    private String estado;
+    private EstadoUsuarios estado;
     private int emailVerificado;
     private Timestamp fechaCreacion;
     private Timestamp fechaActualizacion;
@@ -30,9 +32,9 @@ public class Usuarios {
             String nombre,
             String apellido,
             String documento,
-            String tipoDocumento,
+            TipoDocumentos tipoDocumento,
             int perfilId,
-            String estado,
+            EstadoUsuarios estado,
             int emailVerificado,
             Timestamp fechaCreacion,
             Timestamp fechaActualizacion,
@@ -71,14 +73,14 @@ public class Usuarios {
     public String getdocumento() { return documento; }
     public void setdocumento(String documento) { this.documento = documento; }
     
-    public String gettipoDocumento() { return tipoDocumento; }
-    public void settipoDocumento(String tipoDocumento) { this.tipoDocumento = tipoDocumento; }
+    public TipoDocumentos gettipoDocumento() { return tipoDocumento; }
+    public void settipoDocumento(TipoDocumentos tipoDocumento) { this.tipoDocumento = tipoDocumento; }
     
     public int getperfilId() { return perfilId; }
     public void setperfilId(int perfilId) { this.perfilId = perfilId; }
     
-    public String getestado() { return estado; }
-    public void setestado(String estado) { this.estado = estado; }
+    public EstadoUsuarios getestado() { return estado; }
+    public void setestado(EstadoUsuarios estado) { this.estado = estado; }
     
     public int getemailVerificado() { return emailVerificado; }
     public void setemailVerificado(int emailVerificado) { this.emailVerificado = emailVerificado; }

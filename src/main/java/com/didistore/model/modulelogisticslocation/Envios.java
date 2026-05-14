@@ -1,6 +1,8 @@
 
 package com.didistore.model.modulelogisticslocation;
 
+import com.didistore.util.EstadoEnvios;
+import com.didistore.util.TransportadoraEnvios;
 import java.sql.Timestamp;
 
 /**
@@ -11,9 +13,9 @@ public class Envios {
     private int idEnvio;
     private int pedidoId;
     private int direccionId;
-    private String transportadora;
+    private TransportadoraEnvios transportadora;
     private String numeroGuia;
-    private String estado;
+    private EstadoEnvios estado;
     private Timestamp fechaDespacho;
     private Timestamp fechaEntregaEstimada;
     private Timestamp fechaEntregaReal;
@@ -26,9 +28,9 @@ public class Envios {
     public Envios (int idEnvio,
             int pedidoId,
             int direccionId,
-            String transportadora,
+            TransportadoraEnvios transportadora,
             String numeroGuia,
-            String estado,
+            EstadoEnvios estado,
             Timestamp fechaDespacho,
             Timestamp fechaEntregaEstimada,
             Timestamp fechaEntregaReal,
@@ -59,14 +61,14 @@ public class Envios {
     public int getdireccionId() { return direccionId; }
     public void setdireccionId(int direccionId) { this.direccionId = direccionId; }
     
-    public String gettransportadora() { return transportadora; }
-    public void settransportadora(String transportadora) { this.transportadora = transportadora; }
+    public TransportadoraEnvios gettransportadora() { return transportadora; }
+    public void settransportadora(TransportadoraEnvios transportadora) { this.transportadora = transportadora; }
     
     public String getnumeroGuia() { return numeroGuia; }
     public void setnumeroGuia(String numeroGuia) { this.numeroGuia = numeroGuia; }
     
-    public String getestado() { return estado; }
-    public void setestado(String estado) { this.estado = estado; }
+    public EstadoEnvios getestado() { return estado; }
+    public void setestado(EstadoEnvios estado) { this.estado = estado; }
     
     public Timestamp getfechaDespacho() { return fechaDespacho; }
     public void setfechaDespacho(Timestamp fechaDespacho) { this.fechaDespacho = fechaDespacho; }
