@@ -1,8 +1,8 @@
 
 package com.didistore.model.modulelogisticslocation;
 
-import com.didistore.util.EstadoEnvios;
-import com.didistore.util.TransportadoraEnvios;
+import com.didistore.model.modulelogisticslocation.enums.EstadoEnvios;
+import com.didistore.model.modulelogisticslocation.enums.TransportadoraEnvios;
 import java.sql.Timestamp;
 
 /**

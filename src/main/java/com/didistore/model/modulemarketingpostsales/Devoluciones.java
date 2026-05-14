@@ -1,8 +1,8 @@
 
 package com.didistore.model.modulemarketingpostsales;
 
-import com.didistore.util.EstadoDevoluciones;
-import com.didistore.util.MotivoDevoluciones;
+import com.didistore.model.modulemarketingpostsales.enums.EstadoDevoluciones;
+import com.didistore.model.modulemarketingpostsales.enums.MotivoDevoluciones;
 import java.sql.Timestamp;
 
 /**

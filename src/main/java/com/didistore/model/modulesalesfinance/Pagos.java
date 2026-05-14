@@ -1,8 +1,8 @@
 
 package com.didistore.model.modulesalesfinance;
 
-import com.didistore.util.EstadoPagos;
-import com.didistore.util.MetodoPagos;
+import com.didistore.model.modulesalesfinance.enums.EstadoPagos;
+import com.didistore.model.modulesalesfinance.enums.MetodoPagos;
 import java.sql.Timestamp;
 
 /**

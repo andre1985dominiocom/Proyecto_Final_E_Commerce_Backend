@@ -10,8 +10,8 @@ import java.util.List;
 
 import com.didistore.config.Conexion;
 import com.didistore.model.moduleinventoryfeedback.Productos;
-import com.didistore.util.TallaProductos;
-import com.didistore.util.EstadoProductos;
+import com.didistore.model.moduleinventoryfeedback.enums.TallaProductos;
+import com.didistore.model.moduleinventoryfeedback.enums.EstadoProductos;
 
 /**
  *

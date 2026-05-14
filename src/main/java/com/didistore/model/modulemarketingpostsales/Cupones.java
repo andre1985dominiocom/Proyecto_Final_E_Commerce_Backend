@@ -2,8 +2,8 @@
  
 package com.didistore.model.modulemarketingpostsales;
 
-import com.didistore.util.TipoDescuentos;
-import com.didistore.util.EstadoCupones;
+import com.didistore.model.modulemarketingpostsales.enums.TipoDescuentos;
+import com.didistore.model.modulemarketingpostsales.enums.EstadoCupones;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 

@@ -1,7 +1,7 @@
 
 package com.didistore.model.moduleinventoryfeedback;
 
-import com.didistore.util.EstadoResenas;
+import com.didistore.model.moduleinventoryfeedback.enums.EstadoResenas;
 
 /**
  *

@@ -1,8 +1,8 @@
 
 package com.didistore.model.modulesecurityaccess;
 
-import com.didistore.util.EstadoUsuarios;
-import com.didistore.util.TipoDocumentos;
+import com.didistore.model.modulesecurityaccess.enums.EstadoUsuarios;
+import com.didistore.model.modulesecurityaccess.enums.TipoDocumentos;
 import java.sql.Timestamp;
 
 /**

@@ -1,8 +1,8 @@
 
 package com.didistore.model.moduleinventoryfeedback;
 
-import com.didistore.util.EstadoProductos;
-import com.didistore.util.TallaProductos;
+import com.didistore.model.moduleinventoryfeedback.enums.EstadoProductos;
+import com.didistore.model.moduleinventoryfeedback.enums.TallaProductos;
 import java.sql.Timestamp;
 
 /**

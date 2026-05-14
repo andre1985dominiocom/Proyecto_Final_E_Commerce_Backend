@@ -1,7 +1,7 @@
 
 package com.didistore.model.modulelogisticslocation;
 
-import com.didistore.util.EstadoDirecciones;
+import com.didistore.model.modulelogisticslocation.enums.EstadoDirecciones;
 import java.sql.Timestamp;
 
 /**

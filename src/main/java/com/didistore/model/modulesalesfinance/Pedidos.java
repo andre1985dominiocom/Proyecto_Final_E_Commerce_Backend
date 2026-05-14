@@ -1,7 +1,7 @@
 
 package com.didistore.model.modulesalesfinance;
 
-import com.didistore.util.EstadoPedidos;
+import com.didistore.model.modulesalesfinance.enums.EstadoPedidos;
 import java.sql.Timestamp;
 
 /**

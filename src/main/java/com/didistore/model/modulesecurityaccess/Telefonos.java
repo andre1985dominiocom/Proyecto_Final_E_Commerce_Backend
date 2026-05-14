@@ -1,7 +1,7 @@
 
 package com.didistore.model.modulesecurityaccess;
 
-import com.didistore.util.TipoTelefonos;
+import com.didistore.model.modulesecurityaccess.enums.TipoTelefonos;
 import java.sql.Timestamp;
 
 /**

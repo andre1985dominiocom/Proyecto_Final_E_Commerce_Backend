@@ -1,5 +1,5 @@
 
-package com.didistore.util;
+package com.didistore.model.modulelogisticslocation.enums;
 
 /**
  *

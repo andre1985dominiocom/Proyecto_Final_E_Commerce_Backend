@@ -6,8 +6,8 @@ import com.didistore.model.modulesecurityaccess.Usuarios;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import com.didistore.util.TipoDocumentos;
-import com.didistore.util.EstadoUsuarios;
+import com.didistore.model.modulesecurityaccess.enums.TipoDocumentos;
+import com.didistore.model.modulesecurityaccess.enums.EstadoUsuarios;
 
 
 /**
