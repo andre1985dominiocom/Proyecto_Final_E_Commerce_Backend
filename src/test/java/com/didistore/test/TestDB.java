@@ -1,6 +1,6 @@
 package com.didistore.test;
 
-import com.didistore.dao.CategoriasDAO;
+import com.didistore.dao.moduleinventoryfeedback.CategoriasDAO;
 import com.didistore.model.moduleinventoryfeedback.Categorias;
 import java.util.Map;
 
