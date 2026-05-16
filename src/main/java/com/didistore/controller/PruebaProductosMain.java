@@ -1,11 +1,11 @@
 
 package com.didistore.controller;
 
-import com.didistore.dao.moduleinventoryfeedback.IProductosDAO;
-import com.didistore.dao.moduleinventoryfeedback.ProductosDAOImpl;
-import com.didistore.model.moduleinventoryfeedback.Productos;
-import com.didistore.model.moduleinventoryfeedback.enums.EstadoProductos;
-import com.didistore.model.moduleinventoryfeedback.enums.TallaProductos;
+import com.didistore.dao.interfaces.catalog.IProductosDAO;
+import com.didistore.dao.impl.catalog.ProductosDAOImpl;
+import com.didistore.model.catalog.Productos;
+import com.didistore.model.catalog.enums.EstadoProductos;
+import com.didistore.model.catalog.enums.TallaProductos;
 import java.sql.Timestamp;
 
 /**
@@ -35,7 +35,7 @@ public class PruebaProductosMain {
         nuevoProducto.setfechaActualizacion(fechaActual);
         
         System.out.println("Intentado registrar producto en MySQL... ");
-        productoDAO.insertarProducto(nuevoProducto);
+        productoDAO.insertarProductos(nuevoProducto);
         System.out.println("¡Proceso de inserción finalizado con éxito!");        
     }
 }
