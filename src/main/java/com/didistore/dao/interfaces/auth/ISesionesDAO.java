@@ -10,7 +10,9 @@ import java.util.List;
  */
 public interface ISesionesDAO {
     
-     void insertarSesiones(Sesiones sesion);
+    void insertarSesiones(Sesiones sesion);
+    
+    boolean validarCredenciales(String email, String contrasena);
     
     List<Sesiones> listarSesiones();
     

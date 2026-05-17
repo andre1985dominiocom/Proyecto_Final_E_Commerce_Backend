@@ -19,7 +19,7 @@ public class Usuarios {
     private TipoDocumentos tipoDocumento;
     private int perfilId;
     private EstadoUsuarios estado;
-    private int emailVerificado;
+    private boolean emailVerificado;
     private Timestamp fechaCreacion;
     private Timestamp fechaActualizacion;
     private Timestamp fechaUltimoLogin;
@@ -35,7 +35,7 @@ public class Usuarios {
             TipoDocumentos tipoDocumento,
             int perfilId,
             EstadoUsuarios estado,
-            int emailVerificado,
+            boolean emailVerificado,
             Timestamp fechaCreacion,
             Timestamp fechaActualizacion,
             Timestamp fechaUltimoLogin) {
@@ -82,8 +82,8 @@ public class Usuarios {
     public EstadoUsuarios getestado() { return estado; }
     public void setestado(EstadoUsuarios estado) { this.estado = estado; }
     
-    public int getemailVerificado() { return emailVerificado; }
-    public void setemailVerificado(int emailVerificado) { this.emailVerificado = emailVerificado; }
+    public boolean getemailVerificado() { return emailVerificado; }
+    public void setemailVerificado(boolean emailVerificado) { this.emailVerificado = emailVerificado; }
     
     public Timestamp getfechaCreacion() { return fechaCreacion; }
     public void setfechaCreacion(Timestamp fechaCreacion) { this.fechaCreacion = fechaCreacion; }

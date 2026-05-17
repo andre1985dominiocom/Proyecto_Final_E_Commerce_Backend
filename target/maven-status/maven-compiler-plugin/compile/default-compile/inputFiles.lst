@@ -1,9 +1,11 @@
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\service\auth\AuthServices.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\impl\auth\TokensRecuperacioDAOImpl.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\util\PasswordUtil.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\marketing\Devoluciones.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\impl\sales\CarritoComprasDAOImpl.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\interfaces\logistics\CiudadesDAO.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\util\ValidationUtil.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\admin\servlet\UsuariosServlet.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\sales\PedidoController.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\impl\auth\PerfilPermisosDAOImpl.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\sales\HistorialEstadoPedidos.java
@@ -22,6 +24,8 @@ D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\catalog\enums\TallaProductos.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\interfaces\auth\IPermisosDAO.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\interfaces\logistics\DepartamentosDAO.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\interfaces\auth\ITokensRecuperacionDAO.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\config\CorsFilter.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\logistics\Envios.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\marketing\enums\EstadoPromociones.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\sales\enums\EstadoPedidos.java
@@ -46,7 +50,9 @@ D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\auth\Telefonos.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\util\DateUtil.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\marketing\enums\MotivoDevoluciones.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\interfaces\auth\ITelefonosDAO.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\auth\PermisosController.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\auth\servlet\LoginServlet.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\interfaces\catalog\IProductosDAO.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\sales\Pagos.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\impl\auth\PermisosDAOImpl.java
@@ -57,6 +63,7 @@ D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\impl\catalog\CategoriasDAOImpl.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\logistics\Ciudades.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\interfaces\auth\IPerfilesDAO.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\auth\TelefonosController.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\auth\SesionesController.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\catalog\ImagenesProductos.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\sales\Pedidos.java
@@ -68,6 +75,7 @@ D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\catalog\Categorias.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\config\Conexion.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\auth\PerfilPermisosController.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\impl\auth\TelefonosDAOImpl.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\catalog\Inventarios.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\logistics\Direcciones.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\interfaces\sales\IPedidosDAO.java
@@ -78,6 +86,7 @@ D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\interfaces\catalog\CategoriasDAO.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\catalog\Resenas.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\catalog\enums\EstadoProductos.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\auth\TokensRecuperacionController.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\catalog\ProductosController.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\sales\enums\MetodoPagos.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\impl\catalog\ProductosDAOImpl.java

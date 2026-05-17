@@ -13,7 +13,7 @@ public class TokensRecuperacion {
     private String tokenHash;
     private Timestamp fechaCreacion;
     private Timestamp fechaExpiracion;
-    private int usado;
+    private boolean usado;
     private int intentos;
     
     public TokensRecuperacion() {}
@@ -23,7 +23,7 @@ public class TokensRecuperacion {
             String tokenHash,
             Timestamp fechaCreacion,
             Timestamp fechaExpiracion,
-            int usado,
+            boolean usado,
             int intentos) {
         
         this.idToken = idToken;
@@ -50,8 +50,8 @@ public class TokensRecuperacion {
     public Timestamp getfechaExpiracion() { return fechaExpiracion; }
     public void setfechaExpiracion (Timestamp fechaExpiracion) { this.fechaExpiracion = fechaExpiracion; }
     
-    public int getusado() { return usado; }
-    public void setusado (int usado) { this.usado = usado; } 
+    public boolean getusado() { return usado; }
+    public void setusado (boolean usado) { this.usado = usado; } 
     
     public int getintentos() { return intentos; }
     public void setintentos (int intentos) { this.intentos = intentos; }   

@@ -181,4 +181,23 @@ public class SesionesDAOImpl implements ISesionesDAO{
             System.err.println("Error al eliminar sesión: " + e.getMessage());
         }                   
     }
+
+    public boolean validarCredenciales(String email, String contrasena) {
+        
+        String sql = "SELECT 1 FROM usuarios WHERE email = ? AND contrasena = ?";
+        
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, email);
+            ps.setString(2, contrasena);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al validar credenciales: " + e.getMessage());
+        }
+        return false;
+    }
 }    

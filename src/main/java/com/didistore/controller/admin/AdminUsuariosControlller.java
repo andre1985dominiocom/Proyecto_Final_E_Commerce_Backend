@@ -20,15 +20,15 @@ public class AdminUsuariosControlller {
         
         Usuarios nuevoUsuario = new Usuarios();
         
-        nuevoUsuario.setemail("");
-        nuevoUsuario.setcontrasena("");
-        nuevoUsuario.setnombre("");
-        nuevoUsuario.setapellido("");
-        nuevoUsuario.setdocumento("");
+        nuevoUsuario.setemail("jnuryalexandrasuarez@gmail.com");
+        nuevoUsuario.setcontrasena("123nur");
+        nuevoUsuario.setnombre("Nury");
+        nuevoUsuario.setapellido("Suarez");
+        nuevoUsuario.setdocumento("63256256");
         nuevoUsuario.settipoDocumento(TipoDocumentos.CC);
-        nuevoUsuario.setperfilId(0);
+        nuevoUsuario.setperfilId(2);
         nuevoUsuario.setestado(EstadoUsuarios.Activo);
-        nuevoUsuario.setemailVerificado(0);
+        nuevoUsuario.setemailVerificado(true);
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
         nuevoUsuario.setfechaCreacion(fechaActual);
         nuevoUsuario.setfechaActualizacion(fechaActual);
