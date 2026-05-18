@@ -30,19 +30,6 @@ public class UsuariosServlet extends HttpServlet {
         
         List<Usuarios> listaUsuarios = usuariosDAO.listarUsuarios();
         
-        System.out.println("Cantidad de usuarios encontrados: " + listaUsuarios.size());
-        
-        Usuarios u = new Usuarios();
-        u.setidUsuario(1);
-        u.setemail("jnuryalexandrasuarez@gmail.com");
-        u.setnombre("Nury");
-        u.setapellido("Suarez");
-        u.setdocumento("63523523");
-        u.settipoDocumento(TipoDocumentos.CC);
-        u.setperfilId(2);
-        u.setemailVerificado(true);
-        u.setestado(EstadoUsuarios.Activo);
-        
         String json = gson.toJson(listaUsuarios);
         response.getWriter().write(json);
     }
@@ -90,7 +77,7 @@ public class UsuariosServlet extends HttpServlet {
         Usuarios usuario = gson.fromJson(reader, Usuarios.class);
 
         usuariosDAO.actualizarUsuarios(usuario);
-
+        
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write("{\"message\":\"Usuario actualizado correctamente\"}");
     }

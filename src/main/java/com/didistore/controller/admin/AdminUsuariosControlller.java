@@ -20,11 +20,11 @@ public class AdminUsuariosControlller {
         
         Usuarios nuevoUsuario = new Usuarios();
         
-        nuevoUsuario.setemail("jnuryalexandrasuarez@gmail.com");
-        nuevoUsuario.setcontrasena("123nur");
+        nuevoUsuario.setemail("jnuryalexandrasuarez@example.com");
+        nuevoUsuario.setcontrasena("1234");
         nuevoUsuario.setnombre("Nury");
         nuevoUsuario.setapellido("Suarez");
-        nuevoUsuario.setdocumento("63256256");
+        nuevoUsuario.setdocumento("63509236");
         nuevoUsuario.settipoDocumento(TipoDocumentos.CC);
         nuevoUsuario.setperfilId(2);
         nuevoUsuario.setestado(EstadoUsuarios.Activo);
@@ -34,7 +34,7 @@ public class AdminUsuariosControlller {
         nuevoUsuario.setfechaActualizacion(fechaActual);
         nuevoUsuario.setfechaUltimoLogin(fechaActual);
         
-        System.out.println("Intentado registrar usuario en MySQL... ");
+        System.out.println("Intentado insertar usuario en MySQL... ");
         usuarioDAO.insertarUsuarios(nuevoUsuario);
         System.out.println("¡Proceso de inserción finalizado con éxito!");        
     }
