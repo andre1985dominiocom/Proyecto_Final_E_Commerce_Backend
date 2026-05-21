@@ -1,5 +1,5 @@
 
-package com.didistore.dao.interfaces.catalog;
+package com.didistore.test;
 
 import com.didistore.config.Conexion;
 import com.didistore.model.catalog.Categorias;

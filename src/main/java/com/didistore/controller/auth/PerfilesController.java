@@ -17,9 +17,9 @@ public class PerfilesController {
         
         Perfiles nuevoPerfil = new Perfiles();
         
-        nuevoPerfil.setnombrePerfil("Clientes");
-        nuevoPerfil.setdescripcionPerfil("Todas aquellas mujeres y hombres que estan interesados "
-                                        + "en la comodidad para dormir mejor");
+        nuevoPerfil.setnombrePerfil("Cliente");
+        nuevoPerfil.setdescripcionPerfil("Todas aquellas mujeres y hombres que estan interesados"
+                                         + " en la comodidad para dormir mejor");
         
         System.out.println("Intentado registrar perfiles en MySQL... ");
         perfilDAO.insertarPerfiles(nuevoPerfil);                

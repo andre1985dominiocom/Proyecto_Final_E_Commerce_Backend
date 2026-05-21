@@ -1,5 +1,5 @@
 
-package com.didistore.controller;
+package com.didistore.test;
 
 import com.didistore.dao.interfaces.catalog.IProductosDAO;
 import com.didistore.dao.impl.catalog.ProductosDAOImpl;
@@ -29,7 +29,7 @@ public class PruebaProductosMain {
         nuevoProducto.setcolor("Rosado");
         nuevoProducto.setcategoriaId(1);
         nuevoProducto.setestado(EstadoProductos.Activo);
-        nuevoProducto.setesDestacado(1);
+        nuevoProducto.setesDestacado(true);
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
         nuevoProducto.setfechaCreacion(fechaActual);
         nuevoProducto.setfechaActualizacion(fechaActual);

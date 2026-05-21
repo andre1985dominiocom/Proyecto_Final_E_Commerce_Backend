@@ -9,11 +9,12 @@ import java.util.List;
  * @author Sergio Andrés Álvarez Lache
  */
 public interface IProductosDAO {
+    
     void insertarProductos(Productos producto);
     
     List<Productos> listar();
     
-    void consultarProductos(Productos producto);
+    Productos consultarProductosPorId(int idProducto);
     
     void actualizarProductos(Productos producto);
     

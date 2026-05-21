@@ -1,20 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
+
 package com.didistore.controller.catalog;
+
+import com.didistore.dao.impl.catalog.ProductosDAOImpl;
+import com.didistore.dao.interfaces.catalog.IProductosDAO;
+import com.didistore.model.catalog.Productos;
 
 /**
  *
- * @author DELL
+ * @author Sergio Andrés Álvarez Lache
  */
 public class ProductosController {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
-    }
+        
+        IProductosDAO productoDAO = new ProductosDAOImpl();
+        
+        Productos productoConsulta = new Productos();
+        productoConsulta.setidProducto(1);
     
+        System.out.println("Buscando producto en la BD...");
+        Productos producto = productoDAO.consultarProductosPorId(productoConsulta.getidProducto());
+        
+        if (producto != null) {
+            System.out.println("Producto encontrado: " + producto.getidProducto());
+        } else {
+            System.out.println("Producto no encontrado...");
+        }
+        System.out.println("¡Proceso de busqueda realizado con éxito!");   
+    }
 }

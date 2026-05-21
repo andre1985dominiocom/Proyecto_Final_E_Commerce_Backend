@@ -24,7 +24,7 @@ public class AdminUsuariosControlller {
         nuevoUsuario.setcontrasena("1234");
         nuevoUsuario.setnombre("Nury");
         nuevoUsuario.setapellido("Suarez");
-        nuevoUsuario.setdocumento("63509236");
+        nuevoUsuario.setdocumento("63509369");
         nuevoUsuario.settipoDocumento(TipoDocumentos.CC);
         nuevoUsuario.setperfilId(2);
         nuevoUsuario.setestado(EstadoUsuarios.Activo);

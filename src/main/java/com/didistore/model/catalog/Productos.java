@@ -20,7 +20,7 @@ public class Productos {
     private String color;
     private int categoriaId;
     private EstadoProductos estado;
-    private int esDestacado;
+    private boolean esDestacado;
     private Timestamp fechaCreacion;
     private Timestamp fechaActualizacion;
     
@@ -36,7 +36,7 @@ public class Productos {
             String color,
             int categoriaId,
             EstadoProductos estado,
-            int esDestacado,
+            boolean esDestacado,
             Timestamp fechaCreacion,
             Timestamp fechaActualizacion) {
     
@@ -85,8 +85,8 @@ public class Productos {
     public EstadoProductos getestado() { return estado; }
     public void setestado(EstadoProductos estado) { this.estado = estado; }
     
-    public int getesDestacado() { return esDestacado; }
-    public void setesDestacado(int esDestacado) { this.esDestacado = esDestacado; }
+    public boolean getesDestacado() { return esDestacado; }
+    public void setesDestacado(boolean esDestacado) { this.esDestacado = esDestacado; }
     
     public Timestamp getfechaCreacion() { return fechaCreacion; }
     public void setfechaCreacion(Timestamp fechaCreacion) { this.fechaCreacion = fechaCreacion; }

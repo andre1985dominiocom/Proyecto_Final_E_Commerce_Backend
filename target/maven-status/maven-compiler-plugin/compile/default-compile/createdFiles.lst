@@ -2,7 +2,6 @@ com\didistore\controller\admin\AdminUsuariosControlller.class
 com\didistore\model\logistics\Direcciones.class
 com\didistore\dao\interfaces\catalog\IProductosDAO.class
 com\didistore\model\sales\HistorialEstadoPedidos.class
-com\didistore\controller\PruebaProductosMain.class
 com\didistore\controller\admin\AdminProductosController.class
 com\didistore\model\logistics\enums\EstadoEnvios.class
 com\didistore\model\auth\Permisos.class
@@ -10,11 +9,13 @@ com\didistore\dao\impl\auth\UsuariosDAOImpl.class
 com\didistore\model\marketing\enums\EstadoDevoluciones.class
 com\didistore\model\marketing\Promociones.class
 com\didistore\controller\auth\TelefonosController.class
+com\didistore\controller\auth\servletauth\LoginServlet$LoginRequest.class
 com\didistore\dao\impl\catalog\CategoriasDAOImpl.class
 com\didistore\controller\auth\PermisosController.class
 com\didistore\model\sales\enums\EstadoPedidos.class
 com\didistore\model\auth\Telefonos.class
 com\didistore\dao\interfaces\sales\ICarritoComprasDAO.class
+com\didistore\controller\auth\servletauth\LoginServlet.class
 com\didistore\model\auth\enums\TipoTelefonos.class
 com\didistore\model\auth\Sesiones.class
 com\didistore\model\marketing\enums\TipoDescuentos.class
@@ -49,7 +50,6 @@ com\didistore\model\catalog\enums\EstadoProductos.class
 com\didistore\dao\interfaces\logistics\CiudadesDAO.class
 com\didistore\model\auth\PerfilPermisos.class
 com\didistore\model\marketing\Devoluciones.class
-com\didistore\controller\auth\servlet\LoginServlet.class
 com\didistore\dao\interfaces\sales\IDetallesPedidosDAO.class
 com\didistore\dao\impl\sales\CarritoComprasDAOImpl.class
 com\didistore\util\ResponseUtil.class
@@ -59,6 +59,7 @@ com\didistore\dao\impl\auth\TokensRecuperacioDAOImpl.class
 com\didistore\dao\impl\auth\SesionesDAOImpl.class
 com\didistore\dao\interfaces\auth\IUsuariosDAO.class
 com\didistore\dao\interfaces\sales\IItemCarritosDAO.class
+com\didistore\controller\catalog\servletcatalog\ProductosServlet.class
 com\didistore\model\sales\Pedidos.class
 com\didistore\dao\impl\auth\PerfilesDAOImpl.class
 com\didistore\dao\interfaces\auth\ISesionesDAO.class
@@ -70,7 +71,6 @@ com\didistore\model\sales\enums\EstadoPagos.class
 com\didistore\controller\auth\PerfilesController.class
 com\didistore\dao\interfaces\sales\IPedidosDAO.class
 com\didistore\model\catalog\Productos.class
-com\didistore\dao\interfaces\catalog\CategoriasDAO.class
 com\didistore\util\SessionUtil.class
 com\didistore\model\sales\enums\MetodoPagos.class
 com\didistore\model\logistics\Departamentos.class
@@ -78,10 +78,10 @@ com\didistore\controller\auth\TokensRecuperacionController.class
 com\didistore\dao\interfaces\auth\IPerfilPermisos.class
 com\didistore\dao\interfaces\logistics\DepartamentosDAO.class
 com\didistore\dao\impl\sales\PedidosDAOImpl.class
+com\didistore\controller\admin\servlet\AdminProductosServlet.class
 com\didistore\dao\interfaces\catalog\ICategoriasDAO.class
 com\didistore\model\logistics\Envios.class
 com\didistore\model\sales\CarritoCompras.class
-com\didistore\controller\auth\servlet\LoginServlet$LoginRequest.class
 com\didistore\controller\auth\SesionesController.class
 com\didistore\model\catalog\ImagenesProductos.class
 com\didistore\model\sales\Pagos.class

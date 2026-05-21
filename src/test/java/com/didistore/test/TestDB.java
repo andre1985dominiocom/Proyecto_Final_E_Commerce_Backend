@@ -1,6 +1,5 @@
 package com.didistore.test;
 
-import com.didistore.dao.interfaces.catalog.CategoriasDAO;
 import com.didistore.model.catalog.Categorias;
 import java.util.Map;
 
