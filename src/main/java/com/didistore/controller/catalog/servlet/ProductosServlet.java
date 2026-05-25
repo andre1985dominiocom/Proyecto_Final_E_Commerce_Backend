@@ -1,6 +1,7 @@
 
 package com.didistore.controller.catalog.servlet;
 
+
 /**
  *
  * @author Sergio Andrés Álvarez Lache
@@ -8,5 +9,6 @@ package com.didistore.controller.catalog.servlet;
 
 
 public class ProductosServlet {
+    
     
 }

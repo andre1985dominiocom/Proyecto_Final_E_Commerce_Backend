@@ -103,7 +103,7 @@ public class ProductosDAOImpl implements IProductosDAO {
     }
 
     @Override
-    public List<Productos> listar() {
+    public List<Productos> listarProductos() {
         
         List<Productos> lista = new ArrayList<>();
 
@@ -243,5 +243,71 @@ public class ProductosDAOImpl implements IProductosDAO {
         } catch (SQLException e) {
             System.err.println("Error al eliminar producto: " + e.getMessage());
         }
+    }
+
+    @Override
+    public Productos buscarProductosPorNombre(String nombreProducto) {
+        
+        String sql = "SELECT id_Producto, nombre_Producto, "
+                + "descripcion_Corta, "
+                + "descripcion_Larga, "
+                + "precio, "
+                + "SKU, "
+                + "talla, "
+                + "color, "
+                + "categoria_Id, "
+                + "estado, "
+                + "es_Destacado, "
+                + "fecha_Creacion, "
+                + "fecha_Actualizacion FROM Productos WHERE nombre_Producto = ?";
+        
+        Productos nombreProducto = null;
+
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, nombreProducto);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    nombreProducto = new Productos();
+
+                    nombreProducto.setidProducto(rs.getInt("id_Producto"));
+                    nombreProducto.setnombreProducto(rs.getString("nombre_producto"));
+                    nombreProducto.setdescripcionCorta(rs.getString("descripcion_corta"));
+                    nombreProducto.setdescripcionLarga(rs.getString("descripcion_larga"));
+                    nombreProducto.setprecio(rs.getFloat("precio"));
+                    nombreProducto.setsku(rs.getString("SKU"));
+
+                    String tallaProductoStr = rs.getString("talla");
+                    if (tallaProductoStr != null && !tallaProductoStr.isEmpty()) {
+                        nombreProducto.settalla(TallaProductos.valueOf(tallaProductoStr));
+                    }
+                    
+                    nombreProducto.setcolor(rs.getString("color"));
+                    nombreProducto.setcategoriaId(rs.getInt("categoria_id"));
+
+                    String estadoStr = rs.getString("estado");
+                    if (estadoStr != null && !estadoStr.isEmpty()) {
+                        nombreProducto.setestado(EstadoProductos.valueOf(estadoStr));
+                    }
+
+                    nombreProducto.setesDestacado(rs.getBoolean("es_destacado"));
+                    nombreProducto.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
+                    nombreProducto.setfechaActualizacion(rs.getTimestamp("fecha_actualizacion"));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al consultar producto por ID: " + e.getMessage());
+            
+            
+        }
+        return null;
+    }
+
+    @Override
+    public List<Productos> listarProductoPorCategoria(int idCategoria) {
+        return null;
     }
 }

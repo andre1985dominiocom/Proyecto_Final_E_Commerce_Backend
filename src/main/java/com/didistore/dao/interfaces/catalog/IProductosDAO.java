@@ -12,9 +12,13 @@ public interface IProductosDAO {
     
     void insertarProductos(Productos producto);
     
-    List<Productos> listar();
+    List<Productos> listarProductos();
+    
+    List<Productos> listarProductoPorCategoria(int idCategoria);
     
     Productos consultarProductosPorId(int idProducto);
+    
+    Productos buscarProductosPorNombre(String nombreProducto);
     
     void actualizarProductos(Productos producto);
     

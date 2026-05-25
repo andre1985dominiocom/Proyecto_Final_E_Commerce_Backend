@@ -1,4 +1,3 @@
-com\didistore\controller\admin\AdminUsuariosControlller.class
 com\didistore\model\logistics\Direcciones.class
 com\didistore\dao\interfaces\catalog\IProductosDAO.class
 com\didistore\model\sales\HistorialEstadoPedidos.class
@@ -59,6 +58,7 @@ com\didistore\controller\auth\servlet\LoginServlet.class
 com\didistore\dao\interfaces\sales\IDetallesPedidosDAO.class
 com\didistore\dao\impl\sales\CarritoComprasDAOImpl.class
 com\didistore\util\ResponseUtil.class
+com\didistore\controller\auth\UsuariosController.class
 com\didistore\dao\interfaces\auth\ITelefonosDAO.class
 com\didistore\controller\sales\PedidoController.class
 com\didistore\dao\impl\auth\SesionesDAOImpl.class

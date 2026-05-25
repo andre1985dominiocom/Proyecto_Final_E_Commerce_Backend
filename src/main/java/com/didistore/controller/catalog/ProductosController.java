@@ -3,7 +3,10 @@ package com.didistore.controller.catalog;
 
 import com.didistore.dao.impl.catalog.ProductosDAOImpl;
 import com.didistore.dao.interfaces.catalog.IProductosDAO;
+import static com.didistore.model.auth.enums.EstadoUsuarios.Activo;
 import com.didistore.model.catalog.Productos;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -11,21 +14,44 @@ import com.didistore.model.catalog.Productos;
  */
 public class ProductosController {
 
-    public static void main(String[] args) {
-        
-        IProductosDAO productoDAO = new ProductosDAOImpl();
-        
-        Productos productoConsulta = new Productos();
-        productoConsulta.setidProducto(1);
+    private final IProductosDAO productosDAO;
     
-        System.out.println("Buscando producto en la BD...");
-        Productos producto = productoDAO.consultarProductosPorId(productoConsulta.getidProducto());
+    public ProductosController() {
+        this.productosDAO = new ProductosDAOImpl();
+    }
+    
+    public List<Productos> listarProductos() {
+        List<Productos> productos = productosDAO.listarProductos();
+        List<Productos> activos = new ArrayList<>();
         
-        if (producto != null) {
-            System.out.println("Producto encontrado: " + producto.getidProducto());
-        } else {
-            System.out.println("Producto no encontrado...");
+        for (Productos producto : productos) {
+            if (producto != null && producto.getestado(Activo)) {
+                activos.add(producto);
+            }
         }
-        System.out.println("¡Proceso de busqueda realizado con éxito!");   
+        return activos;
+    }
+    public Productos consultarProductoPorId(int idProducto) {
+        if (idProducto <= 0) {
+            return null;
+        }
+        Productos producto = productosDAO.consultarProductosPorId(idProducto);
+        
+        if (producto == null || !producto.getestado(Activo));
+        return null;
+    }
+    
+    public List<Productos> buscarProductosPorNombre(String nombreProducto) {
+        if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
+        return productosDAO.buscarProductosPorNombre(nombreProducto.trim());
+    }
+    
+    public <Productos> listarProductosPorCategoria(int idCategoria) {
+        if (idCategoria <= 0) {
+            return new ArrayList<>();
+        }
+        return productosDAO.listarProductoPorCategoria(idCategoria);
     }
 }

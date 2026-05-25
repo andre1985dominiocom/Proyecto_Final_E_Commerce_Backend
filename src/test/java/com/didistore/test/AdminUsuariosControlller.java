@@ -1,5 +1,5 @@
 
-package com.didistore.controller.admin;
+package com.didistore.test;
 
 import com.didistore.dao.interfaces.auth.IUsuariosDAO;
 import com.didistore.dao.impl.auth.UsuariosDAOImpl;
@@ -20,13 +20,13 @@ public class AdminUsuariosControlller {
         
         Usuarios nuevoUsuario = new Usuarios();
         
-        nuevoUsuario.setemail("jnuryalexandrasuarez@example.com");
+        nuevoUsuario.setemail("sergio19855@gmail.com");
         nuevoUsuario.setcontrasena("1234");
-        nuevoUsuario.setnombre("Nury");
-        nuevoUsuario.setapellido("Suarez");
-        nuevoUsuario.setdocumento("63509369");
+        nuevoUsuario.setnombre("Sergio");
+        nuevoUsuario.setapellido("Álvarez");
+        nuevoUsuario.setdocumento("1098632369");
         nuevoUsuario.settipoDocumento(TipoDocumentos.CC);
-        nuevoUsuario.setperfilId(2);
+        nuevoUsuario.setperfilId(1);
         nuevoUsuario.setestado(EstadoUsuarios.Activo);
         nuevoUsuario.setemailVerificado(true);
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());

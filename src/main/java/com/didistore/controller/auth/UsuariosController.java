@@ -1,0 +1,43 @@
+
+package com.didistore.controller.auth;
+
+import com.didistore.dao.impl.auth.UsuariosDAOImpl;
+import com.didistore.dao.interfaces.auth.IUsuariosDAO;
+import com.didistore.model.auth.Usuarios;
+import java.sql.Timestamp;
+import java.util.List;
+
+/**
+ *
+ * @author Sergio Andrés Álvarez Lache
+ */
+public class UsuariosController {
+    
+    private final IUsuariosDAO usuariosDAO;
+
+    public UsuariosController() {
+        this.usuariosDAO = new UsuariosDAOImpl();
+    }
+
+    public List<Usuarios> listarUsuario() {
+        return usuariosDAO.listarUsuarios();
+    }
+
+    public void insertarUsuario(Usuarios usuario) {
+        Timestamp ahora = new Timestamp(System.currentTimeMillis());
+        usuario.setfechaCreacion(ahora);
+        usuario.setfechaActualizacion(ahora);
+        usuario.setfechaUltimoLogin(ahora);
+
+        usuariosDAO.insertarUsuarios(usuario);
+    }
+
+    public void actualizarUsuario(Usuarios usuario) {
+        usuario.setfechaActualizacion(new Timestamp(System.currentTimeMillis()));
+        usuariosDAO.actualizarUsuarios(usuario);
+    }
+
+    public void eliminarUsuario(int idUsuario) {
+        usuariosDAO.eliminarUsuarios(idUsuario);
+    }
+}
