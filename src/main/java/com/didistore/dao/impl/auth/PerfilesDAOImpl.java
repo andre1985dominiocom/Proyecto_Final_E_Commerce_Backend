@@ -94,8 +94,8 @@ public class PerfilesDAOImpl implements IPerfilesDAO {
     @Override
     public void actualizarPerfiles(Perfiles perfil) {
         
-        String sql = "UPDATE Usuarios (SET Nombre_perfil = ?,"
-                + "SET Descripcion_perfil = ?) WHERE ID_Perfil = ?";
+        String sql = "UPDATE Usuarios SET Nombre_perfil = ?,"
+                + "Descripcion_perfil = ? WHERE ID_Perfil = ?";
         
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql)) {
@@ -118,7 +118,7 @@ public class PerfilesDAOImpl implements IPerfilesDAO {
     }
 
     @Override
-    public void eliminarPefiles(int idPerfil) {
+    public void eliminarPerfiles(int idPerfil) {
         
         String sql = "DELETE FROM Perfiles WHERE ID_Perfil = ?";
         

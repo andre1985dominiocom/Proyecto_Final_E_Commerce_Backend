@@ -1,1 +1,5 @@
+com\didistore\test\PruebaPermisos.class
+com\didistore\test\PruebaPerfilPermisos.class
+com\didistore\test\PruebaProductosMain.class
 com\didistore\test\TestDB.class
+com\didistore\test\CategoriasDAO.class

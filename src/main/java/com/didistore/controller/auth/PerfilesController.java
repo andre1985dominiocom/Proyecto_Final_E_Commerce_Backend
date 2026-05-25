@@ -4,6 +4,7 @@ package com.didistore.controller.auth;
 import com.didistore.dao.impl.auth.PerfilesDAOImpl;
 import com.didistore.dao.interfaces.auth.IPerfilesDAO;
 import com.didistore.model.auth.Perfiles;
+import java.util.List;
 
 /**
  *
@@ -11,18 +12,39 @@ import com.didistore.model.auth.Perfiles;
  */
 public class PerfilesController {
 
-    public static void main(String[] args) {
-        
-        IPerfilesDAO perfilDAO = new PerfilesDAOImpl();
-        
-        Perfiles nuevoPerfil = new Perfiles();
-        
-        nuevoPerfil.setnombrePerfil("Cliente");
-        nuevoPerfil.setdescripcionPerfil("Todas aquellas mujeres y hombres que estan interesados"
-                                         + " en la comodidad para dormir mejor");
-        
-        System.out.println("Intentado registrar perfiles en MySQL... ");
-        perfilDAO.insertarPerfiles(nuevoPerfil);                
-        System.out.println("¡Proceso de inserción finalizado con éxito!");
-    }   
+     private final IPerfilesDAO perfilesDAO;
+
+    public PerfilesController() {
+        this.perfilesDAO = new PerfilesDAOImpl();
+    }
+
+    public void agregarPerfil(Perfiles perfil) {
+        if (perfil == null) {
+            throw new IllegalArgumentException("El perfil no puede ser null");
+        }
+        perfilesDAO.insertarPerfiles(perfil);
+    }
+
+    public Perfiles consultarPerfilPorId(int perfilId) {
+        if (perfilId <= 0) {
+            return null;
+        }
+        return perfilesDAO.consultarPerfiles(perfilId);
+    }
+
+    public List<Perfiles> listarPerfiles() {
+        return perfilesDAO.listarPerfiles();
+    }
+
+    public void actualizarPerfil(Perfiles perfil) {
+        if (perfil != null) {
+            perfilesDAO.actualizarPerfiles(perfil);
+        }
+    }
+
+    public void eliminarPerfil(int perfilId) {
+        if (perfilId > 0) {
+            perfilesDAO.eliminarPerfiles(perfilId);
+        }
+    }
 }                              

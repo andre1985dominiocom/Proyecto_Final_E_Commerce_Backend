@@ -18,5 +18,5 @@ public interface IPerfilesDAO {
     
     void actualizarPerfiles(Perfiles perfil);
     
-    void eliminarPefiles(int idperfil);
+    void eliminarPerfiles(int idperfil);
 }

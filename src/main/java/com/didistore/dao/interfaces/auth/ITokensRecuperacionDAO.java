@@ -17,7 +17,7 @@ public interface ITokensRecuperacionDAO {
     TokensRecuperacion consultarTokenPorUsuario (int usuarioId);
     
     List<TokensRecuperacion> listarToken();
-    
+        
     void actualizarTokens(TokensRecuperacion token);
     
     void eliminarTokensPorUsuario(int usuarioId);

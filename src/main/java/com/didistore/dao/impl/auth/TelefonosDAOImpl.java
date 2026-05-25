@@ -35,7 +35,7 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
                 ps.setString(3, telefono.getnumero());
                 ps.setInt(4, telefono.getesVerificado());
                 ps.setTimestamp(5, telefono.getfechaAgregado());
-               
+
                 int filasAfectadas = ps.executeUpdate();
                 
                 if (!con.getAutoCommit()) {
@@ -44,10 +44,10 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Telefono insertado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al insertar telefono: " + e.getMessage());
-        }                     
+        }
         
     }
 
@@ -77,7 +77,7 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
                     telefono.setesVerificado(rs.getInt("es_verificado"));
                     telefono.setfechaAgregado(rs.getTimestamp("fecha_agregado"));
                 }
-            } 
+            }
         } catch (SQLException e) {
             System.err.println("Error al consultar telefono: " + e.getMessage());
         }
@@ -111,7 +111,7 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
                     telefono.setesVerificado(rs.getInt("es_verificado"));
                     telefono.setfechaAgregado(rs.getTimestamp("fecha_agregado"));
                 }
-            } 
+            }
         } catch (SQLException e) {
             System.err.println("Error al consultar telefono por ID: " + e.getMessage());
         }
@@ -174,10 +174,10 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Telefono actualizado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al actualizar telefono: " + e.getMessage());
-        }                      
+        }
     }
 
     @Override
@@ -198,10 +198,10 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Telefono eliminado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al eliminar telefono con Usuario ID: " + e.getMessage());
-        }                   
+        }
     }
 
     @Override
@@ -222,9 +222,9 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Telefono eliminado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al eliminar telefono con ID: " + e.getMessage());
-        }                          
+        }
     }
 }

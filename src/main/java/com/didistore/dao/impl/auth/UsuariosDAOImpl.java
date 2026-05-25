@@ -21,7 +21,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         String sql = "INSERT INTO usuarios (email, contrasena, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, usuario.getemail());
             ps.setString(2, usuario.getcontrasena());
@@ -59,15 +59,15 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         String sql = "SELECT id_Usuario, email, contrasena, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login FROM usuarios";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Usuarios usuario = new Usuarios();
 
                 usuario.setidUsuario(rs.getInt("id_Usuario"));
                 usuario.setemail(rs.getString("email"));
-                usuario.setcontrasena(rs.getString("contraseña"));
+                usuario.setcontrasena(rs.getString("contrasena"));
                 usuario.setnombre(rs.getString("nombre"));
                 usuario.setapellido(rs.getString("apellido"));
                 usuario.setdocumento(rs.getString("documento"));
@@ -107,7 +107,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         Usuarios usuario = null;
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, usuarioId);
 
@@ -117,7 +117,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
 
                     usuario.setidUsuario(rs.getInt("id_Usuario"));
                     usuario.setemail(rs.getString("email"));
-                    usuario.setcontrasena(rs.getString("contraseña"));
+                    usuario.setcontrasena(rs.getString("contrasena"));
                     usuario.setnombre(rs.getString("nombre"));
                     usuario.setapellido(rs.getString("apellido"));
                     usuario.setdocumento(rs.getString("documento"));
@@ -156,7 +156,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         Usuarios usuario = null;
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, email);
 
@@ -166,7 +166,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
 
                     usuario.setidUsuario(rs.getInt("id_Usuario"));
                     usuario.setemail(rs.getString("email"));
-                    usuario.setcontrasena(rs.getString("contraseña"));
+                    usuario.setcontrasena(rs.getString("contrasena"));
                     usuario.setnombre(rs.getString("nombre"));
                     usuario.setapellido(rs.getString("apellido"));
                     usuario.setdocumento(rs.getString("documento"));
@@ -203,7 +203,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         String sql = "UPDATE usuarios SET email = ?, contrasena = ?, nombre = ?, apellido = ?, documento = ?, tipo_documento = ?, perfil_id = ?, estado = ?, email_verificado = ?, fecha_creacion = ?, fecha_actualizacion = ?, fecha_ultimo_login = ? WHERE id_Usuario = ?";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, usuario.getemail());
             ps.setString(2, usuario.getcontrasena());
@@ -233,6 +233,32 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
             System.err.println("Error al actualizar usuario: " + e.getMessage());
         }
     }
+    
+    @Override
+    public void actualizarContrasena(int idUsuario, String nuevaContrasena) {
+        String sql = "UPDATE usuarios SET contrasena = ?, fecha_actualizacion = ? WHERE id_Usuario = ?";
+
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, nuevaContrasena);
+            ps.setTimestamp(2, new java.sql.Timestamp(System.currentTimeMillis()));
+            ps.setInt(3, idUsuario);
+
+            int filasAfectadas = ps.executeUpdate();
+
+            if (!con.getAutoCommit()) {
+                con.commit();
+            }
+
+            if (filasAfectadas > 0) {
+                System.out.println("¡Contraseña actualizada correctamente en la BD!");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar contraseña: " + e.getMessage());
+        }
+    }
 
     @Override
     public void eliminarUsuarios(int idUsuario) {
@@ -240,7 +266,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         String sql = "DELETE FROM usuarios WHERE id_Usuario = ?";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idUsuario);
 

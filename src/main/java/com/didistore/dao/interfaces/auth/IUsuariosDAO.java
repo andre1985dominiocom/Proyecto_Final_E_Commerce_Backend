@@ -20,5 +20,7 @@ public interface IUsuariosDAO {
     
     void actualizarUsuarios(Usuarios usuario);
     
+    void actualizarContrasena(int idUsuario, String nuevaContrasena);
+    
     void eliminarUsuarios(int idUsuario);
 }
