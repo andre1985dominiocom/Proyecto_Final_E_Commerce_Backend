@@ -10,13 +10,19 @@ import java.util.List;
  */
 public interface ICategoriasDAO {
     
-    void insertarCategorias(Categorias categoria);
+    boolean insertarCategorias(Categorias categoria);
     
-    List<Categorias> listar();
+    boolean actualizarCategorias(Categorias categoria);
     
-    Categorias consultarCategoriasPorId(int idCategoria);
+    boolean eliminarCategorias(int idCategoria);
     
-    void actualizarCategoria(Categorias categoria);
+    Categorias obtenerCategoriaPorId(int idCategoria);
     
-    void eliminarCategorias(int idCategoria);
+    Categorias buscarCategoriaPorNombre(String nombreCategoria);
+    
+    List<Categorias> obtenerTodasLasCategorias();
+    
+    List<Categorias> obtenerCategoriasRaiz();
+    
+    List<Categorias> obtenerSubcategorias(int categoriaPadreId);
 }

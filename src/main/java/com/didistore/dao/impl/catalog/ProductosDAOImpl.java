@@ -246,7 +246,7 @@ public class ProductosDAOImpl implements IProductosDAO {
     }
 
     @Override
-    public Productos buscarProductosPorNombre(String nombreProducto) {
+    public Productos buscarProductoPorNombre(String nombreProducto) {
         
         String sql = "SELECT id_Producto, nombre_Producto, "
                 + "descripcion_Corta, "
@@ -261,8 +261,8 @@ public class ProductosDAOImpl implements IProductosDAO {
                 + "fecha_Creacion, "
                 + "fecha_Actualizacion FROM Productos WHERE nombre_Producto = ?";
         
-        Productos nombreProducto = null;
-
+        Productos producto = null;
+        
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
             
@@ -270,44 +270,97 @@ public class ProductosDAOImpl implements IProductosDAO {
             
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    nombreProducto = new Productos();
+                    producto = new Productos();
 
-                    nombreProducto.setidProducto(rs.getInt("id_Producto"));
-                    nombreProducto.setnombreProducto(rs.getString("nombre_producto"));
-                    nombreProducto.setdescripcionCorta(rs.getString("descripcion_corta"));
-                    nombreProducto.setdescripcionLarga(rs.getString("descripcion_larga"));
-                    nombreProducto.setprecio(rs.getFloat("precio"));
-                    nombreProducto.setsku(rs.getString("SKU"));
+                    producto.setidProducto(rs.getInt("id_Producto"));
+                    producto.setnombreProducto(rs.getString("nombre_producto"));
+                    producto.setdescripcionCorta(rs.getString("descripcion_corta"));
+                    producto.setdescripcionLarga(rs.getString("descripcion_larga"));
+                    producto.setprecio(rs.getFloat("precio"));
+                    producto.setsku(rs.getString("SKU"));
 
                     String tallaProductoStr = rs.getString("talla");
                     if (tallaProductoStr != null && !tallaProductoStr.isEmpty()) {
-                        nombreProducto.settalla(TallaProductos.valueOf(tallaProductoStr));
+                        producto.settalla(TallaProductos.valueOf(tallaProductoStr));
                     }
                     
-                    nombreProducto.setcolor(rs.getString("color"));
-                    nombreProducto.setcategoriaId(rs.getInt("categoria_id"));
+                    producto.setcolor(rs.getString("color"));
+                    producto.setcategoriaId(rs.getInt("categoria_id"));
 
                     String estadoStr = rs.getString("estado");
                     if (estadoStr != null && !estadoStr.isEmpty()) {
-                        nombreProducto.setestado(EstadoProductos.valueOf(estadoStr));
+                        producto.setestado(EstadoProductos.valueOf(estadoStr));
                     }
 
-                    nombreProducto.setesDestacado(rs.getBoolean("es_destacado"));
-                    nombreProducto.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
-                    nombreProducto.setfechaActualizacion(rs.getTimestamp("fecha_actualizacion"));
+                    producto.setesDestacado(rs.getBoolean("es_destacado"));
+                    producto.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
+                    producto.setfechaActualizacion(rs.getTimestamp("fecha_actualizacion"));
                 }
             }
 
         } catch (SQLException e) {
-            System.err.println("Error al consultar producto por ID: " + e.getMessage());
-            
-            
+            System.err.println("Error al buscar producto por nombre: " + e.getMessage());
         }
-        return null;
+        return producto;
     }
 
     @Override
     public List<Productos> listarProductoPorCategoria(int idCategoria) {
-        return null;
+        List<Productos> lista = new ArrayList<>();
+
+    String sql = "SELECT id_Producto, nombre_Producto, "
+            + "descripcion_Corta, "
+            + "descripcion_Larga, "
+            + "precio, "
+            + "SKU, "
+            + "talla, "
+            + "color, "
+            + "categoria_Id, "
+            + "estado, "
+            + "es_Destacado, "
+            + "fecha_Creacion, "
+            + "fecha_Actualizacion "
+            + "FROM Productos WHERE categoria_Id = ?";
+
+    try (Connection con = Conexion.getConexion();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, idCategoria);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Productos producto = new Productos();
+
+                producto.setidProducto(rs.getInt("id_Producto"));
+                producto.setnombreProducto(rs.getString("nombre_Producto"));
+                producto.setdescripcionCorta(rs.getString("descripcion_Corta"));
+                producto.setdescripcionLarga(rs.getString("descripcion_Larga"));
+                producto.setprecio(rs.getFloat("precio"));
+                producto.setsku(rs.getString("SKU"));
+
+                String tallaProductoStr = rs.getString("talla");
+                if (tallaProductoStr != null && !tallaProductoStr.isEmpty()) {
+                    producto.settalla(TallaProductos.valueOf(tallaProductoStr));
+                }
+
+                producto.setcolor(rs.getString("color"));
+                producto.setcategoriaId(rs.getInt("categoria_Id"));
+
+                String estadoStr = rs.getString("estado");
+                if (estadoStr != null && !estadoStr.isEmpty()) {
+                    producto.setestado(EstadoProductos.valueOf(estadoStr));
+                }
+
+                producto.setesDestacado(rs.getBoolean("es_Destacado"));
+                producto.setfechaCreacion(rs.getTimestamp("fecha_Creacion"));
+                producto.setfechaActualizacion(rs.getTimestamp("fecha_Actualizacion"));
+
+                lista.add(producto);
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al listar productos por categoría: " + e.getMessage());
+        }
+        return lista;       
     }
 }

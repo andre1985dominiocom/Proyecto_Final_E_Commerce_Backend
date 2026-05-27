@@ -18,7 +18,7 @@ public interface IProductosDAO {
     
     Productos consultarProductosPorId(int idProducto);
     
-    Productos buscarProductosPorNombre(String nombreProducto);
+    Productos buscarProductoPorNombre(String nombreProducto);
     
     void actualizarProductos(Productos producto);
     

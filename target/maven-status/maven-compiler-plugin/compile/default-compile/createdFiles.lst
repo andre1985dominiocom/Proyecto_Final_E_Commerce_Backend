@@ -3,6 +3,7 @@ com\didistore\dao\interfaces\catalog\IProductosDAO.class
 com\didistore\model\sales\HistorialEstadoPedidos.class
 com\didistore\controller\admin\AdminProductosController.class
 com\didistore\model\logistics\enums\EstadoEnvios.class
+com\didistore\controller\admin\AdminCategoriasController.class
 com\didistore\model\auth\Permisos.class
 com\didistore\controller\auth\servlet\PerfilPermisosServlet.class
 com\didistore\dao\impl\auth\UsuariosDAOImpl.class
@@ -35,11 +36,13 @@ com\didistore\controller\auth\PerfilPermisosController.class
 com\didistore\controller\catalog\ProductosController.class
 com\didistore\dao\interfaces\auth\ITokensRecuperacionDAO.class
 com\didistore\controller\sales\CarritoController.class
+com\didistore\controller\catalog\servlet\CategoriasServlet.class
 com\didistore\model\auth\TokensRecuperacion.class
 com\didistore\model\marketing\Cupones.class
 com\didistore\model\sales\ItemCarritos.class
 com\didistore\dao\impl\auth\PerfilPermisosDAOImpl.class
 com\didistore\dao\interfaces\auth\IPermisosDAO.class
+com\didistore\controller\catalog\CategoriasController.class
 com\didistore\model\catalog\Resenas.class
 com\didistore\model\marketing\ImagenesDevoluciones.class
 com\didistore\service\auth\AuthServices.class
@@ -67,10 +70,10 @@ com\didistore\dao\interfaces\sales\IItemCarritosDAO.class
 com\didistore\model\sales\Pedidos.class
 com\didistore\dao\impl\auth\PerfilesDAOImpl.class
 com\didistore\dao\interfaces\auth\ISesionesDAO.class
+com\didistore\controller\admin\servlet\AdminCategoriasServlet.class
 com\didistore\model\auth\Usuarios.class
 com\didistore\model\catalog\Inventarios.class
 com\didistore\model\catalog\Wishlist.class
-com\didistore\controller\admin\servlet\UsuariosServlet.class
 com\didistore\model\sales\enums\EstadoPagos.class
 com\didistore\controller\auth\PerfilesController.class
 com\didistore\dao\interfaces\sales\IPedidosDAO.class
@@ -92,6 +95,7 @@ com\didistore\controller\auth\SesionesController.class
 com\didistore\model\catalog\ImagenesProductos.class
 com\didistore\model\sales\Pagos.class
 com\didistore\controller\auth\servlet\TelefonosServlet$TelefonoRequest.class
+com\didistore\controller\auth\servlet\UsuariosServlet.class
 com\didistore\config\CorsFilter.class
 com\didistore\controller\auth\servlet\PerfilesServlet.class
 com\didistore\dao\interfaces\auth\IPerfilesDAO.class

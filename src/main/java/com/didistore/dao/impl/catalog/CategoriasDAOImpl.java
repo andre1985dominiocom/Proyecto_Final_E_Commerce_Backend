@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,160 +20,228 @@ import java.util.List;
 public class CategoriasDAOImpl implements ICategoriasDAO {
 
     @Override
-    public void insertarCategorias(Categorias categoria) {
-        
+    public boolean insertarCategorias(Categorias categoria) {
         String sql = "INSERT INTO Categorias (nombre_Categoria, "
-                + "descripcion, "
+                + "Descripcion, "
                 + "Categoria_padre_ID, "
-                + "fecha_Creacion) VALUES (?, ?, ?, ?)";
+                + "Fecha_creacion) VALUES (?, ?, ?, ?)";
         
-        int idGenerado = 0;
-        
-        try (Connection conexion = Conexion.getConexion();
-             PreparedStatement ps = conexion.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
-            ps.setString(1, categoria.getnombreCategoria());
-            ps.setString(2, categoria.getdescripcion());
-            
-            if (categoria.getcategoriaPadreId() != null && categoria.getcategoriaPadreId() > 0) {
-                ps.setObject(3, categoria.getcategoriaPadreId());
-            } else {
-                ps.setNull(3, java.sql.Types.INTEGER);
-            }
-               
-            ps.setTimestamp(4, new java.sql.Timestamp(System.currentTimeMillis()));
-            
-            int filasAfectadas = ps.executeUpdate();
-            
-            if (filasAfectadas > 0) {
+                ps.setString(1, categoria.getnombreCategoria());
+                ps.setString(2, categoria.getdescripcion());
                 
-                try (ResultSet rs = ps.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        idGenerado = rs.getInt(1);
-                        
-                        categoria.setidCategoria(idGenerado);
+                if (categoria.getcategoriaPadreId() == null) {
+                    ps.setNull(3, Types.INTEGER);
+                } else {
+                    ps.setInt(3, categoria.getcategoriaPadreId());
+                }
+                ps.setTimestamp(4, categoria.getfechaCreacion());
+                
+                int filasAfectadas = ps.executeUpdate();
+                
+                if (!con.getAutoCommit()) {
+                    con.commit();
+                }
+
+                if (filasAfectadas > 0) {
+                    
+                    try (ResultSet rsKeys = ps.getGeneratedKeys()) {
+                        if (rsKeys.next()) {
+                            categoria.setidCategoria(rsKeys.getInt(1));
+                        }
                     }
-                } 
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al insertar categorías. " + e.getMessage());
-        }  
+                    return true;
+                }                          
+            } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
-    public List<Categorias> listar() {
+    public boolean actualizarCategorias(Categorias categoria) {
         
-        List<Categorias> lista = new ArrayList<>();
-
-        String sql = "SELECT id_Categoria, nombre_Categoria, "
-                + "descripcion, "
-                + "Categoria_padre_ID, "
-                + "fecha_Creacion FROM Categorias";
-
+        String sql = "UPDATE Categorias SET nombre_Categoria = ?, "
+                + "Descripcion = ?, "
+                + "Categoria_padre_ID = ?, "
+                + "Fecha_creacion = ? WHERE ID_Categoria = ?";
+        
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                Categorias categoria = new Categorias();
-
-                categoria.setidCategoria(rs.getInt("id_categoria"));
-                categoria.setdescripcion(rs.getString("descripcion"));
-                categoria.setcategoriaPadreId(rs.getInt("categoria_padre_id"));
-                categoria.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
-
-                lista.add(categoria);
-            }
-
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, categoria.getnombreCategoria());
+            ps.setString(2, categoria.getdescripcion());
+          
+                if (categoria.getcategoriaPadreId() == null) {
+                    ps.setNull(3, Types.INTEGER);
+                } else {
+                    ps.setInt(3, categoria.getcategoriaPadreId());
+                }
+                ps.setTimestamp(4, categoria.getfechaCreacion());
+                ps.setInt(5, categoria.getidCategoria());
+                
+                return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al listar categorias: " + e.getMessage());
+            e.printStackTrace();
+        }   
+        return false;
+    }
+
+    @Override
+    public boolean eliminarCategorias(int idCategoria) {
+        
+        String sql = "DELETE FROM Categorias WHERE ID_Categoria = ?";
+        
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setInt(1, idCategoria);
+            
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public Categorias obtenerCategoriaPorId(int idCategoria) {
+        
+        String sql = "SELECT * FROM Categorias WHERE ID_Categoria = ?";
+        
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setInt(1, idCategoria);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapearCategoria(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+       return null;
+    }
+
+    @Override
+    public List<Categorias> obtenerTodasLasCategorias() {
+        
+       List<Categorias> lista = new ArrayList<>();
+        
+       String sql = "SELECT * FROM Categorias ORDER BY Nombre_categoria ASC";
+        
+       try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql);           
+            ResultSet rs = ps.executeQuery()) {
+            
+            while (rs.next()) {
+                lista.add(mapearCategoria(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }   
+       
+    @Override
+    public List<Categorias> obtenerCategoriasRaiz() {
+        
+        List <Categorias> lista = new ArrayList<>();
+        
+        String sql = "SELECT * FROM Categorias WHERE Categoria_padre_ID IS NULL ORDER BY Nombre_categoria ASC";
+        
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql);           
+            ResultSet rs = ps.executeQuery()) {
+            
+            while (rs.next()) {
+                lista.add(mapearCategoria(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+ 
+    @Override
+    public List<Categorias> obtenerSubcategorias(int categoriaPadreId) {
+        
+        List <Categorias> lista = new ArrayList<>();
+        
+        String sql = "SELECT * FROM Categorias WHERE Categoria_padre_ID = ? ORDER BY Nombre_categoria ASC";
+        
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setInt(1, categoriaPadreId);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapearCategoria(rs));
+                }
+            } 
+        } catch (SQLException e) {
+                e.printStackTrace();
         }
         return lista;
     }
 
-    @Override
-    public Categorias consultarCategoriasPorId(int idCategoria) {
+    private Categorias mapearCategoria(ResultSet rs) throws SQLException {
         
-        String sql = "SELECT  FROM categorias nombre_Categoria, "
-                + "descripcion, "
+        Categorias cat = new Categorias();
+        
+        cat.setidCategoria(rs.getInt("ID_Categoria"));
+        cat.setnombreCategoria(rs.getString("Nombre_categoria"));
+        cat.setdescripcion(rs.getString("Descripcion"));
+        cat.setfechaCreacion(rs.getTimestamp("Fecha_creacion"));
+        
+        int categoriaPadreId = rs.getInt("Categoria_padre_ID");
+        if (rs.wasNull()) {
+            cat.setcategoriaPadreId(null);
+        } else {
+            cat.setcategoriaPadreId(categoriaPadreId);
+        }
+        return cat;
+    }
+
+    @Override
+    public Categorias buscarCategoriaPorNombre(String nombreCategoria) {
+         
+        String sql = "SELECT ID_Categoria, nombre_Categoria, "
+                + "Descripcion, "
                 + "Categoria_padre_ID, "
-                + "fecha_Creacion  WHERE id_Categoria = ?";
-
+                + "Fecha_creacion FROM Categorias WHERE nombre_Categoria = ?";
+        
         Categorias categoria = null;
-
+        
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, idCategoria);
-
+            
+            ps.setString(1, nombreCategoria);
+            
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     categoria = new Categorias();
 
                     categoria.setidCategoria(rs.getInt("id_Categoria"));
-                    categoria.setdescripcion(rs.getString("descripcion"));
-                    categoria.setcategoriaPadreId(rs.getInt("categoria_padre_id"));
+                    categoria.setnombreCategoria(rs.getString("nombre_Categoria"));
+                    categoria.setdescripcion(rs.getString("Descripcion"));
+                    
+                    if (categoria.getcategoriaPadreId() == null) {
+                    ps.setNull(1, Types.INTEGER);
+                    } else {
+                    ps.setInt(1, categoria.getcategoriaPadreId());
+                    }
                     categoria.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
                 }
             }
-
         } catch (SQLException e) {
-            System.err.println("Error al consultar producto por ID: " + e.getMessage());
+            e.printStackTrace();
         }
-        return categoria;
+        return null;
     }
-
-    @Override
-    public void actualizarCategoria(Categorias categoria) {
-        
-        String sql = "UPDATE categorias SET descripcion = ?, categoria_padre_id = ?, fecha_Creacion = ? WHERE id_categoria = ? ";
-
-        try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setString(1, categoria.getdescripcion());
-            ps.setInt(2, categoria.getcategoriaPadreId());
-            ps.setTimestamp(3, categoria.getfechaCreacion());
-
-            int filasAfectadas = ps.executeUpdate();
-
-            if (!con.getAutoCommit()) {
-                con.commit();
-            }
-
-            if (filasAfectadas > 0) {
-                System.out.println("¡Categoria actualizada correctamente en la BD!");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar categoria: " + e.getMessage());
-        }
-        
-    }
-
-    @Override
-    public void eliminarCategorias(int idCategoria) {
-        
-        String sql = "DELETE FROM categorias WHERE id_categoria = ?";
-
-        try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, idCategoria);
-
-            int filasAfectadas = ps.executeUpdate();
-
-            if (!con.getAutoCommit()) {
-                con.commit();
-            }
-
-            if (filasAfectadas > 0) {
-                System.out.println("¡Producto eliminado correctamente en la BD!");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error al eliminar producto: " + e.getMessage());
-        }
-    }
-        
 } 

@@ -1,8 +1,8 @@
 
 package com.didistore.controller.admin.servlet;
 
-import com.didistore.controller.admin.AdminProductosController;
-import com.didistore.model.catalog.Productos;
+import com.didistore.controller.admin.AdminCategoriasController;
+import com.didistore.model.catalog.Categorias;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,10 +19,10 @@ import java.util.Map;
  * @author Sergio Andrés Álvarez Lache
  */
 
-@WebServlet("/admin/productos")
-public class AdminProductosServlet extends HttpServlet {
+@WebServlet("/admin/categorias")
+public class AdminCategoriasServlet extends HttpServlet{
     
-    private final AdminProductosController productoController = new AdminProductosController();
+    private final AdminCategoriasController categoriaController = new AdminCategoriasController();
     private final Gson gson = new Gson();
 
     @Override
@@ -34,11 +34,11 @@ public class AdminProductosServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         BufferedReader reader = request.getReader();
-        Productos producto = gson.fromJson(reader, Productos.class);
+        Categorias categoria = gson.fromJson(reader, Categorias.class);
 
         Map<String, Object> resultado = new HashMap<>();
 
-        if (producto == null) {
+        if (categoria == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resultado.put("success", false);
             resultado.put("message", "Body inválido");
@@ -46,11 +46,11 @@ public class AdminProductosServlet extends HttpServlet {
             return;
         }
 
-        productoController.insertarProductos(producto);
+        categoriaController.insertarCategorias(categoria);
 
         response.setStatus(HttpServletResponse.SC_CREATED);
         resultado.put("success", true);
-        resultado.put("message", "Producto creado correctamente");
+        resultado.put("message", "Categoria creada correctamente");
         response.getWriter().write(gson.toJson(resultado));
     }
 
@@ -63,23 +63,23 @@ public class AdminProductosServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         BufferedReader reader = request.getReader();
-        Productos producto = gson.fromJson(reader, Productos.class);
+        Categorias categoria = gson.fromJson(reader, Categorias.class);
 
         Map<String, Object> resultado = new HashMap<>();
 
-        if (producto == null || producto.getidProducto() <= 0) {
+        if (categoria == null || categoria.getidCategoria() <= 0) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resultado.put("success", false);
-            resultado.put("message", "Datos de producto inválidos");
+            resultado.put("message", "Datos de categoria inválidos");
             response.getWriter().write(gson.toJson(resultado));
             return;
         }
 
-        productoController.actualizarProductos(producto);
+        categoriaController.actualizarCategorias(categoria);
 
         response.setStatus(HttpServletResponse.SC_OK);
         resultado.put("success", true);
-        resultado.put("message", "Producto actualizado correctamente");
+        resultado.put("message", "Categoria actualizada correctamente");
         response.getWriter().write(gson.toJson(resultado));
     }
 
@@ -91,27 +91,27 @@ public class AdminProductosServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         Map<String, Object> resultado = new HashMap<>();
-        String id = request.getParameter("idProducto");
+        String id = request.getParameter("idCategoria");
 
         if (id == null || id.trim().isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resultado.put("success", false);
-            resultado.put("message", "Falta idProducto");
+            resultado.put("message", "Falta idCategoria");
             response.getWriter().write(gson.toJson(resultado));
             return;
         }
 
         try {
-            int idProducto = Integer.parseInt(id);
-            productoController.eliminarProductos(idProducto);
+            int idCategoria = Integer.parseInt(id);
+            categoriaController.eliminarCategorias(idCategoria);
 
             response.setStatus(HttpServletResponse.SC_OK);
             resultado.put("success", true);
-            resultado.put("message", "Producto eliminado correctamente");
+            resultado.put("message", "Categoria eliminada correctamente");
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resultado.put("success", false);
-            resultado.put("message", "idProducto inválido");
+            resultado.put("message", "idCategoria inválido");
         }
         response.getWriter().write(gson.toJson(resultado));
     }

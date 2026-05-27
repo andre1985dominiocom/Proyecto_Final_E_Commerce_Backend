@@ -30,7 +30,7 @@ public class Categorias {
     }
     
     public int getidCategoria() { return idCategoria; }
-    public void setidCategoria(int id_Categoria) { this.idCategoria = id_Categoria; }
+    public void setidCategoria(int idCategoria) { this.idCategoria = idCategoria; }
     
     public String getnombreCategoria() { return nombreCategoria; }
     public void setnombreCategoria(String nombreCategoria) { this.nombreCategoria = nombreCategoria; }
