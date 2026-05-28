@@ -20,5 +20,5 @@ public interface IImagenesProductosDAO {
     
     boolean actualizarImagen(ImagenesProductos imagen);
     
-    boolean eliminarImagen      (int idImagen);
+    boolean eliminarImagen(int idImagen);
 }

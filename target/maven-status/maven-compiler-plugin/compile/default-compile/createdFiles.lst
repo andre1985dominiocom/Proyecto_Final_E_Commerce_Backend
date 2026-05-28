@@ -1,5 +1,6 @@
 com\didistore\model\logistics\Direcciones.class
 com\didistore\dao\interfaces\catalog\IProductosDAO.class
+com\didistore\dao\interfaces\catalog\IInventariosDAO.class
 com\didistore\model\sales\HistorialEstadoPedidos.class
 com\didistore\controller\admin\AdminProductosController.class
 com\didistore\model\logistics\enums\EstadoEnvios.class
@@ -105,6 +106,7 @@ com\didistore\dao\interfaces\auth\IPerfilesDAO.class
 com\didistore\model\catalog\Categorias.class
 com\didistore\dao\impl\catalog\ImagenesProductosDAOImpl.class
 com\didistore\model\logistics\enums\TransportadoraEnvios.class
+com\didistore\dao\impl\catalog\InventariosDAOImpl.class
 com\didistore\model\marketing\enums\EstadoCupones.class
 com\didistore\dao\impl\catalog\ProductosDAOImpl.class
 com\didistore\config\Conexion.class

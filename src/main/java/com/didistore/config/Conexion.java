@@ -14,7 +14,7 @@ public class Conexion {
     private static final String DATABASE = "db_e_commerce_didistore";
     private static final String URL = "jdbc:mysql://localhost:3306/" + DATABASE;
     private static final String USER = "root";
-    private static final String PASSWORD = "6719980";
+    private static final String PASSWORD = "#Aprendiz2024";
     
     private static Connection conexion = null;
     
