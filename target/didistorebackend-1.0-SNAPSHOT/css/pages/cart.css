@@ -1,0 +1,8 @@
+/* =============================================
+    DidiStore — Página: Carrito (BEM)
+    Bloque: .page--cart
+    Este archivo solo añade el padding de página
+   ============================================= */
+.page--cart {
+    min-height: calc(100vh - 160px);
+}

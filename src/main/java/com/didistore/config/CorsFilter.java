@@ -38,7 +38,8 @@ public class CorsFilter implements Filter {
 
         String origin = req.getHeader("Origin");
        
-        if ("http://127.0.0.1:5500".equals(origin)) {
+        if ("http://127.0.0.1:5500".equals(origin) || "http://localhost:5500".equals(origin)) {
+
             res.setHeader("Access-Control-Allow-Origin", origin);
         }
         

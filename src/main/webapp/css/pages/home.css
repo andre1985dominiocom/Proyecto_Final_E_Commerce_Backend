@@ -1,0 +1,319 @@
+/* =============================================
+    DidiStore — Página de Inicio (BEM)
+   ============================================= */
+
+/* =============================================
+    Bloque: .hero
+   ============================================= */
+.hero {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-secondary);
+}
+
+/* --- Elemento: slider contenedor --- */
+.hero__slider {
+    position: relative;
+}
+
+/* --- Elemento: slide individual --- */
+.hero__slide {
+    display: none;
+    position: relative;
+    min-height: 420px;
+    align-items: center;
+}
+
+.hero__slide--active {
+    display: flex;
+}
+
+/* --- Elemento: capa de contenido (texto + CTA) --- */
+.hero__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: var(--spacing-3xl) 0;
+}
+
+/* --- Elemento: bloque de texto --- */
+.hero__text {
+    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* --- Elemento: título principal --- */
+.hero__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-text-heading);
+    margin-bottom: 0;
+    line-height: 1.2;
+}
+
+/* --- Elemento: subtítulo --- */
+.hero__subtitle {
+    font-size: 1.15rem;
+    color: var(--color-text-light);
+    margin-bottom: 0;
+}
+
+/* --- Elemento: imagen de fondo del slide --- */
+.hero__image {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.hero__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.35;
+}
+
+/* --- Elemento: flechas de navegación --- */
+.hero__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-pill);
+    background-color: rgba(255,255,255,0.8);
+    color: var(--color-text-heading);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    transition: background-color var(--transition-fast);
+}
+
+.hero__arrow:hover {
+    background-color: var(--color-white);
+}
+
+.hero__arrow--prev { left: var(--spacing-md); }
+.hero__arrow--next { right: var(--spacing-md); }
+
+/* --- Elemento: indicadores de posición --- */
+.hero__indicators {
+    position: absolute;
+    bottom: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+/* =============================================
+    Bloque: .indicator
+   ============================================= */
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-pill);
+    background-color: rgba(255,255,255,0.6);
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.indicator--active {
+    background-color: var(--color-primary-dark);
+    transform: scale(1.3);
+}
+
+/* =============================================
+    Bloque: .features
+   ============================================= */
+.features {
+    padding: var(--spacing-2xl) 0;
+    background-color: var(--color-white);
+}
+
+/* --- Elemento: grid --- */
+.features__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* =============================================
+    Bloque: .feature (ítem individual)
+   ============================================= */
+.feature {
+    text-align: center;
+    padding: var(--spacing-lg);
+    background-color: var(--color-background);
+    border-radius: var(--radius-lg);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.feature:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* --- Elemento: icono --- */
+.feature__icon {
+    font-size: 2.2rem;
+    color: var(--color-primary-dark);
+    margin-bottom: var(--spacing-md);
+    display: block;
+}
+
+/* --- Elemento: título --- */
+.feature__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-heading);
+    margin-bottom: var(--spacing-xs);
+}
+
+/* --- Elemento: descripción --- */
+.feature__text {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+}
+
+/* =============================================
+    Bloque: .categories  (sección)
+   ============================================= */
+.categories {
+    padding: var(--spacing-2xl) 0;
+}
+
+/* --- Elemento: grid de categorías --- */
+.categories__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+}
+
+/* =============================================
+    Bloque: .products  (sección destacados)
+   ============================================= */
+.products {
+    padding: var(--spacing-2xl) 0;
+    background-color: var(--color-background);
+}
+
+/* --- Elemento: grid de productos --- */
+.products__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+}
+
+/* --- Elemento: CTA ver todos --- */
+.products__cta {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+}
+
+/* =============================================
+    Bloque: .section-header  (cabecera de sección reutilizable)
+   ============================================= */
+.section-header {
+    text-align: center;
+}
+
+/* --- Elemento: título de sección --- */
+.section-header__title {
+    font-size: 1.8rem;
+    color: var(--color-text-heading);
+    margin-bottom: var(--spacing-xs);
+}
+
+/* --- Elemento: subtítulo de sección --- */
+.section-header__subtitle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+}
+
+/* =============================================
+    Bloque: .promo-banner
+   ============================================= */
+.promo-banner {
+    padding: var(--spacing-3xl) 0;
+    background-color: var(--color-primary);
+}
+
+/* --- Elemento: contenido del banner --- */
+.promo-banner__content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+/* --- Elemento: texto del banner --- */
+.promo-banner__text {
+    flex: 1;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* --- Elemento: título --- */
+.promo-banner__title {
+    font-size: 2rem;
+    color: var(--color-text-heading);
+    margin-bottom: 0;
+}
+
+/* --- Elemento: subtítulo --- */
+.promo-banner__subtitle {
+    font-size: 1.1rem;
+    color: var(--color-text-light);
+    margin-bottom: 0;
+}
+
+/* --- Elemento: descripción --- */
+.promo-banner__description {
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+    margin-bottom: 0;
+}
+
+/* --- Elemento: imagen --- */
+.promo-banner__image {
+    flex-shrink: 0;
+    width: 280px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.promo-banner__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* =============================================
+    Responsive
+   ============================================= */
+@media (max-width: 768px) {
+    .hero__title { font-size: 1.8rem; }
+    .hero__slide { min-height: 300px; }
+
+    .promo-banner__image {
+        width: 100%;
+    }
+
+    .promo-banner__content {
+        flex-direction: column;
+    }
+}

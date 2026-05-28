@@ -132,7 +132,7 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
         
        List<Categorias> lista = new ArrayList<>();
         
-       String sql = "SELECT * FROM Categorias ORDER BY Nombre_categoria ASC";
+       String sql = "SELECT * FROM Categorias ORDER BY ID_Categoria ASC";
         
        try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql);           

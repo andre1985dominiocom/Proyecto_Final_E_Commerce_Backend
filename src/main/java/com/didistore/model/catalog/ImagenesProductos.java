@@ -24,15 +24,15 @@ public class ImagenesProductos {
         this.formato = formato;
     }
     
-    public int getidImagen() { return idImagen; }
-    public void setidImagen(int idImagen) { this.idImagen = idImagen; }
+    public int getIdImagen() { return idImagen; }
+    public void setIdImagen(int idImagen) { this.idImagen = idImagen; }
     
-    public int getproductoId() { return productoId; }
-    public void setproductoId(int productoId) { this.productoId = productoId; }
+    public int getProductoId() { return productoId; }
+    public void setProductoId(int productoId) { this.productoId = productoId; }
     
-    public String geturl() { return url; }
-    public void seturl(String url) { this.url = url; }
+    public String getUrl() { return url; }
+    public void setUrl(String url) { this.url = url; }
     
-    public String getformato() { return formato; }
-    public void setformato(String formato) { this.formato = formato; }
+    public String getFormato() { return formato; }
+    public void setFormato(String formato) { this.formato = formato; }
 }

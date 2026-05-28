@@ -7,6 +7,7 @@ com\didistore\controller\admin\AdminCategoriasController.class
 com\didistore\model\auth\Permisos.class
 com\didistore\controller\auth\servlet\PerfilPermisosServlet.class
 com\didistore\dao\impl\auth\UsuariosDAOImpl.class
+com\didistore\controller\catalog\ImagenesProductosController.class
 com\didistore\model\marketing\enums\EstadoDevoluciones.class
 com\didistore\model\marketing\Promociones.class
 com\didistore\controller\auth\TelefonosController.class
@@ -72,6 +73,7 @@ com\didistore\dao\impl\auth\PerfilesDAOImpl.class
 com\didistore\dao\interfaces\auth\ISesionesDAO.class
 com\didistore\controller\admin\servlet\AdminCategoriasServlet.class
 com\didistore\model\auth\Usuarios.class
+com\didistore\controller\catalog\servlet\ImagenesProductosServlet.class
 com\didistore\model\catalog\Inventarios.class
 com\didistore\model\catalog\Wishlist.class
 com\didistore\model\sales\enums\EstadoPagos.class
@@ -80,6 +82,7 @@ com\didistore\dao\interfaces\sales\IPedidosDAO.class
 com\didistore\controller\auth\servlet\RestablecerPasswordServlet$RestablecerRequest.class
 com\didistore\model\catalog\Productos.class
 com\didistore\util\SessionUtil.class
+com\didistore\dao\interfaces\catalog\IImagenesProductosDAO.class
 com\didistore\model\sales\enums\MetodoPagos.class
 com\didistore\model\logistics\Departamentos.class
 com\didistore\controller\auth\TokensRecuperacionController.class
@@ -100,6 +103,7 @@ com\didistore\config\CorsFilter.class
 com\didistore\controller\auth\servlet\PerfilesServlet.class
 com\didistore\dao\interfaces\auth\IPerfilesDAO.class
 com\didistore\model\catalog\Categorias.class
+com\didistore\dao\impl\catalog\ImagenesProductosDAOImpl.class
 com\didistore\model\logistics\enums\TransportadoraEnvios.class
 com\didistore\model\marketing\enums\EstadoCupones.class
 com\didistore\dao\impl\catalog\ProductosDAOImpl.class

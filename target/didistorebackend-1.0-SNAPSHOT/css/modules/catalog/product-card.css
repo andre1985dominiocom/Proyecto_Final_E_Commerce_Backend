@@ -1,0 +1,10 @@
+/* =============================================
+    DidiStore — Módulo: product-card en catálogo
+    Los estilos base están en components/cards.css
+    Aquí solo van particularidades del contexto catálogo
+   ============================================= */
+
+/* Ajuste fino para evitar recortes forzados en el catálogo */
+.catalog .product-card__image {
+    aspect-ratio: auto;
+}

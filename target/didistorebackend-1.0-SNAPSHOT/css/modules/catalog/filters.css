@@ -1,0 +1,109 @@
+/* =============================================
+    DidiStore — Módulo: Filtros del catálogo (BEM)
+    Bloque: .filters
+   ============================================= */
+.filters {
+    width: 240px;
+    flex-shrink: 0;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+}
+
+/* --- Elemento: título del panel --- */
+.filters__title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-primary);
+    color: var(--color-text-heading);
+}
+
+/* --- Elemento: grupo de filtro --- */
+.filters__group {
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-secondary);
+}
+
+.filters__group:last-of-type { border-bottom: none; }
+
+.filters__group-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text);
+}
+
+/* --- Elemento: lista de opciones --- */
+.filters__list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filters__label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 0.88rem;
+    cursor: pointer;
+    color: var(--color-text);
+    transition: color var(--transition-fast);
+}
+
+.filters__label:hover { color: var(--color-primary-dark); }
+
+.filters__checkbox,
+.filters__radio {
+    accent-color: var(--color-primary-dark);
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+}
+
+/* --- Elemento: filtro de precio --- */
+.filters__price {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.filters__price-inputs {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.filters__price-input {
+    width: 80px;
+    padding: 5px var(--spacing-sm);
+    border: 1px solid var(--color-neutral);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-family: var(--font-family-base);
+}
+
+.filters__price-separator { color: var(--color-text-muted); }
+
+/* --- Elemento: botón reset --- */
+.filters__reset {
+    width: 100%;
+    padding: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+    background-color: transparent;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.filters__reset:hover { background-color: var(--color-secondary); }
+
+@media (max-width: 768px) {
+    .filters { width: 100%; }
+}
