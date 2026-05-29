@@ -47,6 +47,8 @@ public class TokensRecuperacionController {
         return tokensDAO.consultarTokenPorHash(tokenHash);
     }
     
+    
+    
     public boolean tokenEsValido(String tokenHash) {
         TokensRecuperacion token = consultarTokenPorHash(tokenHash);
         
@@ -54,11 +56,10 @@ public class TokensRecuperacionController {
             return false;
         }
         
-        if (token.getusado(true)) {
-        } else {
+        if (token.getusado()) {
             return false;
-        }
-        
+        } 
+       
         Timestamp ahora = new Timestamp(System.currentTimeMillis());
         
         return token.getfechaExpiracion() != null && token.getfechaExpiracion().after(ahora);

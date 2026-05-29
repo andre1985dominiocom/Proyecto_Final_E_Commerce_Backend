@@ -12,16 +12,6 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// import javax.servlet.Filter;
-// import javax.servlet.FilterChain;
-// import javax.servlet.FilterConfig;
-// import javax.servlet.ServletException;
-// import javax.servlet.ServletRequest;
-// import javax.servlet.ServletResponse;
-// import javax.servlet.annotation.WebFilter;
-// import javax.servlet.http.HttpServletRequest;
-// import javax.servlet.http.HttpServletResponse;
-
 @WebFilter("/*")
 public class CorsFilter implements Filter {
 
@@ -38,7 +28,7 @@ public class CorsFilter implements Filter {
 
         String origin = req.getHeader("Origin");
        
-        if ("http://127.0.0.1:5500".equals(origin) || "http://localhost:5500".equals(origin)) {
+        if ("http://localhost:8080".equals(origin)) {
 
             res.setHeader("Access-Control-Allow-Origin", origin);
         }

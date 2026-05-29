@@ -16,12 +16,13 @@ public class SesionesController {
         this.sesionesDAO = new SesionesDAOImpl();
     }
 
-    public boolean validarCredenciales(String email, String contrasena) {
-        if (email == null || email.trim().isEmpty()
-                || contrasena == null || contrasena.trim().isEmpty()) {
+    public boolean validarCredenciales(String email, String contrasenaPlana) {
+        
+        String hashBD = sesionesDAO.obtenerContrasenaHasheadaPorEmail(email);
+        
+        if (hashBD == null) {
             return false;
-        }
-
-        return sesionesDAO.validarCredenciales(email, contrasena);
+    }
+    return com.didistore.util.PasswordUtil.verify(contrasenaPlana, hashBD);
     }
 }

@@ -13,6 +13,14 @@ import org.mindrot.jbcrypt.BCrypt;
 public class PasswordUtil {
     
     private static final int WORK_FACTOR = 12;
+    private static final String REGEX_COMPLEJIDAD = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
+    
+    public static boolean esSegura(String plainPassword) {
+        if (plainPassword == null || plainPassword.isBlank()) {
+            return false;
+        }
+        return plainPassword.matches(REGEX_COMPLEJIDAD);
+    }
     
     public static String encrypt(String plainPassword) {
         if (plainPassword == null || plainPassword.isBlank()) {
@@ -22,12 +30,12 @@ public class PasswordUtil {
         return BCrypt.hashpw(plainPassword, salt);
     }
         
-        public static boolean verify(String plainPassword, String hashePassword) {
-            if (plainPassword == null || hashePassword == null || hashePassword.isBlank()) {
+        public static boolean verify(String plainPassword, String hashedPassword) {
+            if (plainPassword == null || plainPassword.isBlank() || plainPassword == null || hashedPassword.isBlank()) {
                 return false;
             }
             try {
-                return BCrypt.checkpw(plainPassword, hashePassword);
+                return BCrypt.checkpw(plainPassword, hashedPassword);
             } catch (IllegalArgumentException e) {
                 return false;
         }

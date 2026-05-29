@@ -57,13 +57,13 @@ public class SesionesDAOImpl implements ISesionesDAO{
     public List<Sesiones> listarSesiones() {
         
         List<Sesiones> lista = new ArrayList<>();
-            String sql = "SELECT (Usuario_ID,"
+            String sql = "SELECT Usuario_ID,"
                 + "Token_sesion,"
                 + "Fecha_Creacion,"
                 + "Fecha_expiracion,"
                 + "IP,"
                 + "User_agent,"
-                + "Revocada) FROM sesiones";
+                + "Revocada FROM sesiones";
         
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -89,20 +89,20 @@ public class SesionesDAOImpl implements ISesionesDAO{
     @Override
     public Sesiones consultarSesiones(int idSesion) {
         
-         String sql = "SELECT (Usuario_ID,"
+         String sql = "SELECT Usuario_ID,"
                 + "Token_sesion,"
                 + "Fecha_Creacion,"
                 + "Fecha_expiracion,"
                 + "IP,"
                 + "User_agent,"
-                + "Revocada) FROM sesiones WHERE ID_Sesion = ?";
+                + "Revocada FROM sesiones WHERE ID_Sesion = ?";
         
         Sesiones sesion = null;
         
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql)) {
             
-            ps.setInt(1, sesion.getidSesion());
+            ps.setInt(1, idSesion);
             
             try (ResultSet rs = ps.executeQuery()) {
                 if(rs.next()) {
@@ -125,13 +125,13 @@ public class SesionesDAOImpl implements ISesionesDAO{
     @Override
     public void actualizarSesiones(Sesiones sesion) {
             
-            String sql = "UPDATE Usuarios (SET Usuario_ID = ?,"
-                + "SET Token_sesion = ?,"
-                + "SET Fecha_Creacion = ?,"
-                + "SET Fecha_expiracion = ?,"
-                + "SET IP = ?,"
-                + "SET User_agent = ?,"
-                + "SET Revocada = ?) WHERE ID_Sesion = ?";
+            String sql = "UPDATE sesiones SET Usuario_ID = ?,"
+                + "Token_sesion = ?,"
+                + "Fecha_Creacion = ?,"
+                + "Fecha_expiracion = ?,"
+                + "IP = ?,"
+                + "User_agent = ?,"
+                + "Revocada = ? WHERE ID_Sesion = ?";
         
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql)) {
@@ -140,9 +140,10 @@ public class SesionesDAOImpl implements ISesionesDAO{
                 ps.setString(2, sesion.gettokenSesion());
                 ps.setTimestamp(3, sesion.getfechaCreacion());
                 ps.setTimestamp(4, sesion.getfechaExpiracion());
-                ps.setString(4, sesion.getip());
-                ps.setString(5, sesion.getuserAgent());
-                ps.setInt(6, sesion.getrevocada());
+                ps.setString(5, sesion.getip());
+                ps.setString(6, sesion.getuserAgent());
+                ps.setInt(7, sesion.getrevocada());
+                ps.setInt(8, sesion.getidSesion());
 
                 int filasAfectadas = ps.executeUpdate();
                 
@@ -182,22 +183,23 @@ public class SesionesDAOImpl implements ISesionesDAO{
         }                   
     }
 
-    public boolean validarCredenciales(String email, String contrasena) {
+    public String obtenerContrasenaHasheadaPorEmail(String email) {
         
-        String sql = "SELECT 1 FROM usuarios WHERE email = ? AND contrasena = ?";
+        String sql = "SELECT contrasena FROM usuarios  WHERE email = ?";
         
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setString(1, email);
-            ps.setString(2, contrasena);
-            
+
             try (ResultSet rs = ps.executeQuery()) {
-                return rs.next();
+                if (rs.next()) {
+                    return rs.getString("contrasena");
+                }
             }
         } catch (SQLException e) {
-            System.err.println("Error al validar credenciales: " + e.getMessage());
+            System.err.println("Error al obtener contraseña por email: " + e.getMessage());
         }
-        return false;
+        return null;
     }
 }    

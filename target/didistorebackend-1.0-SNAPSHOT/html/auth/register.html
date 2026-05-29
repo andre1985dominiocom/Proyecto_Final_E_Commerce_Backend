@@ -20,10 +20,10 @@
             <form id="register-form" class="auth__form">
 
                 <label for="username" class="auth__label">Nombre</label>
-                <input type="text" id="username" name="username" class="auth__input" required>
+                <input type="text" id="username" name="username" class="auth__input" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="El nombre solo debe contener letras y espacios.">
 
                 <label for="lastname" class="auth__label">Apellido</label>
-                <input type="text" id="lastname" name="lastname" class="auth__input" required>
+                <input type="text" id="lastname" name="lastname" class="auth__input" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="El apellido solo debe contener letras y espacios.">
 
                 <label for="type-document" class="auth__label">Tipo Documento</label>
                 <select id="type-document" name="type-document" class="auth__input" required>
@@ -35,7 +35,7 @@
                 </select>
 
                 <label for="document" class="auth__label">Documento</label>
-                <input type="text" id="document" name="document" class="auth__input" required>
+                <input type="text" id="document" name="document" class="auth__input" required pattern="^\d{10,12}$" title="El documento debe tener entre 10 y 12 números, sin puntos ni letras.">
 
                 <label for="email" class="auth__label">Correo Electrónico</label>
                 <input type="email" id="email" name="email" class="auth__input" required>

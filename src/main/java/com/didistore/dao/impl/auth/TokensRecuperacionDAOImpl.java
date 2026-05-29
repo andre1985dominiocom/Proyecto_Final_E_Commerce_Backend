@@ -34,7 +34,7 @@ public class TokensRecuperacionDAOImpl implements ITokensRecuperacionDAO {
                 ps.setString(2, token.gettokenHash());
                 ps.setTimestamp(3, token.getfechaCreacion());
                 ps.setTimestamp(4, token.getfechaExpiracion());
-                ps.setBoolean(5, token.getusado(true));
+                ps.setBoolean(5, token.getusado());
                 ps.setInt(6, token.getintentos());
 
                 int filasAfectadas = ps.executeUpdate();
@@ -168,7 +168,7 @@ public class TokensRecuperacionDAOImpl implements ITokensRecuperacionDAO {
                 ps.setString(2, token.gettokenHash());
                 ps.setTimestamp(3, token.getfechaCreacion());
                 ps.setTimestamp(4, token.getfechaExpiracion());
-                ps.setBoolean(5, token.getusado(true));
+                ps.setBoolean(5, token.getusado());
                 ps.setInt(6, token.getintentos());
                 ps.setInt(7, token.getidToken());
 

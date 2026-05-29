@@ -3,21 +3,14 @@ package com.didistore.controller.auth.servlet;
 
 import com.didistore.controller.auth.SesionesController;
 import com.google.gson.Gson;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.annotation.WebServlet;
-//import jakarta.servlet.http.HttpServlet;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -45,21 +38,32 @@ public class LoginServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-
-        BufferedReader reader = request.getReader();
-        LoginRequest loginRequest = gson.fromJson(reader, LoginRequest.class);
-
+        
+        LoginRequest loginRequest = null;
+        
+        try {
+            loginRequest = gson.fromJson(request.getReader(), LoginRequest.class);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            Map<String, Object> errorJson = new HashMap<>();
+            errorJson.put("success", false);
+            errorJson.put("message", "Estructura JSON inválida");
+            response.getWriter().write(gson.toJson(errorJson));
+            return;
+        }
         Map<String, Object> resultado = new HashMap<>();
 
         if (loginRequest == null
-                || loginRequest.getEmail() == null || loginRequest.getEmail().trim().isEmpty()
-                || loginRequest.getContrasena() == null || loginRequest.getContrasena().trim().isEmpty()) {
-
+                || loginRequest.getEmail() == null || loginRequest.getEmail().isBlank()
+                || loginRequest.getContrasena() == null || loginRequest.getContrasena().isBlank()) {
+            
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resultado.put("success", false);
             resultado.put("message", "Email y contraseña son obligatorios");
             response.getWriter().write(gson.toJson(resultado));
             return;
+
+            
         }
 
         boolean valido = sesionesController.validarCredenciales(

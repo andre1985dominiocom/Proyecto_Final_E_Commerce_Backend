@@ -4,23 +4,17 @@ package com.didistore.controller.auth.servlet;
 import com.didistore.controller.auth.TokensRecuperacionController;
 import com.didistore.dao.impl.auth.UsuariosDAOImpl;
 import com.didistore.model.auth.TokensRecuperacion;
+import com.didistore.util.PasswordUtil;
 import com.google.gson.Gson;
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.annotation.WebServlet;
-//import jakarta.servlet.http.HttpServlet;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 
 /**
  *
@@ -29,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/auth/restablecer-password")
 public class RestablecerPasswordServlet extends HttpServlet {
-    
+        
     private final Gson gson = new Gson();
     private final TokensRecuperacionController tokenController = new TokensRecuperacionController();
     private final UsuariosDAOImpl usuariosDAO = new UsuariosDAOImpl();
@@ -55,6 +49,14 @@ public class RestablecerPasswordServlet extends HttpServlet {
             response.getWriter().write(gson.toJson(resultado));
             return;
         }
+        
+        if (!PasswordUtil.esSegura(datos.getnuevaContrasena())) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resultado.put("success", false);
+            resultado.put("message", "La contraseña debe incluir mínimo 8 caracteres, 1 mayúscula, 1 minúscula y 1 número.");
+            response.getWriter().write(gson.toJson(resultado));
+            return;
+        }
 
         boolean tokenValido = tokenController.tokenEsValido(datos.getToken());
 
@@ -75,8 +77,9 @@ public class RestablecerPasswordServlet extends HttpServlet {
             response.getWriter().write(gson.toJson(resultado));
             return;
         }
-
-        usuariosDAO.actualizarContrasena(token.getusuarioId(), datos.getnuevaContrasena());
+        
+        String contrasenaHasheada = PasswordUtil.encrypt(datos.getnuevaContrasena());
+        usuariosDAO.actualizarContrasena(token.getusuarioId(), contrasenaHasheada);
         
         tokenController.marcarTokenComoUsado(datos.getToken());
 
@@ -96,7 +99,7 @@ public class RestablecerPasswordServlet extends HttpServlet {
         }
 
         public void setToken(String token) {
-            this.token = token;
+            this.token = token; 
         }
 
         public String getnuevaContrasena() {

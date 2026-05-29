@@ -50,7 +50,7 @@ public class TokensRecuperacion {
     public Timestamp getfechaExpiracion() { return fechaExpiracion; }
     public void setfechaExpiracion (Timestamp fechaExpiracion) { this.fechaExpiracion = fechaExpiracion; }
     
-    public boolean getusado(boolean par) { return usado; }
+    public boolean getusado() { return usado; }
     public void setusado (boolean usado) { this.usado = usado; } 
     
     public int getintentos() { return intentos; }

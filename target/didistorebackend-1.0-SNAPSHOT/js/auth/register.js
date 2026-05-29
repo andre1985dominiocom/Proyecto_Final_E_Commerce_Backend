@@ -12,12 +12,30 @@ if (form) {
 function validateRegisterData(user) {
   const errors = {};
 
-  if (!user.nombre || user.nombre.length < 2) errors.username = 'Nombre inválido';
-  if (!user.apellido || user.apellido.length < 2) errors.lastname = 'Apellido inválido';
+  // VALIDACIÓN: Solo letras y espacios en Nombre y Apellido
+  const regexLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+  if (!user.nombre || !regexLetras.test(user.nombre) || user.nombre.length < 2) {
+    errors.username = 'El nombre solo debe contener letras';
+  }
+  if (!user.apellido || !regexLetras.test(user.apellido) || user.apellido.length < 2) {
+    errors.lastname = 'El apellido solo debe contener letras';
+  }
+
   if (!user.tipoDocumento) errors['type-document'] = 'Selecciona tipo de documento';
-  if (!user.documento || user.documento.length < 5) errors.document = 'Documento inválido';
+
+  // VALIDACIÓN: Documento numérico de entre 10 y 12 dígitos
+  const regexDocumento = /^\d{10,12}$/;
+  if (!user.documento || !regexDocumento.test(user.documento)) {
+    errors.document = 'El documento debe tener entre 10 y 12 números';
+  }
+
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email)) errors.email = 'Correo inválido';
-  if (!user.contrasena || user.contrasena.length < 6) errors.password = 'Mínimo 6 caracteres';
+
+  // VALIDACIÓN REQUERIMIENTO RF01: Mínimo 8 caracteres, 1 mayúscula, 1 minúscula y 1 número
+  const regexPasswordRobust = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+  if (!user.contrasena || !regexPasswordRobust.test(user.contrasena)) {
+    errors.password = 'Mínimo 8 caracteres, una mayúscula, una minúscula y un número';
+  }
 
   return errors;
 }
@@ -38,7 +56,7 @@ function buildUserPayload() {
     contrasena: document.getElementById('password')?.value.trim(),
     perfilId: 3,
     estado: 'Activo',
-    emailVerificado: false
+    emailVerificado: true
   };
 }
 

@@ -12,7 +12,7 @@ public interface ISesionesDAO {
     
     void insertarSesiones(Sesiones sesion);
     
-    boolean validarCredenciales(String email, String contrasena);
+    String obtenerContrasenaHasheadaPorEmail(String email);
     
     List<Sesiones> listarSesiones();
     
