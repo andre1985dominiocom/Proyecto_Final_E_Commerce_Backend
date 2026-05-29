@@ -82,10 +82,12 @@ com\didistore\controller\auth\PerfilesController.class
 com\didistore\dao\interfaces\sales\IPedidosDAO.class
 com\didistore\controller\auth\servlet\RestablecerPasswordServlet$RestablecerRequest.class
 com\didistore\model\catalog\Productos.class
+com\didistore\controller\admin\AdminInventariosController.class
 com\didistore\util\SessionUtil.class
 com\didistore\dao\interfaces\catalog\IImagenesProductosDAO.class
 com\didistore\model\sales\enums\MetodoPagos.class
 com\didistore\model\logistics\Departamentos.class
+com\didistore\controller\admin\servlet\AdminInventariosServlet.class
 com\didistore\controller\auth\TokensRecuperacionController.class
 com\didistore\dao\interfaces\logistics\DepartamentosDAO.class
 com\didistore\controller\auth\servlet\RestablecerPasswordServlet.class

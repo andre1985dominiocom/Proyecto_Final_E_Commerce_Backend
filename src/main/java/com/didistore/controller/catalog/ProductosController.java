@@ -43,4 +43,10 @@ public class ProductosController {
         }
         return productosDAO.buscarProductoPorNombre(nombreProducto.trim());
     }
+    
+    public void eliminarProductos(int idProducto) {
+        if (idProducto <= 0) {
+        }
+        productosDAO.eliminarProductos(idProducto);
+    }
 }

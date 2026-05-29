@@ -17,6 +17,7 @@ D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\sales\ItemCarritos.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\impl\auth\SesionesDAOImpl.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\marketing\Cupones.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\admin\AdminInventariosController.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\auth\servlet\UsuariosServlet.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\auth\TokensRecuperacion.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\util\SessionUtil.java
@@ -39,6 +40,7 @@ D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\sales\Pedidos.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\util\ResponseUtil.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\auth\enums\TipoTelefonos.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\admin\servlet\AdminInventariosServlet.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\logistics\Departamentos.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\auth\PerfilPermisosController.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\catalog\CategoriasController.java

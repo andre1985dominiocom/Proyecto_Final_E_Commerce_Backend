@@ -155,16 +155,25 @@ function renderProductRow(product) {
     <tr>
       <td>${product.idProducto || '-'}</td>
       <td><div class="admin-product-image">Sin imagen</div></td>
-      <td>${product.nombreProducto || product.nombreProducto || '-'}</td>
-      <td>${product.categoriaId || product.categoriaId || '-'}</td>
-      <td>${formatCurrency(product.precio || product.precio)}</td>
+      <td>${product.nombreProducto || '-'}</td>
+      <td>${product.categoriaId || '-'}</td>
+      <td>${formatCurrency(product.precio)}</td>
       <td>${product.sku || '-'}</td>
       <td>
         <span class="admin-badge ${statusBadge(product.estado)}">
           ${product.estado || '-'}
         </span>
       </td>
-      <td><div class="admin-table__actions"><button class="admin-btn admin-btn--danger admin-btn--small" data-delete-id="${id}">Eliminar</button></div></td>
+      <td>
+        <div class="admin-table__actions">
+          <button class="admin-btn admin-btn--primary admin-btn--small" data-stock-id="${id}">
+            Stock
+          </button>
+          <button class="admin-btn admin-btn--danger admin-btn--small" data-delete-id="${id}">
+            Eliminar
+          </button>
+        </div>
+      </td>
     </tr>
   `;
 }

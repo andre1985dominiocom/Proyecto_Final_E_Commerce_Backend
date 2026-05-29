@@ -69,6 +69,39 @@
             </div>
         </div>
     </div>
+    
+<div id="modal-inventario" class="admin-modal" style="display: none;">
+        <div class="admin-modal__container">
+            <div class="admin-modal__header">
+                <h3>Gestionar Inventario</h3>
+                <button id="btn-cerrar-modal" class="admin-modal__close">&times;</button>
+             </div>
+    
+        <form id="form-inventario" class="admin-modal__form">
+            <input type="hidden" id="inv-id" name="idInventario">
+
+        <div class="admin-form__group">
+            <label for="inv-actual">Stock Actual</label>
+            <input type="number" id="inv-actual" name="stockActual" min="0" required class="admin-input">
+        </div>
+
+        <div class="admin-form__group">
+            <label for="inv-minimo">Stock Mínimo</label>
+            <input type="number" id="inv-minimo" name="stockMinimo" min="0" required class="admin-input">
+        </div>
+
+        <div class="admin-form__group">
+            <label for="inv-reservado">Stock Reservado</label>
+            <input type="number" id="inv-reservado" name="stockReservado" min="0" required class="admin-input">
+        </div>
+
+        <div class="admin-modal__footer">
+            <button type="button" id="btn-cancelar-modal" class="admin-btn admin-btn--secondary">Cancelar</button>
+            <button type="submit" class="admin-btn admin-btn--success">Guardar Cambios</button>
+        </div>
+        </form>
+    </div>
+</div>
     <script src="../../js/main.js" type="module"></script>
     <script src="../../js/admin/entity-table.js" type="module"></script>
 </body>
