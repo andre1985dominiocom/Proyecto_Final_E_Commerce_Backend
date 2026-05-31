@@ -164,7 +164,7 @@ public class ProductosDAOImpl implements IProductosDAO {
     @Override
     public Productos consultarProductosPorId(int idProducto) {
         
-        String sql = "SELECT  FROM productos id_Producto, nombre_Producto, "
+        String sql = "SELECT id_Producto, nombre_Producto, "
                 + "descripcion_Corta, "
                 + "descripcion_Larga, "
                 + "precio, "
@@ -175,7 +175,7 @@ public class ProductosDAOImpl implements IProductosDAO {
                 + "estado, "
                 + "es_Destacado, "
                 + "fecha_Creacion, "
-                + "fecha_Actualizacion WHERE id_Producto = ?";
+                + "fecha_Actualizacion FROM productos WHERE id_Producto = ?";
 
         Productos producto = null;
 

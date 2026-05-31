@@ -82,7 +82,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
     @Override
     public Inventarios consultarInventarioPorId(int idInventario) {
         
-        String sql = "SELECT  FROM Inventarios Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion  WHERE ID_inventario = ?";
+        String sql = "SELECT Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion FROM Inventarios WHERE ID_inventario = ?";
 
         Inventarios inventario = null;
 
@@ -142,7 +142,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
     @Override
     public boolean actualizarInventario(Inventarios inventario) {
         
-        String sql = "UPDATE Inventario SET producto_id = ?, Stock_actual = ?, Stock_minimo = ?, Stock_reservado = ?, Fecha_creacion = ?, Fecha_actualizacion = ? WHERE ID_Inventario = ?";
+        String sql = "UPDATE Inventarios SET producto_id = ?, Stock_actual = ?, Stock_minimo = ?, Stock_reservado = ?, Fecha_creacion = ?, Fecha_actualizacion = ? WHERE ID_Inventario = ?";
         
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -175,7 +175,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
     @Override
     public boolean eliminarInventario(int idInventario) {
         
-        String sql = "DELETE FROM Inventario WHERE ID_Inventario = ?";
+        String sql = "DELETE FROM Inventarios WHERE ID_Inventario = ?";
 
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {

@@ -35,9 +35,9 @@ public class SesionesDAOImpl implements ISesionesDAO{
                 ps.setString(2, sesion.gettokenSesion());
                 ps.setTimestamp(3, sesion.getfechaCreacion());
                 ps.setTimestamp(4, sesion.getfechaExpiracion());
-                ps.setString(4, sesion.getip());
-                ps.setString(5, sesion.getuserAgent());
-                ps.setInt(6, sesion.getrevocada());
+                ps.setString(5, sesion.getip());
+                ps.setString(6, sesion.getuserAgent());
+                ps.setInt(7, sesion.getrevocada());
                
                 int filasAfectadas = ps.executeUpdate();
                 

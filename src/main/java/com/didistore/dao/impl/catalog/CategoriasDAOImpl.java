@@ -230,11 +230,12 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
                     categoria.setidCategoria(rs.getInt("id_Categoria"));
                     categoria.setnombreCategoria(rs.getString("nombre_Categoria"));
                     categoria.setdescripcion(rs.getString("Descripcion"));
-                    
-                    if (categoria.getcategoriaPadreId() == null) {
-                    ps.setNull(1, Types.INTEGER);
+
+                    int categoriaPadreId = rs.getInt("Categoria_padre_ID");
+                    if (rs.wasNull()) {
+                        categoria.setcategoriaPadreId(null);
                     } else {
-                    ps.setInt(1, categoria.getcategoriaPadreId());
+                        categoria.setcategoriaPadreId(categoriaPadreId);
                     }
                     categoria.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
                 }
@@ -242,6 +243,6 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return categoria;
     }
 } 

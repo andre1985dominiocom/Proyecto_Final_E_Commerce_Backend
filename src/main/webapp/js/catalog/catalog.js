@@ -99,10 +99,11 @@ function renderCategoryFilters(categories) {
   filtersList.innerHTML = categories.map((cat) => {
     const id = escapeAttr(String(cat.idCategoria || cat.id || ''));
     const name = escapeHtml(cat.nombreCategoria || cat.nombre || cat.name || 'Sin nombre');
+    const slug = escapeAttr(toSlug(cat.nombreCategoria || cat.nombre || cat.name || ''));
     return `
       <li class="filters__item">
         <label class="filters__label">
-          <input type="checkbox" class="filters__checkbox" name="category" value="${id}"> ${name}
+          <input type="checkbox" class="filters__checkbox" name="category" value="${id}" data-slug="${slug}"> ${name}
         </label>
       </li>`;
   }).join('');
@@ -194,10 +195,20 @@ function escapeAttr(str) {
 
 function preselectCategoryFromQuery() {
   const params = new URLSearchParams(window.location.search);
-  const idCategoria = params.get('idCategoria') || params.get('category');
-  if (!idCategoria) return;
-  const checkbox = document.querySelector(`input[name="category"][value="${idCategoria}"]`);
-  if (checkbox) checkbox.checked = true;
+  const categoryParam = (params.get('idCategoria') || params.get('category') || '').trim();
+  if (!categoryParam) return;
+
+  const byId = document.querySelector(`input[name="category"][value="${categoryParam}"]`);
+  if (byId) {
+    byId.checked = true;
+    return;
+  }
+
+  const normalizedSlug = toSlug(categoryParam);
+  const bySlug = Array.from(document.querySelectorAll('input[name="category"]'))
+    .find((input) => (input.dataset.slug || '') === normalizedSlug);
+
+  if (bySlug) bySlug.checked = true;
 }
 
 function sortCards(cards, sortBy) {
@@ -250,4 +261,13 @@ function setupAddToCart(cards) {
       showToast(`${name} agregado al carrito.`, 'success');
     });
   });
+}
+
+function toSlug(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 }

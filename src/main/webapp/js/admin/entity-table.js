@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, STORAGE_KEYS } from '../core/config.js';
+import { API_ENDPOINTS, CATALOG_ENDPOINTS, STORAGE_KEYS } from '../core/config.js';
 import { request } from '../core/http.js';
 import { ADMIN_MOCK_DATA } from '../core/mock-data.js';
 import { getJSON, setJSON } from '../core/storage.js';
@@ -20,7 +20,13 @@ async function initEntityPage(entity) {
   if (!tbody) return;
 
   const storage = getJSON(STORAGE_KEYS.adminData, {});
-  const apiPath = API_ENDPOINTS[entity] || '';
+  const apiPathByEntity = {
+    products: CATALOG_ENDPOINTS.productos,
+    categories: CATALOG_ENDPOINTS.categorias,
+    orders: API_ENDPOINTS.orders,
+    promotions: API_ENDPOINTS.promotions
+  };
+  const apiPath = apiPathByEntity[entity] || '';
   const pageSize = 5;
 
   const state = {
@@ -41,7 +47,7 @@ async function initEntityPage(entity) {
 
   renderStateRow(tbody, 'Cargando información...', 'loading', columnsCount);
 
-  const response = apiPath ? await request(`/catalog/categorias`) : { ok: false };
+  const response = apiPath ? await request(apiPath) : { ok: false };
 
   if (response.ok && Array.isArray(response.data)) {
     state.rows = ensureEntityIds(entity, response.data);

@@ -121,10 +121,13 @@ async function submitCheckout(event) {
 
   setButtonLoading(submitButton, true, 'Confirmando...');
 
-  const result = await request(API_ENDPOINTS.checkout, {
-    method: 'POST',
-    body: payload
-  });
+  const checkoutEndpoint = API_ENDPOINTS.checkout;
+  const result = checkoutEndpoint
+    ? await request(checkoutEndpoint, {
+      method: 'POST',
+      body: payload
+    })
+    : { ok: false };
 
   if (!result.ok) {
     const localOrders = getJSON(STORAGE_KEYS.orders, []);
