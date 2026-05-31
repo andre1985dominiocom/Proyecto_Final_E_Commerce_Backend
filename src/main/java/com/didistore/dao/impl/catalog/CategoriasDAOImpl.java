@@ -216,8 +216,6 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
                 + "Categoria_padre_ID, "
                 + "Fecha_creacion FROM Categorias WHERE nombre_Categoria = ?";
         
-        Categorias categoria = null;
-        
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
             
@@ -225,18 +223,7 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
             
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    categoria = new Categorias();
-
-                    categoria.setidCategoria(rs.getInt("id_Categoria"));
-                    categoria.setnombreCategoria(rs.getString("nombre_Categoria"));
-                    categoria.setdescripcion(rs.getString("Descripcion"));
-                    
-                    if (categoria.getcategoriaPadreId() == null) {
-                    ps.setNull(1, Types.INTEGER);
-                    } else {
-                    ps.setInt(1, categoria.getcategoriaPadreId());
-                    }
-                    categoria.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
+                    return mapearCategoria(rs);
                 }
             }
         } catch (SQLException e) {

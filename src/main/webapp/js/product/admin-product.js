@@ -1,24 +1,25 @@
+import { API_ENDPOINTS, CATALOG_ENDPOINTS, buildApiUrl } from '../core/config.js';
 import { showToast } from '../core/ui.js';
-
-const API_BASE = 'http://localhost:8080/didistorebackend';
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('admin-product-form');
     const table = document.querySelector('table');
     const formInventario = document.getElementById('form-inventario');
-    
-    const cerrarModal = () => document.getElementById('modal-inventario').style.display = 'none';
-        document.getElementById('btn-cerrar-modal')?.addEventListener('click', cerrarModal);
-        document.getElementById('btn-cancelar-modal')?.addEventListener('click', cerrarModal);
 
-    // --- Inicialización sección: Formulario de Crear / Editar Producto ---
+    const cerrarModal = () => {
+        const modal = document.getElementById('modal-inventario');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    };
+
+    document.getElementById('btn-cerrar-modal')?.addEventListener('click', cerrarModal);
+    document.getElementById('btn-cancelar-modal')?.addEventListener('click', cerrarModal);
+
     if (form) {
-        form.addEventListener('submit', handleSubmit);
-        cargarCategorias();
-        cargarProductoSiEsEdicion();
+        inicializarFormularioProducto(form);
     }
 
-    // --- Inicialización sección: Delegación de Inventarios en la Tabla ---
     if (table) {
         table.addEventListener('click', (e) => {
             if (e.target.matches('[data-stock-id]')) {
@@ -28,15 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Inicialización sección: Guardar datos de la Modal ---
     if (formInventario) {
         formInventario.addEventListener('submit', guardarCambiosInventario);
     }
 });
 
-/* ==========================================================================
-   LÓGICA DEL FORMULARIO DE PRODUCTOS (POST / PUT)
-   ========================================================================== */
+async function inicializarFormularioProducto(form) {
+    form.addEventListener('submit', handleSubmit);
+    await cargarCategorias();
+    await cargarProductoSiEsEdicion();
+}
 
 async function handleSubmit(event) {
     event.preventDefault();
@@ -56,7 +58,7 @@ async function handleSubmit(event) {
     }
 
     try {
-        const response = await fetch(`${API_BASE}/admin/productos`, {
+        const response = await fetch(buildApiUrl(API_ENDPOINTS.products), {
             method: metodo,
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8'
@@ -78,7 +80,6 @@ async function handleSubmit(event) {
         if (!idProducto) {
             form.reset();
         }
-
     } catch (error) {
         console.error('Error al guardar producto:', error);
         mostrarMensaje(error.message || 'Error al guardar producto', 'error');
@@ -110,6 +111,7 @@ function construirProductoDesdeFormulario() {
         categoriaId: Number(categoriaId),
         estado: mapearEstado(estadoFormulario),
         esDestacado: descuento > 0,
+        descuento,
         stock
     };
 }
@@ -128,13 +130,13 @@ async function cargarCategorias() {
     if (!selectCategoria) return;
 
     try {
-        const response = await fetch(`${API_BASE}/catalog/categorias`);
+        const response = await fetch(buildApiUrl(CATALOG_ENDPOINTS.categorias));
         const categorias = await leerRespuestaJSON(response);
 
         if (!response.ok) throw new Error('No se pudieron cargar las categorías');
         if (!Array.isArray(categorias)) return;
 
-        const opcionVacia = `<option value="">Selecciona una categoría</option>`;
+        const opcionVacia = '<option value="">Selecciona una categoría</option>';
         const opciones = categorias.map((categoria) => `
             <option value="${categoria.idCategoria}">
                 ${categoria.nombreCategoria ?? 'Categoría'}
@@ -147,7 +149,6 @@ async function cargarCategorias() {
         if (categoriaIdURL) {
             selectCategoria.value = categoriaIdURL;
         }
-
     } catch (error) {
         console.error('Error al cargar categorías:', error);
         mostrarMensaje('No se pudieron cargar las categorías.', 'error');
@@ -159,13 +160,12 @@ async function cargarProductoSiEsEdicion() {
     if (!idProducto) return;
 
     try {
-        const response = await fetch(`${API_BASE}/catalog/productos?idProducto=${encodeURIComponent(idProducto)}`);
+        const response = await fetch(buildApiUrl(`${CATALOG_ENDPOINTS.productos}?idProducto=${encodeURIComponent(idProducto)}`));
         const producto = await leerRespuestaJSON(response);
 
         if (!response.ok) throw new Error(producto.message || 'No se pudo cargar el producto');
 
         llenarFormulario(producto);
-
     } catch (error) {
         console.error('Error al cargar producto:', error);
         mostrarMensaje(error.message || 'No se pudo cargar el producto para edición.', 'error');
@@ -173,14 +173,15 @@ async function cargarProductoSiEsEdicion() {
 }
 
 function llenarFormulario(producto) {
-    setValue('idProducto', producto.idProducto);
-    setValue('url', producto.url || '');
-    setValue('nombreProducto', producto.nombreProducto);
-    setValue('categoriaId', producto.categoriaId);
-    setValue('precio', producto.precio);
-    setValue('sku', producto.sku);
-    
-    const estadoSelect = document.getElementById('estado');
+    setValue('product-name', producto.nombreProducto);
+    setValue('product-description', producto.descripcionCorta || producto.descripcionLarga || '');
+    setValue('product-price', producto.precio);
+    setValue('product-sku', producto.sku);
+    setValue('product-stock', producto.stock ?? producto.stockActual ?? '');
+    setValue('product-category', producto.categoriaId ?? producto.idCategoria ?? '');
+    setValue('product-discount', producto.descuento ?? 0);
+
+    const estadoSelect = document.getElementById('product-status');
     if (estadoSelect) {
         estadoSelect.value = mapearEstadoFormulario(producto.estado);
     }
@@ -207,13 +208,8 @@ function setValue(id, value) {
     }
 }
 
-/* ==========================================================================
-   MÓDULO DE GESTIÓN DE INVENTARIOS (MODAL & FETCH REST)
-   ========================================================================== */
-
 function abrirModalInventario(productoId) {
-    // Corregido: Se añade API_BASE para evitar desvíos de URL de subcarpetas
-    fetch(`${API_BASE}/admin/inventarios?id=${productoId}`)
+    fetch(buildApiUrl(`${API_ENDPOINTS.inventory}?id=${encodeURIComponent(productoId)}`))
         .then(response => {
             if (!response.ok) throw new Error('Error al recuperar datos del servidor');
             return response.json();
@@ -237,13 +233,13 @@ function guardarCambiosInventario(e) {
     e.preventDefault();
 
     const datos = {
-        idInventario: parseInt(document.getElementById('inv-id').value),
-        stockActual: parseInt(document.getElementById('inv-actual').value),
-        stockMinimo: parseInt(document.getElementById('inv-minimo').value),
-        stockReservado: parseInt(document.getElementById('inv-reservado').value)
+        idInventario: parseInt(document.getElementById('inv-id').value, 10),
+        stockActual: parseInt(document.getElementById('inv-actual').value, 10),
+        stockMinimo: parseInt(document.getElementById('inv-minimo').value, 10),
+        stockReservado: parseInt(document.getElementById('inv-reservado').value, 10)
     };
 
-    fetch(`${API_BASE}/admin/inventarios`, {
+    fetch(buildApiUrl(API_ENDPOINTS.inventory), {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json; charset=UTF-8'
@@ -256,8 +252,6 @@ function guardarCambiosInventario(e) {
             mostrarMensaje('¡Inventario actualizado con éxito!', 'success');
             const modal = document.getElementById('modal-inventario');
             if (modal) modal.style.display = 'none';
-            
-            // Opcional: Aquí puedes meter la función que recargue tu tabla de productos de forma asíncrona
         } else {
             mostrarMensaje(`Error: ${res.error}`, 'error');
         }
@@ -267,10 +261,6 @@ function guardarCambiosInventario(e) {
         mostrarMensaje('Error de red al intentar actualizar el inventario.', 'error');
     });
 }
-
-/* ==========================================================================
-   UTILIDADES COMPARTIDAS
-   ========================================================================== */
 
 async function leerRespuestaJSON(response) {
     const text = await response.text();
@@ -283,7 +273,6 @@ async function leerRespuestaJSON(response) {
 
 function mostrarMensaje(mensaje, tipo = 'info') {
     console.log(`[${tipo.toUpperCase()}] ${mensaje}`);
-    // Integración de tus Toasts del core UI
     if (typeof showToast === 'function') {
         showToast(mensaje, tipo);
     } else {
