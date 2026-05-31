@@ -84,9 +84,12 @@ public class TokensRecuperacionServlet extends HttpServlet {
         }
 
         int usuarioId = tokenRequest.getUsuarioId();
+        String normalizedEmail = tokenRequest.getEmail() == null
+                ? ""
+                : tokenRequest.getEmail().trim().toLowerCase();
 
-        if (usuarioId <= 0 && tokenRequest.getEmail() != null && !tokenRequest.getEmail().trim().isEmpty()) {
-            Usuarios usuario = usuariosDAO.consultarUsuariosPorEmail(tokenRequest.getEmail().trim().toLowerCase());
+        if (usuarioId <= 0 && !normalizedEmail.isEmpty()) {
+            Usuarios usuario = usuariosDAO.consultarUsuariosPorEmail(normalizedEmail);
             if (usuario != null) {
                 usuarioId = usuario.getidUsuario();
             }

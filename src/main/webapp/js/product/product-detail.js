@@ -3,7 +3,11 @@ import { request } from '../core/http.js';
 import { getJSON } from '../core/storage.js';
 import { formatCurrency, showToast } from '../core/ui.js';
 
-initProductDetail();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initProductDetail, { once: true });
+} else {
+  initProductDetail();
+}
 
 function renderProduct(product) {
   const name = product.nombreProducto || 'Producto';
