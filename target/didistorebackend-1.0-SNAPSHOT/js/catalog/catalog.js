@@ -127,8 +127,8 @@ function buildProductCard(product, catMap) {
   const id = product.idProducto || product.id || product.codigo || '';
   const name = product.nombreProducto || product.nombre || product.name || 'Producto';
   const price = Number(product.precio || product.price || 0);
-  const stock = Number(product.stock ?? 1);
-  const categoryId = String(product.idCategoria || product.categoryId || '');
+  const stock = Number(product.stock ?? product.stockActual ?? 1);
+  const categoryId = String(product.categoriaId || product.idCategoria || product.categoryId || '');
   const categoryName = catMap[categoryId] || product.nombreCategoria || product.categoria || product.category || '';
   const imageUrl = product.imagenUrl || product.imagen || product.image || '';
   const isNew = Boolean(product.esNuevo || product.isNew);

@@ -1,10 +1,20 @@
-import { API_ENDPOINTS, STORAGE_KEYS } from '../core/config.js';
+import { API_ENDPOINTS, CATALOG_ENDPOINTS, STORAGE_KEYS } from '../core/config.js';
 import { request } from '../core/http.js';
 import { ADMIN_MOCK_DATA } from '../core/mock-data.js';
 import { getJSON, setJSON } from '../core/storage.js';
 import { formatCurrency, renderStateRow, showToast } from '../core/ui.js';
 
 const root = document.querySelector('[data-admin-entity]');
+const READ_ENDPOINTS = {
+  products: CATALOG_ENDPOINTS.productos,
+  categories: CATALOG_ENDPOINTS.categorias,
+  orders: API_ENDPOINTS.orders,
+  promotions: API_ENDPOINTS.promotions
+};
+const DELETE_QUERY_PARAMS = {
+  products: 'idProducto',
+  categories: 'idCategoria'
+};
 
 if (root) {
   initEntityPage(root.dataset.adminEntity);
@@ -21,6 +31,7 @@ async function initEntityPage(entity) {
 
   const storage = getJSON(STORAGE_KEYS.adminData, {});
   const apiPath = API_ENDPOINTS[entity] || '';
+  const readPath = READ_ENDPOINTS[entity] || apiPath;
   const pageSize = 5;
 
   const state = {
@@ -41,7 +52,7 @@ async function initEntityPage(entity) {
 
   renderStateRow(tbody, 'Cargando información...', 'loading', columnsCount);
 
-  const response = apiPath ? await request(`/catalog/categorias`) : { ok: false };
+  const response = readPath ? await request(readPath) : { ok: false };
 
   if (response.ok && Array.isArray(response.data)) {
     state.rows = ensureEntityIds(entity, response.data);
@@ -82,8 +93,14 @@ async function initEntityPage(entity) {
     tbody.innerHTML = getPageRows().map((row) => rowRenderer(row)).join('');
 
     tbody.querySelectorAll('button[data-delete-id]').forEach((button) => {
-      button.addEventListener('click', () => {
+      button.addEventListener('click', async () => {
         const id = button.dataset.deleteId;
+        const deleted = await deleteEntity(entity, apiPath, id);
+
+        if (!deleted) {
+          return;
+        }
+
         state.rows = state.rows.filter((item) => String(getRowId(item)) !== id);
         storage[entity] = state.rows;
         setJSON(STORAGE_KEYS.adminData, storage);
@@ -118,11 +135,31 @@ async function initEntityPage(entity) {
   applyFilters();
 }
 
+async function deleteEntity(entity, apiPath, id) {
+  const queryParam = DELETE_QUERY_PARAMS[entity];
+
+  if (!apiPath || !queryParam) {
+    return true;
+  }
+
+  const response = await request(`${apiPath}?${queryParam}=${encodeURIComponent(id)}`, {
+    method: 'DELETE'
+  });
+
+  if (response.ok) {
+    showToast(response.data?.message || 'Registro eliminado correctamente.', 'success');
+    return true;
+  }
+
+  showToast(response.error || 'No se pudo eliminar el registro en el backend.', 'error');
+  return false;
+}
+
 function getEntityId(entity, row) {
   if (entity === 'orders' && (row.id || row.idPedido || row.code)) return row.id || row.idPedido || row.code;
   if (entity === 'promotions' && (row.id || row.code || row.codigo)) return row.id || row.code || row.codigo;
   if (entity === 'categories' && (row.id || row.idCategoria)) return row.id || row.idCategoria;
-  if (entity === 'products' && (row.idProducto || row.idProducto || row.sku)) return row.idProducto || row.idProducto || row.sku;
+  if (entity === 'products' && (row.idProducto || row.id || row.sku)) return row.idProducto || row.id || row.sku;
   return row.__localId;
 }
 
@@ -156,7 +193,7 @@ function renderProductRow(product) {
       <td>${product.idProducto || '-'}</td>
       <td><div class="admin-product-image">Sin imagen</div></td>
       <td>${product.nombreProducto || '-'}</td>
-      <td>${product.categoriaId || '-'}</td>
+      <td>${product.categoriaId || product.idCategoria || '-'}</td>
       <td>${formatCurrency(product.precio)}</td>
       <td>${product.sku || '-'}</td>
       <td>
@@ -183,7 +220,7 @@ function renderCategoryRow(category) {
   return `
     <tr>
       <td>${category.idCategoria || '-'}</td>
-      <td>${category.nombreCategoria || category.nombreCategoria || '-'}</td>
+      <td>${category.nombreCategoria || category.nombre || '-'}</td>
       <td>${category.description || category.descripcion || '-'}</td>
       <td>${category.products || category.cantidadProductos || 0}</td>
       <td><span class="admin-badge ${statusBadge(category.date || category.fechaCreacion)}">${category.date || category.fechaCreacion || '-'}</span></td>
