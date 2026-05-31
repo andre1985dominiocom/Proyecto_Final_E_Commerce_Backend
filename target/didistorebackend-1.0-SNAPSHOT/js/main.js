@@ -1,3 +1,4 @@
+import { buildAppUrl } from './core/config.js';
 import { getSession, clearSession } from './core/session.js';
 
 const { token, user } = getSession();
@@ -18,6 +19,6 @@ document.querySelectorAll('[data-logout-link], [data-logout-action="true"]').for
   element.addEventListener('click', (event) => {
     event.preventDefault();
     clearSession();
-    window.location.href = '/html/auth/login.html';
+    window.location.href = buildAppUrl('/html/auth/login.html');
   });
 });

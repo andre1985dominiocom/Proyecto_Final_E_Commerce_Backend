@@ -1,4 +1,22 @@
-export const API_BASE_URL = localStorage.getItem('didistore:apiBaseUrl') || 'http://localhost:8080/didistorebackend';
+const RESERVED_ROOT_SEGMENTS = new Set(['html', 'css', 'js', 'assets', 'META-INF', 'WEB-INF']);
+
+function detectAppContextPath() {
+  if (typeof window === 'undefined') {
+    return '/didistorebackend';
+  }
+
+  const segments = window.location.pathname.split('/').filter(Boolean);
+  const firstSegment = segments[0] || '';
+
+  if (!firstSegment || firstSegment.includes('.') || RESERVED_ROOT_SEGMENTS.has(firstSegment)) {
+    return '';
+  }
+
+  return `/${firstSegment}`;
+}
+
+export const APP_CONTEXT_PATH = detectAppContextPath();
+export const API_BASE_URL = localStorage.getItem('didistore:apiBaseUrl') || `${window.location.origin}${APP_CONTEXT_PATH}`;
 
 export const STORAGE_KEYS = {
   token: 'didistore:token',
@@ -16,9 +34,13 @@ export const API_ENDPOINTS = {
   users: '/admin/usuarios',
   products: '/admin/productos',
   categories: '/admin/categorias',
+  inventory: '/admin/inventarios',
   orders: '/admin/pedidos',
   promotions: '/admin/promociones',
-  checkout: '/checkout'
+  checkout: '/checkout',
+  passwordRecovery: '/auth/recuperacion',
+  validateToken: '/auth/validar-token',
+  resetPassword: '/auth/restablecer-password'
 };
 
 export const CATALOG_ENDPOINTS = {
@@ -36,6 +58,17 @@ export const COUPON_DISCOUNTS = {
 export function buildApiUrl(path = '') {
   if (!path) return API_BASE_URL;
   const normalizedBase = API_BASE_URL.replace(/\/$/, '');
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${normalizedBase}${normalizedPath}`;
+}
+
+export function buildAppUrl(path = '') {
+  const normalizedBase = `${window.location.origin}${APP_CONTEXT_PATH}`.replace(/\/$/, '');
+
+  if (!path) {
+    return normalizedBase;
+  }
+
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   return `${normalizedBase}${normalizedPath}`;
 }
