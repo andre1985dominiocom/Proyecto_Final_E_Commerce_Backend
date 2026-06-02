@@ -21,6 +21,7 @@ public class Pedidos {
     private double montoTotal;
     private int cuponId;
     private Timestamp fechaPedido;
+    private int carritoId;
     
     public Pedidos() {}
     
@@ -35,7 +36,8 @@ public class Pedidos {
             double costoEnvio,
             double montoTotal,
             int cuponId,
-            Timestamp fechaPedido) {
+            Timestamp fechaPedido,
+            int carritoId) {
         
         this.idPedido = idPedido;
         this.numeroPedido = numeroPedido;
@@ -49,6 +51,7 @@ public class Pedidos {
         this.montoTotal = montoTotal;
         this.cuponId = cuponId;
         this.fechaPedido = fechaPedido;
+        this.carritoId = carritoId;
     }
     
     public int getidPedido() { return idPedido; }
@@ -86,4 +89,7 @@ public class Pedidos {
     
     public Timestamp getfechaPedido() { return fechaPedido; }
     public void setfechaPedido(Timestamp fechaPedido) { this.fechaPedido = fechaPedido; }
+    
+    public int getcarritoId() { return carritoId; }
+    public void setcarritoId(int carritoId) { this.costoEnvio = carritoId; }
 }
