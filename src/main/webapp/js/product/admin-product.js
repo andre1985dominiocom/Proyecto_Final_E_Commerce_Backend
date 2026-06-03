@@ -91,12 +91,10 @@ function construirProductoDesdeFormulario() {
     const sku = document.getElementById('product-sku')?.value.trim() || '';
     const descripcion = document.getElementById('product-description')?.value.trim() || '';
     const precio = Number(document.getElementById('product-price')?.value || 0);
-    const stock = Number(document.getElementById('product-stock')?.value || 0);
     const categoriaId = document.getElementById('product-category')?.value || '';
     const estadoFormulario = document.getElementById('product-status')?.value || 'active';
-    const descuento = Number(document.getElementById('product-discount')?.value || 0);
 
-    if (!nombreProducto || precio <= 0 || stock < 0 || !categoriaId) {
+    if (!nombreProducto || precio <= 0 || !categoriaId) {
         return null;
     }
 
@@ -110,9 +108,7 @@ function construirProductoDesdeFormulario() {
         color: '',
         categoriaId: Number(categoriaId),
         estado: mapearEstado(estadoFormulario),
-        esDestacado: descuento > 0,
-        descuento,
-        stock
+        esDestacado: false
     };
 }
 
@@ -177,9 +173,7 @@ function llenarFormulario(producto) {
     setValue('product-description', producto.descripcionCorta || producto.descripcionLarga || '');
     setValue('product-price', producto.precio);
     setValue('product-sku', producto.sku);
-    setValue('product-stock', producto.stock ?? producto.stockActual ?? '');
     setValue('product-category', producto.categoriaId ?? producto.idCategoria ?? '');
-    setValue('product-discount', producto.descuento ?? 0);
 
     const estadoSelect = document.getElementById('product-status');
     if (estadoSelect) {

@@ -2,7 +2,9 @@
 package com.didistore.controller.auth.servlet;
 
 import com.didistore.controller.auth.TokensRecuperacionController;
+import com.didistore.dao.impl.auth.UsuariosDAOImpl;
 import com.didistore.model.auth.TokensRecuperacion;
+import com.didistore.model.auth.Usuarios;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +27,7 @@ public class TokensRecuperacionServlet extends HttpServlet {
     
     private final Gson gson = new Gson();
     private final TokensRecuperacionController tokenController = new TokensRecuperacionController();
+    private final UsuariosDAOImpl usuariosDAO = new UsuariosDAOImpl();
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -72,10 +75,32 @@ public class TokensRecuperacionServlet extends HttpServlet {
 
         Map<String, Object> resultado = new HashMap<>();
 
-        if (tokenRequest == null || tokenRequest.getUsuarioId() <= 0) {
+        if (tokenRequest == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resultado.put("success", false);
-            resultado.put("message", "usuarioId inválido");
+            resultado.put("message", "Body inválido");
+            response.getWriter().write(gson.toJson(resultado));
+            return;
+        }
+
+        int usuarioId = tokenRequest.getUsuarioId();
+
+        if (usuarioId <= 0 && tokenRequest.getEmail() != null && !tokenRequest.getEmail().isBlank()) {
+            Usuarios usuario = usuariosDAO.consultarUsuariosPorEmail(tokenRequest.getEmail().trim().toLowerCase());
+            if (usuario == null) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                resultado.put("success", true);
+                resultado.put("message", "Si el correo está registrado, recibirás instrucciones.");
+                response.getWriter().write(gson.toJson(resultado));
+                return;
+            }
+            usuarioId = usuario.getidUsuario();
+        }
+
+        if (usuarioId <= 0) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resultado.put("success", false);
+            resultado.put("message", "Debe enviar email o usuarioId válido");
             response.getWriter().write(gson.toJson(resultado));
             return;
         }
@@ -83,7 +108,7 @@ public class TokensRecuperacionServlet extends HttpServlet {
         Timestamp fechaExpiracion = new Timestamp(System.currentTimeMillis() + 3600000);
 
         TokensRecuperacion token = tokenController.crearTokenParaUsuario(
-                tokenRequest.getUsuarioId(),
+                usuarioId,
                 fechaExpiracion
         );
 
@@ -97,6 +122,7 @@ public class TokensRecuperacionServlet extends HttpServlet {
 
     public static class TokenRequest {
         private int usuarioId;
+        private String email;
 
         public int getUsuarioId() {
             return usuarioId;
@@ -104,6 +130,14 @@ public class TokensRecuperacionServlet extends HttpServlet {
 
         public void setUsuarioId(int usuarioId) {
             this.usuarioId = usuarioId;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
         }
     }
 }

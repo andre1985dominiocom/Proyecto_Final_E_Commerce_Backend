@@ -2,6 +2,7 @@
 package com.didistore.controller.admin.servlet;
 
 import com.didistore.controller.admin.AdminCategoriasController;
+import com.didistore.controller.catalog.CategoriasController;
 import com.didistore.model.catalog.Categorias;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +25,44 @@ import java.util.Map;
 public class AdminCategoriasServlet extends HttpServlet{
     
     private final AdminCategoriasController categoriaController = new AdminCategoriasController();
+    private final CategoriasController catalogCategoriasController = new CategoriasController();
     private final Gson gson = new Gson();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        String idParam = request.getParameter("idCategoria");
+
+        if (idParam != null && !idParam.trim().isEmpty()) {
+            Map<String, Object> resultado = new HashMap<>();
+            try {
+                int idCategoria = Integer.parseInt(idParam);
+                Categorias categoria = catalogCategoriasController.obtenerCategoriaPorId(idCategoria);
+                if (categoria != null) {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().write(gson.toJson(categoria));
+                } else {
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    resultado.put("success", false);
+                    resultado.put("message", "Categoría no encontrada");
+                    response.getWriter().write(gson.toJson(resultado));
+                }
+            } catch (NumberFormatException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resultado.put("success", false);
+                resultado.put("message", "idCategoria inválido");
+                response.getWriter().write(gson.toJson(resultado));
+            }
+        } else {
+            List<Categorias> categorias = catalogCategoriasController.listarCategorias();
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write(gson.toJson(categorias));
+        }
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

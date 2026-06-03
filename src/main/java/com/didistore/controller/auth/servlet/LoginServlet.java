@@ -2,6 +2,8 @@
 package com.didistore.controller.auth.servlet;
 
 import com.didistore.controller.auth.SesionesController;
+import com.didistore.dao.impl.auth.UsuariosDAOImpl;
+import com.didistore.model.auth.Usuarios;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -22,6 +25,7 @@ public class LoginServlet extends HttpServlet {
     
     private final Gson gson = new Gson();
     private final SesionesController sesionesController = new SesionesController();
+    private final UsuariosDAOImpl usuariosDAO = new UsuariosDAOImpl();
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -72,9 +76,27 @@ public class LoginServlet extends HttpServlet {
         );
 
         if (valido) {
+            Usuarios usuario = usuariosDAO.consultarUsuariosPorEmail(loginRequest.getEmail());
+
+            HttpSession session = request.getSession(true);
+            session.setAttribute("usuarioId", usuario != null ? usuario.getidUsuario() : 0);
+            session.setAttribute("email", loginRequest.getEmail());
+
+            Map<String, Object> usuarioData = new HashMap<>();
+            if (usuario != null) {
+                usuarioData.put("idUsuario", usuario.getidUsuario());
+                usuarioData.put("email", usuario.getemail());
+                usuarioData.put("nombre", usuario.getnombre());
+                usuarioData.put("apellido", usuario.getapellido());
+                usuarioData.put("perfilId", usuario.getperfilId());
+            } else {
+                usuarioData.put("email", loginRequest.getEmail());
+            }
+
             resultado.put("success", true);
             resultado.put("message", "Inicio de sesión correcto");
-            resultado.put("token", "token-demo-123");
+            resultado.put("token", session.getId());
+            resultado.put("usuario", usuarioData);
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             resultado.put("success", false);
