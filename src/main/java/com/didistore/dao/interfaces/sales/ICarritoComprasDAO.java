@@ -13,14 +13,25 @@ public interface ICarritoComprasDAO {
     
      // Carrito de compras
     boolean crearCarrito(CarritoCompras carrito);
-    CarritoCompras obtenerCarritoPorId(int idCarrito);
-    CarritoCompras obtenerCarritoPorUsuario(int usuarioId);
+    
+    CarritoCompras buscarPorUsuario(int usuarioId);
+    
+    CarritoCompras buscarPorSesion(String sesionId);
+    
+    boolean actualizarPorFecha(int idCarrito);
+    
+    boolean eliminarCarrito(int idCarrito);
 
     // Items de carrito
-    boolean agregarItem(ItemCarritos idItem);
-    boolean actualizarItem(ItemCarritos idItem);
+    boolean agregarItem(ItemCarritos item);
+    
+    boolean actualizarCantidad(int idItem, int cantidad);
+    
     boolean eliminarItem(int itemId);
+    
     List<ItemCarritos> listarItems(int carritoId);
 
     boolean vaciarCarrito(int carritoId);
+    
+    double obtenerTotal(int carritoId);
 }

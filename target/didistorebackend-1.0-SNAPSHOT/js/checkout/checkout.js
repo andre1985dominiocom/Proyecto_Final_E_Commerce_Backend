@@ -115,33 +115,54 @@ async function submitCheckout(event) {
   event.preventDefault();
 
   const submitButton = form.querySelector('button[type="submit"]');
-  const payload = Object.fromEntries(new FormData(form).entries());
-  payload['doc-type'] = normalizeDocumentType(payload['doc-type']);
-  payload.items = getJSON(STORAGE_KEYS.cart, []);
-
+  // Extraemos los datos del formulario (debe contener un input name="direccionId")
+  const formData = new FormData(form);
+  
   setButtonLoading(submitButton, true, 'Confirmando...');
 
-  const result = await request(API_ENDPOINTS.checkout, {
-    method: 'POST',
-    body: payload
-  });
+  // Adaptamos el envío al formato que espera PedidoServlet.java
+  const params = new URLSearchParams();
+  params.append('accion', 'checkout');
+  
+  // Asegúrate de que en tu HTML tengas un campo con name="direccionId"
+  params.append('direccionId', formData.get('direccionId') || 1); 
+  
+  const couponCode = localStorage.getItem(STORAGE_KEYS.coupon);
+  // Si tienes la lógica de IDs de cupones, la envías aquí:
+  params.append('cuponId', couponCode ? 1 : 0); 
 
-  if (!result.ok) {
+  try {
+    const response = await fetch(API_ENDPOINTS.checkout, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+      // Manejo de error si el Servlet rechaza la transacción
+      showToast(result.message || 'Error al procesar el pedido.', 'error');
+    } else {
+      showToast('Pedido confirmado correctamente.', 'success');
+      
+      // Limpiamos los borradores visuales
+      localStorage.removeItem(STORAGE_KEYS.checkoutDraft);
+      
+      setTimeout(() => {
+        window.location.href = './confirmation.html';
+      }, 1200);
+    }
+  } catch (error) {
+    console.error("Error en el checkout:", error);
+    // Fallback offline (Excelente práctica que ya tenías)
     const localOrders = getJSON(STORAGE_KEYS.orders, []);
-    localOrders.push({ id: `LOCAL-${Date.now()}`, ...payload, status: 'Pendiente' });
+    localOrders.push({ id: `LOCAL-${Date.now()}`, status: 'Pendiente_Pago' });
     setJSON(STORAGE_KEYS.orders, localOrders);
     showToast('Backend no disponible: pedido guardado localmente.', 'warning');
-  } else {
-    showToast('Pedido confirmado correctamente.', 'success');
+  } finally {
+    setButtonLoading(submitButton, false);
   }
-
-  localStorage.removeItem(STORAGE_KEYS.cart);
-  localStorage.removeItem(STORAGE_KEYS.checkoutDraft);
-  setButtonLoading(submitButton, false);
-
-  setTimeout(() => {
-    window.location.href = './confirmation.html';
-  }, 1200);
 }
 
 function normalizeDocumentType(value) {

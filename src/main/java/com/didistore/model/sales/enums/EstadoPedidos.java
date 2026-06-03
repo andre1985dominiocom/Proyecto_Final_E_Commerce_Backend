@@ -8,9 +8,9 @@ package com.didistore.model.sales.enums;
 public enum EstadoPedidos {
     Pendiente_Pago,
     Pagado,
-    EnPreparacion,
+    En_Preparacion,
     Despachado,
-    EnTransito,
+    En_Transito,
     Entregado,
     Cancelado,
     Devuelto    

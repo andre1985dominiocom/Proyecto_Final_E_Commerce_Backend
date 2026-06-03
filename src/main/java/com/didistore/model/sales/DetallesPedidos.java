@@ -47,4 +47,12 @@ public class DetallesPedidos {
     
     public double getsubtotal() { return subtotal; }
     public void setsubtotal(double subtotal) { this.subtotal = subtotal; }
+
+    public double getsubTotal() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void setsubTotal(double aDouble) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

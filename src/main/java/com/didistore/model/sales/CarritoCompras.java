@@ -35,7 +35,7 @@ public class CarritoCompras {
     public int getidCarrito() { return idCarrito; }
     public void setidCarrito(int idCarrito) { this.idCarrito = idCarrito; }
     
-    public int usuarioId() { return usuarioId; }
+    public int getusuarioId() { return usuarioId; }
     public void setusuarioId(int usuarioId) { this.usuarioId = usuarioId; }
     
     public String getsesionId() { return sesionId; }
