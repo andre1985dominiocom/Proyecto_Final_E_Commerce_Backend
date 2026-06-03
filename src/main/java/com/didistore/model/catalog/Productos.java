@@ -43,7 +43,7 @@ public class Productos {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
         this.descripcionCorta = descripcioncorta;
-        this.descripcionCorta = descripcionLarga;
+        this.descripcionLarga = descripcionLarga;
         this.precio = precio;
         this.sku = sku;
         this.talla = talla;

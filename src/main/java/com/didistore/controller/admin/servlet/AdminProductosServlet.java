@@ -2,6 +2,7 @@
 package com.didistore.controller.admin.servlet;
 
 import com.didistore.controller.admin.AdminProductosController;
+import com.didistore.controller.catalog.ProductosController;
 import com.didistore.model.catalog.Productos;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -23,7 +24,47 @@ import java.util.Map;
 public class AdminProductosServlet extends HttpServlet {
     
     private final AdminProductosController productoController = new AdminProductosController();
+    private final ProductosController catalogProductosController = new ProductosController();
     private final Gson gson = new Gson();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        String idParam = request.getParameter("idProducto");
+        Map<String, Object> resultado = new HashMap<>();
+
+        if (idParam == null || idParam.trim().isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resultado.put("success", false);
+            resultado.put("message", "Falta idProducto");
+            response.getWriter().write(gson.toJson(resultado));
+            return;
+        }
+
+        try {
+            int idProducto = Integer.parseInt(idParam);
+            Productos producto = catalogProductosController.consultarProductosPorId(idProducto);
+
+            if (producto != null) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write(gson.toJson(producto));
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resultado.put("success", false);
+                resultado.put("message", "Producto no encontrado");
+                response.getWriter().write(gson.toJson(resultado));
+            }
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resultado.put("success", false);
+            resultado.put("message", "idProducto inválido");
+            response.getWriter().write(gson.toJson(resultado));
+        }
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
