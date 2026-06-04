@@ -8,6 +8,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para la gestión de usuarios en la base de datos.
 public interface IUsuariosDAO {
     
     void insertarUsuarios(Usuarios usuario);

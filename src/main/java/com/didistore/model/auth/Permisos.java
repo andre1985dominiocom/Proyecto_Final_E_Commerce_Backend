@@ -5,6 +5,8 @@ package com.didistore.model.auth;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa los permisos de acceso a las funcionalidades del sistema
 public class Permisos {
     private int idPermiso;
     private String nombrePermiso;

@@ -9,6 +9,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa a los usuarios del sistema, con sus atributos y métodos de acceso.
 public class Usuarios {
     private int idUsuario;
     private String email;
@@ -24,6 +26,7 @@ public class Usuarios {
     private Timestamp fechaActualizacion;
     private Timestamp fechaUltimoLogin;
     
+    // Constructor vacío y constructor con parámetros para facilitar la creación de objetos Usuarios.
     public Usuarios() {}
     
     public Usuarios (int idUsuario,
@@ -40,6 +43,7 @@ public class Usuarios {
             Timestamp fechaActualizacion,
             Timestamp fechaUltimoLogin) {
     
+        // Asignación de los parámetros a los atributos de la clase.
         this.idUsuario = idUsuario;
         this.email = email;
         this.contrasena = contrasena;
@@ -55,6 +59,7 @@ public class Usuarios {
         this.fechaUltimoLogin = fechaUltimoLogin;
     }
     
+    // Métodos getter y setter para cada atributo, permitiendo el acceso y modificación de los datos de los usuarios.
     public int getidUsuario() { return idUsuario; }
     public void setidUsuario(int idUsuario) { this.idUsuario = idUsuario; }
     

@@ -8,6 +8,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para la gestión de tokens de recuperación de contraseña en la base de datos.
 public interface ITokensRecuperacionDAO {
     
     void insertarToken(TokensRecuperacion token);

@@ -7,6 +7,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa una sesión de usuario en el sistema, con sus atributos y métodos de acceso.
 public class Sesiones {
     private int idSesion;
     private int usuarioId;
@@ -17,8 +19,10 @@ public class Sesiones {
     private String userAgent;
     private int revocada;
     
+    // Constructor vacío y constructor con parámetros para inicializar los atributos de la sesión.
     public Sesiones() {}
     
+    // Constructor con parámetros para inicializar los atributos de la sesión.
     public Sesiones (int idSesion,
             int usuarioId,
             String tokenSesion,
@@ -28,6 +32,7 @@ public class Sesiones {
             String userAgent,
             int revocada) {
         
+        // Inicializa los atributos de la sesión con los valores proporcionados.
         this.idSesion = idSesion;
         this.usuarioId = usuarioId;
         this.tokenSesion = tokenSesion;
@@ -38,6 +43,7 @@ public class Sesiones {
         this.revocada = revocada;
     }
     
+    // Métodos de acceso (getters y setters) para cada atributo de la sesión.
     public int getidSesion() { return idSesion; }
     public void setidSesion (int idSesion) { this.idSesion = idSesion; }
     

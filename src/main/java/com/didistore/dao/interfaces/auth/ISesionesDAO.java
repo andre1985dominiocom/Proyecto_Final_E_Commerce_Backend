@@ -8,6 +8,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para el DAO de Sesiones, define los métodos CRUD para la entidad Sesiones
 public interface ISesionesDAO {
     
     void insertarSesiones(Sesiones sesion);

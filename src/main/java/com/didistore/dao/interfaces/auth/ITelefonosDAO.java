@@ -8,6 +8,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para el manejo de los teléfonos asociados a los usuarios en la base de datos.
 public interface ITelefonosDAO {
     
     void insertarTelefono(Telefonos telefono);

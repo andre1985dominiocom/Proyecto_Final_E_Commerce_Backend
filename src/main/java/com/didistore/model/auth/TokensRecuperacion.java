@@ -7,6 +7,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa un token de recuperación de contraseña, con sus atributos y métodos de acceso.
 public class TokensRecuperacion {
     private int idToken;
     private int usuarioId;
@@ -16,8 +18,10 @@ public class TokensRecuperacion {
     private boolean usado;
     private int intentos;
     
+    // Constructor vacío y constructor con parámetros para inicializar los atributos.
     public TokensRecuperacion() {}
     
+    // Constructor con parámetros para inicializar los atributos del token de recuperación.
     public TokensRecuperacion (int idToken,
             int usuarioId,
             String tokenHash,
@@ -26,6 +30,7 @@ public class TokensRecuperacion {
             boolean usado,
             int intentos) {
         
+        // Inicialización de los atributos del token de recuperación con los valores proporcionados.
         this.idToken = idToken;
         this.usuarioId = usuarioId;
         this.tokenHash = tokenHash;
@@ -35,6 +40,7 @@ public class TokensRecuperacion {
         this.intentos = intentos;
     }
     
+    // Métodos de acceso (getters y setters) para cada atributo del token de recuperación.
     public int getidToken() { return idToken; }
     public void setidToken (int idToken) { this.idToken = idToken; }
     

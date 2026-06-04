@@ -15,8 +15,11 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz ITokensRecuperacionDAO para gestionar los tokens de recuperación de contraseña en la base de datos.
 public class TokensRecuperacionDAOImpl implements ITokensRecuperacionDAO {
     
+    // Método para insertar un nuevo token de recuperación en la base de datos.
     @Override
     public void insertarToken(TokensRecuperacion token) {
         
@@ -51,6 +54,7 @@ public class TokensRecuperacionDAOImpl implements ITokensRecuperacionDAO {
         }
     }
 
+    // Método para consultar un token de recuperación por su hash.
     @Override
     public TokensRecuperacion consultarTokenPorHash(String tokenHash) {
         
@@ -85,6 +89,7 @@ public class TokensRecuperacionDAOImpl implements ITokensRecuperacionDAO {
         return token;
     }
 
+    // Método para consultar un token de recuperación por el ID del usuario.
     @Override
     public TokensRecuperacion consultarTokenPorUsuario(int usuarioId) {
         
@@ -112,13 +117,14 @@ public class TokensRecuperacionDAOImpl implements ITokensRecuperacionDAO {
                     token.setusado(rs.getBoolean("usado"));
                     token.setintentos(rs.getInt("intentos"));
                 }
-            } 
+            }
         } catch (SQLException e) {
             System.err.println("Error al consultar token por usuario: " + e.getMessage());
         }
         return token;
     }
 
+    // Método para listar todos los tokens de recuperación almacenados en la base de datos.
     @Override
     public List<TokensRecuperacion> listarToken() {
         
@@ -151,6 +157,7 @@ public class TokensRecuperacionDAOImpl implements ITokensRecuperacionDAO {
         return lista;
     }
 
+    // Método para actualizar un token de recuperación existente en la base de datos.
     @Override
     public void actualizarTokens(TokensRecuperacion token) {
         
@@ -186,6 +193,7 @@ public class TokensRecuperacionDAOImpl implements ITokensRecuperacionDAO {
         }
     }
 
+    // Método para eliminar todos los tokens de recuperación asociados a un usuario específico en la base de datos.
     @Override
     public void eliminarTokensPorUsuario(int usuarioId) {
         
@@ -210,6 +218,7 @@ public class TokensRecuperacionDAOImpl implements ITokensRecuperacionDAO {
         }
     }
 
+    // Método para eliminar un token de recuperación específico por su ID en la base de datos.
     @Override
     public void eliminarTokenPorId(int idToken) {
         

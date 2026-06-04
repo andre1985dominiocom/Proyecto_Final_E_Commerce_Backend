@@ -8,6 +8,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa un teléfono asociado a un usuario, con sus atributos y métodos de acceso.
 public class Telefonos {
     private int idTelefono;
     private int usuarioId;
@@ -16,8 +18,10 @@ public class Telefonos {
     private int esVerificado;
     private Timestamp fechaAgregado;
     
+    // Constructor vacío y constructor con parámetros para inicializar los atributos.
     public Telefonos() {}
     
+    // Constructor con parámetros para inicializar los atributos del teléfono asociado a un usuario.
     public Telefonos (int idTelefono,
             int usuarioId,
             TipoTelefonos tipo,
@@ -25,6 +29,7 @@ public class Telefonos {
             int esVerificado,
             Timestamp fechaAgregado) {
         
+        // Inicialización de los atributos del teléfono con los valores proporcionados.
         this.idTelefono = idTelefono;
         this.usuarioId = usuarioId;
         this.tipo = tipo;
@@ -33,6 +38,7 @@ public class Telefonos {
         this.fechaAgregado = fechaAgregado;
     }
     
+    // Métodos de acceso (getters y setters) para cada atributo del teléfono asociado a un usuario.
     public int getidTelefono() { return idTelefono; }
     public void setidTelefono (int idTelefono) { this.idTelefono = idTelefono; }
     

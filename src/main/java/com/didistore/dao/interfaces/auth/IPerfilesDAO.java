@@ -8,6 +8,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para el manejo de los perfiles de usuario en la base de datos
 public interface IPerfilesDAO {
     
     void insertarPerfiles(Perfiles perfil);

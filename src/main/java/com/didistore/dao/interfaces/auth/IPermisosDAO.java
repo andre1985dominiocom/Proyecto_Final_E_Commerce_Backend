@@ -8,6 +8,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para el manejo de los permisos en la base de datos
 public interface IPermisosDAO {
     
     void insertarPermisos(Permisos permiso);

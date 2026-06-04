@@ -13,8 +13,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+// Implementación de la interfaz IUsuariosDAO para gestionar operaciones CRUD en la tabla "usuarios" de la base de datos.
 public class UsuariosDAOImpl implements IUsuariosDAO {
 
+    // Método para insertar un nuevo usuario en la base de datos.
     @Override
     public void insertarUsuarios(Usuarios usuario) {
 
@@ -51,6 +53,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         }
     }
 
+    // Método para listar todos los usuarios de la base de datos.
     @Override
     public List<Usuarios> listarUsuarios() {
 
@@ -99,6 +102,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         return lista;
     }
 
+    // Método para consultar un usuario por su ID.
     @Override
     public Usuarios consultarUsuariosPorId(int usuarioId) {
 
@@ -148,6 +152,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         return usuario;
     }
 
+    // Método para consultar un usuario por su email.
     @Override
     public Usuarios consultarUsuariosPorEmail(String email) {
 
@@ -197,6 +202,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         return usuario;
     }
 
+    // Método para actualizar un usuario existente en la base de datos.
     @Override
     public void actualizarUsuarios(Usuarios usuario) {
 
@@ -234,6 +240,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         }
     }
     
+    // Método para actualizar la contraseña de un usuario existente en la base de datos.
     @Override
     public void actualizarContrasena(int idUsuario, String nuevaContrasena) {
         String sql = "UPDATE usuarios SET contrasena = ?, fecha_actualizacion = ? WHERE id_Usuario = ?";
@@ -260,6 +267,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         }
     }
 
+    // Método para eliminar un usuario existente en la base de datos.
     @Override
     public void eliminarUsuarios(int idUsuario) {
 

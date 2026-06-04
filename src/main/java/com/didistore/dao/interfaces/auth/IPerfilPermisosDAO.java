@@ -8,6 +8,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para el acceso a datos de la entidad PerfilPermisos
 public interface IPerfilPermisosDAO {
     
     boolean insertarPerfilPermisos(PerfilPermisos perfilPermiso);
