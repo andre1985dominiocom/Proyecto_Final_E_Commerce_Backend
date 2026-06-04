@@ -129,7 +129,7 @@ function buildProductCard(product, catMap) {
   const name = product.nombreProducto || product.nombre || product.name || 'Producto';
   const price = Number(product.precio || product.price || 0);
   const stock = Number(product.stock ?? 1);
-  const categoryId = String(product.idCategoria || product.categoryId || '');
+  const categoryId = String(product.categoriaId || product.idCategoria || product.categoryId || '');
   const categoryName = catMap[categoryId] || product.nombreCategoria || product.categoria || product.category || '';
   const imageUrl = product.imagenUrl || product.imagen || product.image || '';
   const isNew = Boolean(product.esNuevo || product.isNew);
@@ -266,7 +266,7 @@ function setupAddToCart(cards) {
 function toSlug(value) {
   return String(value || '')
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[̀-ͯ]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');

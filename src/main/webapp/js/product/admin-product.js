@@ -1,24 +1,28 @@
+import { buildApiUrl } from '../core/config.js';
 import { showToast } from '../core/ui.js';
 
-const API_BASE = 'http://localhost:8080/didistorebackend';
+const API_BASE = buildApiUrl('');
+
+const PRODUCT_ENDPOINT = buildApiUrl('/admin/productos');
+const CATEGORY_ENDPOINT = buildApiUrl('/catalog/categorias');
+const PRODUCT_CATALOG_ENDPOINT = buildApiUrl('/catalog/productos');
+const INVENTORY_ENDPOINT = buildApiUrl('/admin/inventarios');
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('admin-product-form');
     const table = document.querySelector('table');
     const formInventario = document.getElementById('form-inventario');
-    
-    const cerrarModal = () => document.getElementById('modal-inventario').style.display = 'none';
-        document.getElementById('btn-cerrar-modal')?.addEventListener('click', cerrarModal);
-        document.getElementById('btn-cancelar-modal')?.addEventListener('click', cerrarModal);
 
-    // --- Inicialización sección: Formulario de Crear / Editar Producto ---
+    const cerrarModal = () => document.getElementById('modal-inventario').style.display = 'none';
+    document.getElementById('btn-cerrar-modal')?.addEventListener('click', cerrarModal);
+    document.getElementById('btn-cancelar-modal')?.addEventListener('click', cerrarModal);
+
     if (form) {
         form.addEventListener('submit', handleSubmit);
         cargarCategorias();
         cargarProductoSiEsEdicion();
     }
 
-    // --- Inicialización sección: Delegación de Inventarios en la Tabla ---
     if (table) {
         table.addEventListener('click', (e) => {
             if (e.target.matches('[data-stock-id]')) {
@@ -28,15 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Inicialización sección: Guardar datos de la Modal ---
     if (formInventario) {
         formInventario.addEventListener('submit', guardarCambiosInventario);
     }
 });
-
-/* ==========================================================================
-   LÓGICA DEL FORMULARIO DE PRODUCTOS (POST / PUT)
-   ========================================================================== */
 
 async function handleSubmit(event) {
     event.preventDefault();
@@ -56,7 +55,7 @@ async function handleSubmit(event) {
     }
 
     try {
-        const response = await fetch(`${API_BASE}/admin/productos`, {
+        const response = await fetch(PRODUCT_ENDPOINT, {
             method: metodo,
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8'
@@ -105,7 +104,7 @@ function construirProductoDesdeFormulario() {
         descripcionLarga: descripcion,
         precio,
         sku,
-        talla: '',
+        talla: null,
         color: '',
         categoriaId: Number(categoriaId),
         estado: mapearEstado(estadoFormulario),
@@ -116,10 +115,10 @@ function construirProductoDesdeFormulario() {
 
 function mapearEstado(estadoFormulario) {
     switch (estadoFormulario) {
-        case 'active': return 'ACTIVO';
-        case 'inactive': return 'INACTIVO';
-        case 'draft': return 'AGOTADO';
-        default: return 'ACTIVO';
+        case 'active': return 'Activo';
+        case 'inactive': return 'Inactivo';
+        case 'draft': return 'Agotado';
+        default: return 'Activo';
     }
 }
 
@@ -128,7 +127,7 @@ async function cargarCategorias() {
     if (!selectCategoria) return;
 
     try {
-        const response = await fetch(`${API_BASE}/catalog/categorias`);
+        const response = await fetch(CATEGORY_ENDPOINT);
         const categorias = await leerRespuestaJSON(response);
 
         if (!response.ok) throw new Error('No se pudieron cargar las categorías');
@@ -159,7 +158,7 @@ async function cargarProductoSiEsEdicion() {
     if (!idProducto) return;
 
     try {
-        const response = await fetch(`${API_BASE}/catalog/productos?idProducto=${encodeURIComponent(idProducto)}`);
+        const response = await fetch(`${PRODUCT_CATALOG_ENDPOINT}?idProducto=${encodeURIComponent(idProducto)}`);
         const producto = await leerRespuestaJSON(response);
 
         if (!response.ok) throw new Error(producto.message || 'No se pudo cargar el producto');
@@ -173,14 +172,13 @@ async function cargarProductoSiEsEdicion() {
 }
 
 function llenarFormulario(producto) {
-    setValue('idProducto', producto.idProducto);
-    setValue('url', producto.url || '');
-    setValue('nombreProducto', producto.nombreProducto);
-    setValue('categoriaId', producto.categoriaId);
-    setValue('precio', producto.precio);
-    setValue('sku', producto.sku);
-    
-    const estadoSelect = document.getElementById('estado');
+    setValue('product-name', producto.nombreProducto);
+    setValue('product-description', producto.descripcionCorta || producto.descripcionLarga || '');
+    setValue('product-category', producto.categoriaId);
+    setValue('product-price', producto.precio);
+    setValue('product-sku', producto.sku);
+
+    const estadoSelect = document.getElementById('product-status');
     if (estadoSelect) {
         estadoSelect.value = mapearEstadoFormulario(producto.estado);
     }
@@ -188,9 +186,9 @@ function llenarFormulario(producto) {
 
 function mapearEstadoFormulario(estadoBackend) {
     switch (estadoBackend) {
-        case 'ACTIVO': return 'active';
-        case 'INACTIVO': return 'inactive';
-        case 'AGOTADO': return 'draft';
+        case 'Activo': return 'active';
+        case 'Inactivo': return 'inactive';
+        case 'Agotado': return 'draft';
         default: return 'active';
     }
 }
@@ -207,13 +205,8 @@ function setValue(id, value) {
     }
 }
 
-/* ==========================================================================
-   MÓDULO DE GESTIÓN DE INVENTARIOS (MODAL & FETCH REST)
-   ========================================================================== */
-
 function abrirModalInventario(productoId) {
-    // Corregido: Se añade API_BASE para evitar desvíos de URL de subcarpetas
-    fetch(`${API_BASE}/admin/inventarios?id=${productoId}`)
+    fetch(`${INVENTORY_ENDPOINT}?id=${productoId}`)
         .then(response => {
             if (!response.ok) throw new Error('Error al recuperar datos del servidor');
             return response.json();
@@ -243,7 +236,7 @@ function guardarCambiosInventario(e) {
         stockReservado: parseInt(document.getElementById('inv-reservado').value)
     };
 
-    fetch(`${API_BASE}/admin/inventarios`, {
+    fetch(INVENTORY_ENDPOINT, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json; charset=UTF-8'
@@ -256,8 +249,6 @@ function guardarCambiosInventario(e) {
             mostrarMensaje('¡Inventario actualizado con éxito!', 'success');
             const modal = document.getElementById('modal-inventario');
             if (modal) modal.style.display = 'none';
-            
-            // Opcional: Aquí puedes meter la función que recargue tu tabla de productos de forma asíncrona
         } else {
             mostrarMensaje(`Error: ${res.error}`, 'error');
         }
@@ -267,10 +258,6 @@ function guardarCambiosInventario(e) {
         mostrarMensaje('Error de red al intentar actualizar el inventario.', 'error');
     });
 }
-
-/* ==========================================================================
-   UTILIDADES COMPARTIDAS
-   ========================================================================== */
 
 async function leerRespuestaJSON(response) {
     const text = await response.text();
@@ -283,7 +270,6 @@ async function leerRespuestaJSON(response) {
 
 function mostrarMensaje(mensaje, tipo = 'info') {
     console.log(`[${tipo.toUpperCase()}] ${mensaje}`);
-    // Integración de tus Toasts del core UI
     if (typeof showToast === 'function') {
         showToast(mensaje, tipo);
     } else {

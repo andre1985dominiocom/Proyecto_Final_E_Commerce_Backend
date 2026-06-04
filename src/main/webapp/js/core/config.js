@@ -30,9 +30,9 @@ export const API_ENDPOINTS = {
   users: '/admin/usuarios',
   products: '/admin/productos',
   categories: '/admin/categorias',
-  orders: null,
+  orders: '/sales/pedidos',
   promotions: null,
-  checkout: null,
+  checkout: '/sales/checkout',
   authRecovery: '/auth/recuperacion',
   authValidateToken: '/auth/validar-token',
   authResetPassword: '/auth/restablecer-password'
