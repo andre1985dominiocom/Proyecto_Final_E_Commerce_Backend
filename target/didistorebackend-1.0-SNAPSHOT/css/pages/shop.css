@@ -1,7 +1,0 @@
-/* =============================================
-    DidiStore — Página: Catálogo / Tienda
-    Los estilos están en modules/catalog/
-   ============================================= */
-.page--shop {
-    min-height: calc(100vh - 160px);
-}
