@@ -128,7 +128,7 @@ function getEntityId(entity, row) {
   if (entity === 'orders' && (row.id || row.idPedido || row.code)) return row.id || row.idPedido || row.code;
   if (entity === 'promotions' && (row.id || row.code || row.codigo)) return row.id || row.code || row.codigo;
   if (entity === 'categories' && (row.id || row.idCategoria)) return row.id || row.idCategoria;
-  if (entity === 'products' && (row.idProducto || row.idProducto || row.sku)) return row.idProducto || row.idProducto || row.sku;
+  if (entity === 'products' && (row.idProducto || row.id || row.sku)) return row.idProducto || row.id || row.sku;
   return row.__localId;
 }
 
@@ -189,7 +189,7 @@ function renderCategoryRow(category) {
   return `
     <tr>
       <td>${category.idCategoria || '-'}</td>
-      <td>${category.nombreCategoria || category.nombreCategoria || '-'}</td>
+      <td>${category.nombreCategoria || category.nombre || '-'}</td>
       <td>${category.description || category.descripcion || '-'}</td>
       <td>${category.products || category.cantidadProductos || 0}</td>
       <td><span class="admin-badge ${statusBadge(category.date || category.fechaCreacion)}">${category.date || category.fechaCreacion || '-'}</span></td>

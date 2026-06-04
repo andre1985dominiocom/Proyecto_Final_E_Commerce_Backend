@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class PedidoController {
 
+    private static final double IVA_PORCENTAJE = 0.19d;
     private static final Map<Integer, ClientePedido> CLIENTES_PEDIDO = new ConcurrentHashMap<>();
 
     private final IPedidosDAO pedidosDAO;
@@ -51,7 +52,7 @@ public class PedidoController {
         }
 
         double subtotal = carritoController.calcularSubtotal(detalles);
-        double iva = subtotal * 0.19d;
+        double iva = subtotal * IVA_PORCENTAJE;
         double montoTotal = subtotal - descuento + iva + costoEnvio;
 
         Pedidos pedido = new Pedidos();

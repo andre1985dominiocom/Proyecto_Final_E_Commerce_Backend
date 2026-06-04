@@ -21,6 +21,7 @@ import java.util.Map;
 @WebServlet("/sales/checkout")
 public class CheckoutServlet extends HttpServlet {
 
+    private static final double COSTO_ENVIO_BASE = 10000d;
     private final PedidoController pedidoController = new PedidoController();
     private final Gson gson = new Gson();
 
@@ -50,7 +51,7 @@ public class CheckoutServlet extends HttpServlet {
             }
 
             double subtotal = calcularSubtotal(items);
-            double costoEnvio = subtotal > 0 ? 10000d : 0d;
+            double costoEnvio = subtotal > 0 ? COSTO_ENVIO_BASE : 0d;
             Map<String, Object> pedido = pedidoController.registrarPedido(
                     (nombre + " " + apellido).trim(),
                     email,
