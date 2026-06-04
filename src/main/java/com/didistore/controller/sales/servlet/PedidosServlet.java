@@ -29,7 +29,7 @@ public class PedidosServlet extends HttpServlet {
             Map<String, Object> pedido = obtenerPedido(idPedidoParam);
             if (pedido == null) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                response.getWriter().write("{"message":"Pedido no encontrado"}");
+                response.getWriter().write("{\"message\":\"Pedido no encontrado\"}");
                 return;
             }
 
