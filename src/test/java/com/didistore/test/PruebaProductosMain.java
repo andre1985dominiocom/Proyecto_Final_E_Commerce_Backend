@@ -28,7 +28,7 @@ public class PruebaProductosMain {
         nuevoProducto.settalla(TallaProductos.S);
         nuevoProducto.setcolor("Rosado");
         nuevoProducto.setcategoriaId(1);
-        nuevoProducto.setestado(EstadoProductos.Activo);
+        nuevoProducto.setestado(EstadoProductos.ACTIVO);
         nuevoProducto.setesDestacado(true);
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
         nuevoProducto.setfechaCreacion(fechaActual);

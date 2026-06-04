@@ -1,6 +1,5 @@
-import { API_ENDPOINTS, STORAGE_KEYS } from '../core/config.js';
+import { API_ENDPOINTS } from '../core/config.js';
 import { request } from '../core/http.js';
-import { getJSON } from '../core/storage.js';
 import { setSession } from '../core/session.js';
 import { setButtonLoading, showToast } from '../core/ui.js';
 
@@ -10,17 +9,35 @@ if (form) {
   form.addEventListener('submit', handleLogin);
 }
 
-function findLocalUser(email, password) {
-  const users = getJSON(STORAGE_KEYS.users, []);
-  return users.find((item) => item.email === email && item.contrasena === password) || null;
+function getRedirectByRol(rol, perfilId) {
+  const rolNormalizado = String(rol || '').toUpperCase().trim();
+  const perfil = Number(perfilId);
+
+  if (rolNormalizado === 'ADMIN' || perfil === 1) {
+    return '../admin/dashboard.html';
+  }
+
+  if (rolNormalizado === 'EMPLEADO' || perfil === 2) {
+    return '../admin/dashboard.html';
+  }
+
+  if (rolNormalizado === 'CLIENTE' || perfil === 3) {
+    return '../account/account.html';
+  }
+
+  return '../../index.html';
 }
 
 async function handleLogin(event) {
   event.preventDefault();
 
   const submitButton = form.querySelector('button[type="submit"]');
-  const email = (document.getElementById('username')?.value || '').trim().toLowerCase();
-  const contrasena = (document.getElementById('password')?.value || '').trim();
+
+  const emailInput = document.getElementById('email') || document.getElementById('username');
+  const passwordInput = document.getElementById('contrasena') || document.getElementById('password');
+
+  const email = (emailInput?.value || '').trim().toLowerCase();
+  const contrasena = (passwordInput?.value || '').trim();
 
   if (!email || !contrasena) {
     showToast('Debes completar correo y contraseña.', 'error');
@@ -29,33 +46,44 @@ async function handleLogin(event) {
 
   setButtonLoading(submitButton, true, 'Ingresando...');
 
-  const result = await request(API_ENDPOINTS.login, {
-    method: 'POST',
-    body: { email, contrasena }
-  });
+  try {
+    const result = await request(API_ENDPOINTS.login, {
+      method: 'POST',
+      body: { email, contrasena }
+    });
 
-  if (result.ok) {
-    const token = result.data?.token || `mock-token-${Date.now()}`;
-    setSession({ token, user: result.data?.usuario || { email } });
+    console.log('Respuesta completa login:', result);
+
+    if (!result.ok) {
+      console.error('Login fallido:', result);
+      showToast(result.error || result.data?.message || 'Credenciales inválidas.', 'error');
+      return;
+    }
+
+    const usuario = result.data?.usuario || {};
+    const token = result.data?.token || '';
+    const perfilId = usuario?.perfilId;
+    const rol = usuario?.rol;
+
+    console.log('Usuario autenticado:', usuario);
+    console.log('perfilId:', perfilId);
+    console.log('rol:', rol);
+
+    setSession({ token, user: usuario });
+
+    const destino = getRedirectByRol(rol, perfilId);
+    console.log('Destino calculado:', destino);
+
     showToast(result.data?.message || 'Inicio de sesión exitoso.', 'success');
+
     setTimeout(() => {
-      window.location.href = '../../index.html';
-    }, 900);
+      window.location.href = destino;
+    }, 800);
+
+  } catch (error) {
+    console.error('Error real de login:', error);
+    showToast('Ocurrió un error al iniciar sesión.', 'error');
+  } finally {
     setButtonLoading(submitButton, false);
-    return;
   }
-
-  const localUser = findLocalUser(email, contrasena);
-
-  if (localUser) {
-    setSession({ token: `local-token-${Date.now()}`, user: localUser });
-    showToast('Ingreso local exitoso (modo sin backend).', 'warning');
-    setTimeout(() => {
-      window.location.href = '../../index.html';
-    }, 900);
-  } else {
-    showToast(result.error || 'Credenciales inválidas.', 'error');
-  }
-
-  setButtonLoading(submitButton, false);
 }

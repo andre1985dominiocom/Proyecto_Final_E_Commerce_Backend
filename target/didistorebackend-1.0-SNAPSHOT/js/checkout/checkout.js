@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, COUPON_DISCOUNTS, STORAGE_KEYS } from '../core/config.js';
+import { API_ENDPOINTS, COUPON_DISCOUNTS, STORAGE_KEYS, buildApiUrl } from '../core/config.js';
 import { request } from '../core/http.js';
 import { getJSON, setJSON } from '../core/storage.js';
 import { formatCurrency, setButtonLoading, showToast } from '../core/ui.js';
@@ -115,7 +115,7 @@ async function submitCheckout(event) {
   event.preventDefault();
 
   const submitButton = form.querySelector('button[type="submit"]');
-  // Extraemos los datos del formulario (debe contener un input name="direccionId")
+  // Extraemos los datos del formulario (debe contener un input name="direccionEnvioId")
   const formData = new FormData(form);
   
   setButtonLoading(submitButton, true, 'Confirmando...');
@@ -124,15 +124,15 @@ async function submitCheckout(event) {
   const params = new URLSearchParams();
   params.append('accion', 'checkout');
   
-  // Asegúrate de que en tu HTML tengas un campo con name="direccionId"
-  params.append('direccionId', formData.get('direccionId') || 1); 
+  // Asegúrate de que en tu HTML tengas un campo con name="direccionEnvioId"
+  params.append('direccionEnvioId', formData.get('direccionEnvioId') || 1); 
   
   const couponCode = localStorage.getItem(STORAGE_KEYS.coupon);
   // Si tienes la lógica de IDs de cupones, la envías aquí:
   params.append('cuponId', couponCode ? 1 : 0); 
 
   try {
-    const response = await fetch(API_ENDPOINTS.checkout, {
+    const response = await fetch(buildApiUrl(API_ENDPOINTS.checkout), {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: params

@@ -1,5 +1,4 @@
-import { API_ENDPOINTS } from '../core/config.js';
-import { request } from '../core/http.js';
+import { API_ENDPOINTS, buildApiUrl } from '../core/config.js';
 import { setButtonLoading, showToast } from '../core/ui.js';
 
 const form = document.getElementById('forgot-password-form');
@@ -22,45 +21,37 @@ async function handleRecoveryRequest(event) {
 
   setButtonLoading(submitButton, true, 'Enviando...');
 
-  const usersResponse = await request(API_ENDPOINTS.users);
+  try {
+    const response = await fetch(buildApiUrl(API_ENDPOINTS.passwordRecovery), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+      body: JSON.stringify({ email })
+    });
 
-  if (!usersResponse.ok || !Array.isArray(usersResponse.data)) {
-    updateStatus('No fue posible validar el correo en este momento.', 'error');
-    showToast(usersResponse.error || 'No se pudo consultar usuarios.', 'error');
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      updateStatus(data.message || 'No se pudo generar el token de recuperación.', 'error');
+      showToast(data.message || 'No se pudo generar el token de recuperación.', 'error');
+      setButtonLoading(submitButton, false);
+      return;
+    }
+
+    const token = data.token;
+    updateStatus('Token generado correctamente. Serás redirigido para restablecer tu contraseña.', 'success');
+    showToast('Token generado correctamente.', 'success');
     setButtonLoading(submitButton, false);
-    return;
-  }
 
-  const user = usersResponse.data.find((item) => String(item.email || '').trim().toLowerCase() === email);
-
-  if (!user?.idUsuario) {
-    updateStatus('No encontramos una cuenta asociada a ese correo.', 'error');
-    showToast('No encontramos una cuenta asociada a ese correo.', 'error');
+    if (token) {
+      setTimeout(() => {
+        window.location.href = `reset-password.html?token=${encodeURIComponent(token)}`;
+      }, 900);
+    }
+  } catch (error) {
+    console.error('Error en recuperación de contraseña:', error);
+    updateStatus('No fue posible procesar la solicitud en este momento.', 'error');
+    showToast('Error al procesar la solicitud.', 'error');
     setButtonLoading(submitButton, false);
-    return;
-  }
-
-  const recoveryResponse = await request(API_ENDPOINTS.passwordRecovery, {
-    method: 'POST',
-    body: { usuarioId: Number(user.idUsuario) }
-  });
-
-  if (!recoveryResponse.ok) {
-    updateStatus(recoveryResponse.error || 'No se pudo generar el token de recuperación.', 'error');
-    showToast(recoveryResponse.error || 'No se pudo generar el token de recuperación.', 'error');
-    setButtonLoading(submitButton, false);
-    return;
-  }
-
-  const token = recoveryResponse.data?.token;
-  updateStatus('Token generado correctamente. Serás redirigido para restablecer tu contraseña.', 'success');
-  showToast('Token generado correctamente.', 'success');
-  setButtonLoading(submitButton, false);
-
-  if (token) {
-    setTimeout(() => {
-      window.location.href = `reset-password.html?token=${encodeURIComponent(token)}`;
-    }, 900);
   }
 }
 
