@@ -9,8 +9,26 @@ if (form) {
   form.addEventListener('submit', handleLogin);
 }
 
+function normalizarRol(rol) {
+  const valor = String(rol || '').trim().toUpperCase();
+
+  if (valor === 'ADMIN' || valor === 'ADMINISTRADOR') {
+    return 'ADMIN';
+  }
+
+  if (valor === 'EMPLEADO') {
+    return 'EMPLEADO';
+  }
+
+  if (valor === 'CLIENTE' || valor === 'CLIENTES') {
+    return 'CLIENTE';
+  }
+
+  return 'SIN_ROL';
+}
+
 function getRedirectByRol(rol, perfilId) {
-  const rolNormalizado = String(rol || '').toUpperCase().trim();
+  const rolNormalizado = normalizarRol(rol);
   const perfil = Number(perfilId);
 
   if (rolNormalizado === 'ADMIN' || perfil === 1) {
@@ -33,8 +51,13 @@ async function handleLogin(event) {
 
   const submitButton = form.querySelector('button[type="submit"]');
 
-  const emailInput = document.getElementById('email') || document.getElementById('username');
-  const passwordInput = document.getElementById('contrasena') || document.getElementById('password');
+  const emailInput =
+    document.getElementById('email') ||
+    document.getElementById('username');
+
+  const passwordInput =
+    document.getElementById('contrasena') ||
+    document.getElementById('password');
 
   const email = (emailInput?.value || '').trim().toLowerCase();
   const contrasena = (passwordInput?.value || '').trim();
@@ -45,45 +68,96 @@ async function handleLogin(event) {
   }
 
   setButtonLoading(submitButton, true, 'Ingresando...');
-
-  try {
-    const result = await request(API_ENDPOINTS.login, {
+try {
+    // 1. Usamos fetch nativo para evitar que http.js modifique la respuesta
+    const response = await fetch(API_ENDPOINTS.login, {
       method: 'POST',
-      body: { email, contrasena }
+      headers: { 
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify({ email: email, contrasena: contrasena })
     });
 
-    console.log('Respuesta completa login:', result);
+    // 2. Extraemos el JSON crudo del servidor
+    const data = await response.json();
+    
+    // 🔥 PUNTOS DE CONTROL OBLIGATORIOS 🔥
+    console.log('--- DEBUG: RESPUESTA CRUDA DE JAVA ---', data);
 
-    if (!result.ok) {
-      console.error('Login fallido:', result);
-      showToast(result.error || result.data?.message || 'Credenciales inválidas.', 'error');
+    if (!data.success) {
+      showToast(data.message || 'Credenciales inválidas.', 'error');
       return;
     }
 
-    const usuario = result.data?.usuario || {};
-    const token = result.data?.token || '';
-    const perfilId = usuario?.perfilId;
-    const rol = usuario?.rol;
+    // 3. Extraemos los datos tal cual los manda Java
+    const usuario = data.usuario || {};
+    const token = data.token || '';
+    
+    // Fíjate que aquí usamos usuario.perfilId y usuario.rol
+    const perfilId = usuario.perfilId; 
+    const rol = usuario.rol;
 
-    console.log('Usuario autenticado:', usuario);
-    console.log('perfilId:', perfilId);
-    console.log('rol:', rol);
+    console.log('--- DEBUG: ROL ---', rol);
+    console.log('--- DEBUG: PERFIL ID ---', perfilId);
 
     setSession({ token, user: usuario });
 
+    // 4. Calculamos el destino
     const destino = getRedirectByRol(rol, perfilId);
-    console.log('Destino calculado:', destino);
+    console.log('--- DEBUG: DESTINO ---', destino);
 
-    showToast(result.data?.message || 'Inicio de sesión exitoso.', 'success');
+    showToast(data.message || 'Inicio de sesión exitoso.', 'success');
 
     setTimeout(() => {
-      window.location.href = destino;
+      // window.location.href = destino;
+      console.log('🛑 REDIRECCIÓN CONGELADA 🛑. Debería ir a:', destino);
     }, 800);
 
   } catch (error) {
-    console.error('Error real de login:', error);
+    console.error('Error en login:', error);
     showToast('Ocurrió un error al iniciar sesión.', 'error');
   } finally {
     setButtonLoading(submitButton, false);
   }
+
+//  try {
+//    const result = await request(API_ENDPOINTS.login, {
+//      method: 'POST',
+//      body: { email, contrasena }
+//    });
+//
+//    console.log('Respuesta login:', result);
+//
+//    if (!result.ok) {
+//      showToast(result.error || result.data?.message || 'Credenciales inválidas.', 'error');
+//      return;
+//    }
+//
+//    const usuario = result.data?.usuario || {};
+//    const token = result.data?.token || '';
+//    const perfilId = usuario?.perfilId;
+//    const rol = usuario?.rol;
+//
+//    console.log('Usuario autenticado:', usuario);
+//    console.log('perfilId:', perfilId);
+//    console.log('rol:', rol);
+//
+//    setSession({ token, user: usuario });
+//
+//    const destino = getRedirectByRol(rol, perfilId);
+//
+//    console.log('Destino calculado:', destino);
+//
+//    showToast(result.data?.message || 'Inicio de sesión exitoso.', 'success');
+//
+//    setTimeout(() => {
+//      window.location.href = destino;
+//    }, 800);
+//
+//  } catch (error) {
+//    console.error('Error en login:', error);
+//    showToast('Ocurrió un error al iniciar sesión.', 'error');
+//  } finally {
+//    setButtonLoading(submitButton, false);
+//  }
 }

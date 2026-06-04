@@ -120,7 +120,7 @@ public class LoginServlet extends HttpServlet {
     private String mapRol(int perfilId) {
         switch (perfilId) {
             case 1:
-                return "Administrador";
+                return "Admin";
             case 2:
                 return "Empleado";
             case 3:

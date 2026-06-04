@@ -30,7 +30,7 @@ export const STORAGE_KEYS = {
 };
 
 export const API_ENDPOINTS = {
-  login: '/login',
+  login: '/didistorebackend/login',
   users: '/admin/usuarios',
   products: '/admin/productos',
   categories: '/admin/categorias',
