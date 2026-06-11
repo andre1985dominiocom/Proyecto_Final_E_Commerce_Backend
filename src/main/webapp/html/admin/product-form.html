@@ -44,6 +44,14 @@
                             <label for="product-sku" class="admin-form__label">SKU / Referencia</label>
                             <input type="text" id="product-sku" name="product-sku" class="admin-form__input" placeholder="Ej: VF-001">
                         </div>
+                        <div class="admin-form__group">
+                            <label for="product-talla" class="admin-form__label">Talla</label>
+                            <input type="text" id="product-talla" name="product-talla" class="admin-form__input" placeholder="Ej: XS, S, M">
+                        </div>
+                        <div class="admin-form__group">
+                            <label for="product-color" class="admin-form__label">Color</label>
+                            <input type="text" id="product-color" name="product-color" class="admin-form__input">
+                        </div>
                     </div>
 
                     <div class="admin-form__group">
@@ -87,7 +95,7 @@
                         <input type="file" id="product-image" name="product-image" class="admin-form__input" accept="image/*">
                         <p class="admin-form__hint">Formatos aceptados: JPG, PNG, WEBP. Tamaño máximo: 2MB.</p>
                     </div>
-
+                    
                     <div class="admin-form__group">
                         <label for="product-discount" class="admin-form__label">Descuento (%)</label>
                         <input type="number" id="product-discount" name="product-discount" class="admin-form__input" placeholder="0" min="0" max="100">
@@ -102,6 +110,7 @@
             </div>
         </div>
     </div>
+    <script src="../../js/admin/dashboard.js" type="module"></script>
     <script src="../../js/product/admin-product.js" type="module"></script>
 </body>
 </html>

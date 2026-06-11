@@ -19,6 +19,8 @@ public class Productos {
     private TallaProductos talla;
     private String color;
     private int categoriaId;
+    private String nombreCategoria;
+    private Integer stock;
     private EstadoProductos estado;
     private boolean esDestacado;
     private Timestamp fechaCreacion;
@@ -35,6 +37,8 @@ public class Productos {
             TallaProductos talla,
             String color,
             int categoriaId,
+            String nombreCategoria,
+            Integer stock,
             EstadoProductos estado,
             boolean esDestacado,
             Timestamp fechaCreacion,
@@ -49,6 +53,8 @@ public class Productos {
         this.talla = talla;
         this.color = color;
         this.categoriaId = categoriaId;
+        this.nombreCategoria = nombreCategoria;
+        this.stock = stock;
         this.estado = estado;
         this.esDestacado = esDestacado;
         this.fechaCreacion = fechaCreacion;
@@ -81,6 +87,12 @@ public class Productos {
     
     public int getcategoriaId() { return categoriaId; }
     public void setcategoriaId(int categoriaId) { this.categoriaId = categoriaId; }
+    
+    public String getNombreCategoria() { return nombreCategoria;}
+    public void setNombreCategoria(String categoriaNombre) { this.nombreCategoria = categoriaNombre; }
+
+    public Integer getStock() { return stock; }
+    public void setStock(Integer stock) { this.stock = stock; }
     
     public EstadoProductos getestado() { return estado; }
     public void setestado(EstadoProductos estado) { this.estado = estado; }

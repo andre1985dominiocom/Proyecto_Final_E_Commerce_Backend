@@ -23,12 +23,16 @@ export async function request(path, options = {}) {
     method: options.method || 'GET',
     headers: {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       ...(options.headers || {})
     }
   };
 
   if (options.body !== undefined) {
-    requestOptions.body = typeof options.body === 'string' ? options.body : JSON.stringify(options.body);
+    requestOptions.body =
+      typeof options.body === 'string'
+        ? options.body
+        : JSON.stringify(options.body);
   }
 
   try {

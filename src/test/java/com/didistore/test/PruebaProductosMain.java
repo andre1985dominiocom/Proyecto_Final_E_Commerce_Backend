@@ -20,15 +20,15 @@ public class PruebaProductosMain {
         
         Productos nuevoProducto = new Productos();
         
-        nuevoProducto.setnombreProducto("pijama Short");
-        nuevoProducto.setdescripcionCorta("Pijama corta de tiras");
-        nuevoProducto.setdescripcionLarga("Pijama para mujer short con dibujos de Hello Kitty");
-        nuevoProducto.setprecio(30000);
-        nuevoProducto.setsku("PIJ-SHORT-001");
+        nuevoProducto.setnombreProducto("pijama Pantalón Mangas Moñito");
+        nuevoProducto.setdescripcionCorta("Pijama pantalón de mangas ");
+        nuevoProducto.setdescripcionLarga("Pijama para mujer pantalón de mangas");
+        nuevoProducto.setprecio(55000);
+        nuevoProducto.setsku("PIJ-PAN-002");
         nuevoProducto.settalla(TallaProductos.S);
         nuevoProducto.setcolor("Rosado");
         nuevoProducto.setcategoriaId(1);
-        nuevoProducto.setestado(EstadoProductos.ACTIVO);
+        nuevoProducto.setestado(EstadoProductos.Activo);
         nuevoProducto.setesDestacado(true);
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
         nuevoProducto.setfechaCreacion(fechaActual);

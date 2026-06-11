@@ -203,34 +203,6 @@
             <p class="footer__text">&copy; 2026 DidiStore. Todos los derechos reservados.</p>
         </div>
     </footer>
-
-    <script>
-        function changeImage(thumbnail) {
-            document.getElementById('mainImage').src = thumbnail.src;
-            document.querySelectorAll('.product-detail__thumbnail').forEach(function(t) {
-                t.classList.remove('product-detail__thumbnail--active');
-            });
-            thumbnail.classList.add('product-detail__thumbnail--active');
-        }
-
-        function changeQty(delta) {
-            var input = document.getElementById('product-quantity');
-            var currentVal = parseInt(input.value, 10) || 1;
-            var newVal = Math.max(1, Math.min(99, currentVal + delta));
-            input.value = newVal;
-        }
-
-        function openTab(event, tabId) {
-            document.querySelectorAll('.product-detail__tab-content').forEach(function(tab) {
-                tab.classList.remove('product-detail__tab-content--active');
-            });
-            document.querySelectorAll('.product-detail__tab-btn').forEach(function(btn) {
-                btn.classList.remove('product-detail__tab-btn--active');
-            });
-            document.getElementById(tabId).classList.add('product-detail__tab-content--active');
-            event.currentTarget.classList.add('product-detail__tab-btn--active');
-        }
-    </script>
     <script src="../../js/product/product-detail.js" type="module"></script>
 </body>
 </html>

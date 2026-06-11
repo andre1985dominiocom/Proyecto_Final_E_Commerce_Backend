@@ -1,6 +1,7 @@
-import { API_ENDPOINTS, STORAGE_KEYS } from '../core/config.js';
+import { API_ENDPOINTS, STORAGE_KEYS, buildAppUrl } from '../core/config.js';
 import { request } from '../core/http.js';
 import { getJSON, setJSON } from '../core/storage.js';
+import { canManageUsers, isAuthenticated } from '../core/guards.js';
 import { renderStateRow, showToast } from '../core/ui.js';
 
 const tbody = document.getElementById('users-table-body');
@@ -26,6 +27,17 @@ if (tbody) {
 }
 
 async function init() {
+  if (!isAuthenticated()) {
+    window.location.href = buildAppUrl('/html/auth/login.html');
+    return;
+  }
+
+  if (!canManageUsers()) {
+    renderStateRow(tbody, 'No tienes permisos para administrar usuarios.', 'empty', 8);
+    showToast('Acceso restringido solo para administradores.', 'error');
+    return;
+  }
+
   bindEvents();
   await loadUsers();
 }
@@ -70,8 +82,16 @@ function applyFilters() {
     const role = normalizeRole(user);
     const roleText = roleLabels[user.perfilId] || user.rol || '';
 
-    const matchesSearch = !query || fullName.includes(query) || email.includes(query) || String(user.documento || '').includes(query);
-    const matchesRole = !selectedRole || role === selectedRole || roleText.toLowerCase().includes(expectedRole);
+    const matchesSearch =
+      !query ||
+      fullName.includes(query) ||
+      email.includes(query) ||
+      String(user.documento || '').includes(query);
+
+    const matchesRole =
+      !selectedRole ||
+      role === selectedRole ||
+      roleText.toLowerCase().includes(expectedRole);
 
     return matchesSearch && matchesRole;
   });
@@ -97,7 +117,9 @@ function renderTable() {
     const initials = getUserInitials(user);
     const fullName = `${user.nombre || ''} ${user.apellido || ''}`.trim() || 'Sin nombre';
     const role = roleLabels[user.perfilId] || user.rol || 'Cliente';
-    const stateClass = String(user.estado || '').toLowerCase() === 'activo' ? 'admin-badge--success' : 'admin-badge--warning';
+    const stateClass = String(user.estado || '').toLowerCase() === 'activo'
+      ? 'admin-badge--success'
+      : 'admin-badge--warning';
 
     return `
       <tr>
@@ -168,6 +190,11 @@ function persistUsers() {
 }
 
 async function handleAction(event) {
+  if (!canManageUsers()) {
+    showToast('No tienes permisos para realizar esta acción.', 'error');
+    return;
+  }
+
   const button = event.currentTarget;
   const userId = button.dataset.id;
   const action = button.dataset.action;
@@ -175,7 +202,9 @@ async function handleAction(event) {
   if (action === 'delete') {
     if (!window.confirm('¿Deseas eliminar este usuario?')) return;
 
-    const result = await request(`${API_ENDPOINTS.users}?idUsuario=${encodeURIComponent(userId)}`, { method: 'DELETE' });
+    const result = await request(`${API_ENDPOINTS.users}?idUsuario=${encodeURIComponent(userId)}`, {
+      method: 'DELETE'
+    });
 
     if (!result.ok) {
       showToast('Backend no disponible: eliminando localmente.', 'warning');

@@ -61,7 +61,7 @@ public class ProductosDAOImpl implements IProductosDAO {
                     System.out.println("¡Producto insertado correctamente en la BD!");
                 }                          
             } catch (SQLException e) {
-            System.err.println("Error al listar productos: " + e.getMessage());
+            System.err.println("Error al insertar productos: " + e.getMessage());
         }
     }
 
@@ -103,61 +103,71 @@ public class ProductosDAOImpl implements IProductosDAO {
     }
 
     @Override
-    public List<Productos> listarProductos() {
-        
+   public List<Productos> listarProductos() {
+
         List<Productos> lista = new ArrayList<>();
 
-        String sql = "SELECT id_Producto, nombre_Producto, "
-                + "descripcion_Corta, "
-                + "descripcion_Larga, "
-                + "precio, "
-                + "SKU, "
-                + "talla, "
-                + "color, "
-                + "categoria_Id, "
-                + "estado, "
-                + "es_Destacado, "
-                + "fecha_Creacion, "
-                + "fecha_Actualizacion FROM Productos";
+        String sql = "SELECT "
+                + "p.id_Producto, "
+                + "p.nombre_Producto, "
+                + "p.descripcion_Corta, "
+                + "p.descripcion_Larga, "
+                + "p.precio, "
+                + "p.SKU, "
+                + "p.talla, "
+                + "p.color, "
+                + "p.categoria_Id, "
+                + "c.Nombre_categoria AS nombre_Categoria, "
+                + "i.Stock_actual AS stock, "
+                + "p.estado, "
+                + "p.es_Destacado, "
+                + "p.fecha_Creacion, "
+                + "p.fecha_Actualizacion "
+                + "FROM Productos p "
+                + "LEFT JOIN Categorias c ON c.ID_Categoria = p.categoria_Id "
+                + "LEFT JOIN Inventarios i ON i.Producto_ID = p.id_Producto "
+                + "ORDER BY p.id_Producto ASC";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Productos producto = new Productos();
 
                 producto.setidProducto(rs.getInt("id_Producto"));
-                producto.setnombreProducto(rs.getString("nombre_producto"));
-                producto.setdescripcionCorta(rs.getString("descripcion_corta"));
-                producto.setdescripcionLarga(rs.getString("descripcion_larga"));
+                producto.setnombreProducto(rs.getString("nombre_Producto"));
+                producto.setdescripcionCorta(rs.getString("descripcion_Corta"));
+                producto.setdescripcionLarga(rs.getString("descripcion_Larga"));
                 producto.setprecio(rs.getFloat("precio"));
                 producto.setsku(rs.getString("SKU"));
 
                 String tallaProductoStr = rs.getString("talla");
-                if (tallaProductoStr != null && !tallaProductoStr.isEmpty()) {
-                    producto.settalla(TallaProductos.valueOf(tallaProductoStr));
+                if (tallaProductoStr != null && !tallaProductoStr.trim().isEmpty()) {
+                    producto.settalla(TallaProductos.valueOf(tallaProductoStr.trim().toUpperCase()));
                 }
-                
+
                 producto.setcolor(rs.getString("color"));
-                producto.setcategoriaId(rs.getInt("categoria_id"));
+                producto.setcategoriaId(rs.getInt("categoria_Id"));
+                producto.setNombreCategoria(rs.getString("Nombre_categoria"));
+
+                int stockValue = rs.getInt("stock");
+                producto.setStock(rs.wasNull() ? null : stockValue);
 
                 String estadoStr = rs.getString("estado");
-                if (estadoStr != null && !estadoStr.isEmpty()) {
-                   producto.setestado(EstadoProductos.valueOf(estadoStr));
+                if (estadoStr != null && !estadoStr.trim().isEmpty()) {
+                    producto.setestado(EstadoProductos.valueOf(estadoStr.trim()));
                 }
 
-                producto.setesDestacado(rs.getBoolean("es_destacado"));
-                producto.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
-                producto.setfechaActualizacion(rs.getTimestamp("fecha_actualizacion"));
+                producto.setesDestacado(rs.getBoolean("es_Destacado"));
+                producto.setfechaCreacion(rs.getTimestamp("fecha_Creacion"));
+                producto.setfechaActualizacion(rs.getTimestamp("fecha_Actualizacion"));
 
                 lista.add(producto);
             }
-
         } catch (SQLException e) {
-            System.err.println("Error al listar productos: " + e.getMessage());
+        System.err.println("Error al listar productos: " + e.getMessage());
         }
-        
         return lista;
     }
 

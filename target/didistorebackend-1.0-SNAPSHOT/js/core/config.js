@@ -16,7 +16,7 @@ function detectAppContextPath() {
 }
 
 export const APP_CONTEXT_PATH = detectAppContextPath();
-export const API_BASE_URL = localStorage.getItem('didistore:apiBaseUrl') || `${window.location.origin}${APP_CONTEXT_PATH}`;
+export const API_BASE_URL = `${window.location.origin}${APP_CONTEXT_PATH}`;
 
 export const STORAGE_KEYS = {
   token: 'didistore:token',
@@ -30,7 +30,7 @@ export const STORAGE_KEYS = {
 };
 
 export const API_ENDPOINTS = {
-  login: '/didistorebackend/login',
+  login: '/login',
   users: '/admin/usuarios',
   products: '/admin/productos',
   categories: '/admin/categorias',
@@ -56,8 +56,10 @@ export const COUPON_DISCOUNTS = {
 };
 
 export function buildApiUrl(path = '') {
-  if (!path) return API_BASE_URL;
   const normalizedBase = API_BASE_URL.replace(/\/$/, '');
+
+  if (!path) return normalizedBase;
+
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   return `${normalizedBase}${normalizedPath}`;
 }
