@@ -183,6 +183,7 @@ public class SesionesDAOImpl implements ISesionesDAO{
         }                   
     }
 
+    @Override
     public String obtenerContrasenaHasheadaPorEmail(String email) {
         
         String sql = "SELECT contrasena FROM usuarios  WHERE email = ?";
