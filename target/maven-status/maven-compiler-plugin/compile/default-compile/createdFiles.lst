@@ -1,3 +1,4 @@
+com\didistore\dao\interfaces\sales\IHistorialEstadoPedidosDAO.class
 com\didistore\servlet\auth\PermisosServlet.class
 com\didistore\model\logistics\Direcciones.class
 com\didistore\servlet\admin\AdminProductosServlet.class
@@ -13,6 +14,7 @@ com\didistore\controller\admin\AdminCategoriasController.class
 com\didistore\servlet\auth\PerfilesServlet.class
 com\didistore\servlet\auth\RestablecerPasswordServlet.class
 com\didistore\model\auth\Permisos.class
+com\didistore\dao\impl\sales\PagosDAOImpl.class
 com\didistore\dao\impl\auth\UsuariosDAOImpl.class
 com\didistore\controller\catalog\ImagenesProductosController.class
 com\didistore\model\marketing\enums\EstadoDevoluciones.class
@@ -39,6 +41,7 @@ com\didistore\model\auth\enums\TipoDocumentos.class
 com\didistore\util\PasswordUtil.class
 com\didistore\model\auth\Perfiles.class
 com\didistore\servlet\auth\TelefonosServlet.class
+com\didistore\controller\sales\PagosController.class
 com\didistore\model\catalog\enums\TallaProductos.class
 com\didistore\servlet\auth\PerfilPermisosServlet.class
 com\didistore\dao\impl\auth\PermisosDAOImpl.class
@@ -87,6 +90,7 @@ com\didistore\servlet\auth\TokensRecuperacionServlet$TokenRequest.class
 com\didistore\dao\impl\auth\PerfilesDAOImpl.class
 com\didistore\dao\interfaces\auth\ISesionesDAO.class
 com\didistore\model\auth\Usuarios.class
+com\didistore\servlet\sales\PagosServlet.class
 com\didistore\model\catalog\Inventarios.class
 com\didistore\model\catalog\Wishlist.class
 com\didistore\model\sales\enums\EstadoPagos.class
@@ -103,11 +107,13 @@ com\didistore\model\logistics\Departamentos.class
 com\didistore\controller\auth\TokensRecuperacionController.class
 com\didistore\servlet\auth\TokensRecuperacionServlet.class
 com\didistore\dao\interfaces\logistics\DepartamentosDAO.class
+com\didistore\dao\interfaces\sales\IPagosDAO.class
 com\didistore\dao\impl\sales\PedidosDAOImpl.class
 com\didistore\dao\interfaces\catalog\ICategoriasDAO.class
 com\didistore\model\logistics\Envios.class
 com\didistore\model\sales\CarritoCompras.class
 com\didistore\controller\auth\SesionesController.class
+com\didistore\controller\sales\HistorialEstadoPedidosController.class
 com\didistore\model\catalog\ImagenesProductos.class
 com\didistore\model\sales\Pagos.class
 com\didistore\config\CorsFilter.class
@@ -117,10 +123,12 @@ com\didistore\dao\impl\catalog\ImagenesProductosDAOImpl.class
 com\didistore\model\logistics\enums\TransportadoraEnvios.class
 com\didistore\dao\impl\catalog\InventariosDAOImpl.class
 com\didistore\model\marketing\enums\EstadoCupones.class
+com\didistore\servlet\sales\HistorialEstadoPedidosServlet.class
 com\didistore\dao\impl\catalog\ProductosDAOImpl.class
 com\didistore\servlet\auth\UsuariosServlet.class
 com\didistore\controller\catalog\WishlistController.class
 com\didistore\config\Conexion.class
+com\didistore\dao\impl\sales\HistorialEstadoPedidosDAOImpl.class
 com\didistore\model\auth\enums\EstadoUsuarios.class
 com\didistore\servlet\auth\LoginServlet.class
 com\didistore\model\catalog\enums\EstadoResenas.class
