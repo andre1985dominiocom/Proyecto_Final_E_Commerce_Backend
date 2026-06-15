@@ -24,6 +24,7 @@ D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\servlet\admin\AdminCategoriasServlet.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\auth\TokensRecuperacion.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\util\SessionUtil.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\servlet\admin\AdminDashboardServlet.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\interfaces\sales\ICarritoComprasDAO.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\logistics\enums\EstadoEnvios.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\marketing\enums\TipoDescuentos.java
@@ -93,6 +94,7 @@ D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\impl\auth\UsuariosDAOImpl.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\auth\Perfiles.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\auth\Telefonos.java
+D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\controller\admin\AdminDashboardController.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\dao\interfaces\auth\IPerfilPermisosDAO.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\servlet\auth\RestablecerPasswordServlet.java
 D:\Trabajos_ADSO\Proyecto_Final\Proyecto_Final_Backend\Proyecto_Final_E_Commerce_Backend\src\main\java\com\didistore\model\marketing\enums\MotivoDevoluciones.java

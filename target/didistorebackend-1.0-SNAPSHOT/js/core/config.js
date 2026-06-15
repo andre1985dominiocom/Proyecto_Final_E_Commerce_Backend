@@ -40,7 +40,8 @@ export const API_ENDPOINTS = {
   checkout: '/sales/pedido',
   passwordRecovery: '/auth/recuperacion',
   validateToken: '/auth/validar-token',
-  resetPassword: '/auth/restablecer-password'
+  resetPassword: '/auth/restablecer-password',
+  dashboard: '/admin/dashboard-data'
 };
 
 export const CATALOG_ENDPOINTS = {

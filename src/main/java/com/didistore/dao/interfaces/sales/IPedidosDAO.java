@@ -24,6 +24,9 @@ public interface IPedidosDAO {
     boolean actualizarEstado(int idPedido, EstadoPedidos nuevoEstado);
     
     // Métodos para Detalles de Pedidos
-    List<DetallesPedidos> listarDetallesPorPedido(int pedidoId);
+    List<DetallesPedidos> listarDetallesPorPedido(int pedidoId);  
     
+    double calcularVentasMesActual();
+    
+    int contarPedidosNuevos();
 }

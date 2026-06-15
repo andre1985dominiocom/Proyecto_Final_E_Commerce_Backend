@@ -37,6 +37,7 @@ com\didistore\dao\interfaces\catalog\IResenasDAO.class
 com\didistore\controller\catalog\ResenasController.class
 com\didistore\model\logistics\enums\EstadoDirecciones.class
 com\didistore\servlet\auth\RestablecerPasswordServlet$RestablecerRequest.class
+com\didistore\controller\admin\AdminDashboardController.class
 com\didistore\model\auth\enums\TipoDocumentos.class
 com\didistore\util\PasswordUtil.class
 com\didistore\model\auth\Perfiles.class
@@ -80,6 +81,7 @@ com\didistore\servlet\catalog\CategoriasServlet.class
 com\didistore\controller\auth\UsuariosController.class
 com\didistore\dao\interfaces\auth\ITelefonosDAO.class
 com\didistore\config\filter\RoleFilter.class
+com\didistore\servlet\admin\AdminDashboardServlet.class
 com\didistore\controller\sales\PedidoController.class
 com\didistore\servlet\admin\AdminCategoriasServlet.class
 com\didistore\dao\impl\auth\SesionesDAOImpl.class

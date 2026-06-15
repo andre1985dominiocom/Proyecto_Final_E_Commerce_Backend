@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', initDashboardAccess);
 
 function initDashboardAccess() {
   if (!isAuthenticated()) {
-    window.location.href = buildAppUrl('/html/auth/login.html');
+    window.location.href = buildAppUrl('/html/admin/dashboard.html');
     return;
   }
 
@@ -57,7 +57,7 @@ function setupLogout() {
   logoutButtons.forEach((button) => {
     button.addEventListener('click', () => {
       clearSession();
-      window.location.href = buildAppUrl('/html/auth/login.html');
+      window.location.href = buildAppUrl('/html/admin/dashboard.html');
     });
   });
 }

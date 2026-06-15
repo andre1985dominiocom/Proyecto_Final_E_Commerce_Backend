@@ -231,6 +231,45 @@ public class PedidosDAOImpl implements IPedidosDAO {
         }
         return  lista;
     }
+    
+    @Override
+    public double calcularVentasMesActual() {
+        // Suma el total de pedidos cuyo estado sea 'Pagado' o 'Entregado' dentro del mes en curso
+        String sql = "SELECT SUM(Total) AS total_mes FROM Pedidos " +
+                 "WHERE Estado_pedido IN ('Pendiente_Pago', 'Pagado', 'En_Preparación', 'Despacahado', 'En_Transito', Entregado', 'Cancelado', 'Devuelto') " +
+                 "AND MONTH(Fecha_creacion) = MONTH(CURRENT_DATE()) " +
+                 "AND YEAR(Fecha_creacion) = YEAR(CURRENT_DATE())";
+    
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
+        
+            if (rs.next()) {
+            return rs.getDouble("total_mes");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
+    
+    @Override
+    public int contarPedidosNuevos() {
+        // Cuenta los pedidos que requieren atención inmediata (ej: estado PENDIENTE)
+        String sql = "SELECT COUNT(*) AS nuevos FROM Pedidos WHERE Estado_pedido = 'PENDIENTE'";
+    
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
+        
+            if (rs.next()) {
+                return rs.getInt("nuevos");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     private Pedidos mapearPedido(ResultSet rs) throws SQLException {
         Pedidos pedido = new Pedidos();
