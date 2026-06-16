@@ -29,6 +29,14 @@ public class AdminInventariosServlet extends HttpServlet {
         this.inventariocontroller = new AdminInventariosController();
         this.gson = new Gson();
     }
+    
+    // --- NUEVO: Interceptar la petición de seguridad del navegador ---
+    @Override
+    protected void doOptions(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        configurarCabecerasJSON(response);
+        response.setStatus(HttpServletResponse.SC_OK);
+    }
 
     /**
      * 1. GET: Listar todo o consultar por ID

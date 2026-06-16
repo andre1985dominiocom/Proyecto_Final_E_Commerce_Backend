@@ -54,7 +54,7 @@ public class AdminInventariosController {
             return false;
         }
 
-        if (inventario.getstockReservado() < 0) {
+        if (inventario.getstockReservado() > inventario.getstockActual()) {
             return false;
         }
 
