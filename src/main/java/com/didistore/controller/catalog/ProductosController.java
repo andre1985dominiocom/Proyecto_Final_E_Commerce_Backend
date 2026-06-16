@@ -49,4 +49,8 @@ public class ProductosController {
         }
         productosDAO.eliminarProductos(idProducto);
     }
+    
+    public List<Productos> listarCatalogoPublico(){
+        return productosDAO.listarCatalogoPublico();
+    }
 }

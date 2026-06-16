@@ -29,6 +29,20 @@ public class ProductosServlet extends HttpServlet {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        
+         String vista = request.getParameter("vista");
+
+
+        if ("publica".equals(vista)) {
+
+            List<Productos> lista =
+                productoController.listarCatalogoPublico();
+
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            response.getWriter().write(gson.toJson(lista));
+            return;
+        }
 
         String idProductoParam = request.getParameter("idProducto");
         String idCategoriaParam = request.getParameter("idCategoria");

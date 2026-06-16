@@ -25,6 +25,7 @@ public class Productos {
     private boolean esDestacado;
     private Timestamp fechaCreacion;
     private Timestamp fechaActualizacion;
+    private String imagenUrl;
     
     public Productos() {}
     
@@ -42,7 +43,8 @@ public class Productos {
             EstadoProductos estado,
             boolean esDestacado,
             Timestamp fechaCreacion,
-            Timestamp fechaActualizacion) {
+            Timestamp fechaActualizacion,
+            String imagenUrl) {
     
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
@@ -59,6 +61,7 @@ public class Productos {
         this.esDestacado = esDestacado;
         this.fechaCreacion = fechaCreacion;
         this.fechaActualizacion = fechaActualizacion;
+        this.imagenUrl = imagenUrl;
 }
     
     public int getidProducto() { return idProducto; }
@@ -105,4 +108,7 @@ public class Productos {
     
     public Timestamp getfechaActualizacion() { return fechaActualizacion; }
     public void setfechaActualizacion(Timestamp fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
+    
+    public String getimagenUrl() { return imagenUrl; }
+    public void setimagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
 }

@@ -23,4 +23,6 @@ public interface IProductosDAO {
     void actualizarProductos(Productos producto);
     
     void eliminarProductos(int idProducto);
+    
+    List<Productos> listarCatalogoPublico();
 }

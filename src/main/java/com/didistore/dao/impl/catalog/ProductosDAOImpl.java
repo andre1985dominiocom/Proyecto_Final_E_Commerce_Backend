@@ -373,4 +373,52 @@ public class ProductosDAOImpl implements IProductosDAO {
         }
         return lista;       
     }
+
+    @Override
+    public List<Productos> listarCatalogoPublico() {
+        
+        List<Productos> lista = new ArrayList<>();
+
+        String sql = "SELECT "
+                    + "p.id_Producto, "
+                    + "p.nombre_Producto, "
+                    + "p.descripcion_Corta, "
+                    + "p.precio, "
+                    + "p.estado, "
+                    + "c.Nombre_categoria, "
+                    + "i.Url AS imagen "
+                    + "FROM Productos p "
+                    + "LEFT JOIN Categorias c "
+                    + "ON c.ID_Categoria = p.categoria_Id "
+                    + "LEFT JOIN ImagenesProductos i "
+                    + "ON i.Producto_ID = p.id_Producto "
+                    + "WHERE p.estado = ?";
+
+
+        try(Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1,
+            EstadoProductos.Activo.name());
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+
+                Productos producto = new Productos();
+
+                producto.setidProducto(rs.getInt("id_Producto"));
+                producto.setnombreProducto(rs.getString("nombre_Producto"));
+                producto.setdescripcionCorta(rs.getString("descripcion_Corta"));
+                producto.setprecio(rs.getFloat("precio"));
+                producto.setNombreCategoria(rs.getString("Nombre_categoria"));
+                producto.setimagenUrl(rs.getString("imagen"));
+
+                lista.add(producto);
+            }
+        }catch(SQLException e){
+            System.err.println("Error catálogo público " + e.getMessage());
+        }
+        return null;
+    }
 }
