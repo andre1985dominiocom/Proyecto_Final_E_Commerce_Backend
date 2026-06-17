@@ -47,7 +47,7 @@ public class ProductosServlet extends HttpServlet {
         String idProductoParam = request.getParameter("idProducto");
         String idCategoriaParam = request.getParameter("idCategoria");
         String nombreProductoParam = request.getParameter("nombreProducto");
-
+     
         if (idProductoParam != null && !idProductoParam.trim().isEmpty()) {
             try {
                 int idProducto = Integer.parseInt(idProductoParam);

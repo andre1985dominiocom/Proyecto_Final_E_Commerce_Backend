@@ -109,6 +109,6 @@ public class Productos {
     public Timestamp getfechaActualizacion() { return fechaActualizacion; }
     public void setfechaActualizacion(Timestamp fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
     
-    public String getimagenUrl() { return imagenUrl; }
-    public void setimagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
+    public String getImagenUrl() { return imagenUrl; }
+    public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
 }

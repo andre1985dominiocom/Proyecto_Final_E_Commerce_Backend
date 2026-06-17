@@ -386,12 +386,12 @@ public class ProductosDAOImpl implements IProductosDAO {
                     + "p.precio, "
                     + "p.estado, "
                     + "c.Nombre_categoria, "
-                    + "i.Url AS imagen "
+                    + "i.Url AS imagenUrl "
                     + "FROM Productos p "
                     + "LEFT JOIN Categorias c "
                     + "ON c.ID_Categoria = p.categoria_Id "
-                    + "LEFT JOIN ImagenesProductos i "
-                    + "ON i.Producto_ID = p.id_Producto "
+                    + "LEFT JOIN Imagenes_Productos i "
+                    + "ON i.Producto_ID = p.ID_Producto "
                     + "WHERE p.estado = ?";
 
 
@@ -404,6 +404,10 @@ public class ProductosDAOImpl implements IProductosDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
+                
+                 System.out.println("ID PRODUCTO: " + rs.getInt("id_Producto"));
+
+                 System.out.println("IMAGEN SQL: " + rs.getString("imagenUrl"));
 
                 Productos producto = new Productos();
 
@@ -412,13 +416,12 @@ public class ProductosDAOImpl implements IProductosDAO {
                 producto.setdescripcionCorta(rs.getString("descripcion_Corta"));
                 producto.setprecio(rs.getFloat("precio"));
                 producto.setNombreCategoria(rs.getString("Nombre_categoria"));
-                producto.setimagenUrl(rs.getString("imagen"));
-
+                producto.setImagenUrl(rs.getString("Url"));               
                 lista.add(producto);
             }
         }catch(SQLException e){
             System.err.println("Error catálogo público " + e.getMessage());
         }
-        return null;
+        return lista;
     }
 }

@@ -1,5 +1,6 @@
 import { buildAppUrl } from './core/config.js';
 import { getSession, clearSession } from './core/session.js';
+import "./catalog/catalog-public.js";
 
 const { token, user } = getSession();
 
