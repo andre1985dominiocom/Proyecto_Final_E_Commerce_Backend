@@ -31,6 +31,7 @@ public class AuthFilter extends HttpFilter implements Filter {
                 path.equals("/") ||
                 path.equals("/index.html") ||
                 path.equals("/login") ||
+                path.equals("/logout") ||
                 path.equals("/sales/carrito") ||
                 path.startsWith("/html/auth/") ||
                 path.startsWith("/css/") ||
@@ -45,6 +46,11 @@ public class AuthFilter extends HttpFilter implements Filter {
 
             HttpSession session = request.getSession(false);
             boolean authenticated = session != null && session.getAttribute("usuarioId") != null;
+            
+            // LOG: Esto te ayudará a ver en consola por qué te bota al login
+            if (!authenticated) {
+                System.out.println("DEBUG: Acceso denegado a: " + path + " - Usuario no autenticado");
+            }
 
             if (!authenticated) {
                 if (isAjaxRequest(request)) {

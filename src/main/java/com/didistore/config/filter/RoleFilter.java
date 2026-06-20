@@ -26,11 +26,18 @@ public class RoleFilter extends HttpFilter implements Filter {
         String contextPath = request.getContextPath();
         String uri = request.getRequestURI();
         String path = uri.substring(contextPath.length());
+        
+        if (path.startsWith("/css/") || path.startsWith("/js/") || 
+            path.startsWith("/assets/") || path.startsWith("/catalog/")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         boolean publicResource =
                 path.equals("/") ||
                 path.equals("/index.html") ||
                 path.equals("/login") ||
+                path.equals("/logout") ||
                 path.startsWith("/html/auth/") ||
                 path.startsWith("/css/") ||
                 path.startsWith("/js/") ||
