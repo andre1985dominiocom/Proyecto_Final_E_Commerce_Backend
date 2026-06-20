@@ -35,6 +35,7 @@ export const API_ENDPOINTS = {
   products: '/admin/productos',
   categories: '/admin/categorias',
   inventory: '/admin/inventarios',
+  cart: '/sales/carrito',
   orders: '/sales/pedido',
   promotions: '/catalog/productos',
   checkout: '/sales/pedido',

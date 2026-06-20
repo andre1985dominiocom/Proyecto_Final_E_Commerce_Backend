@@ -15,6 +15,7 @@ public class ItemCarritos {
     private double precioUnitario;
     private double subtotal;
     private Timestamp fechaAgregado;
+    private String nombreProducto;
     
     public ItemCarritos() {}
     
@@ -23,7 +24,8 @@ public class ItemCarritos {
             int productoId,
             int cantidad,
             double precioUnitario,
-            Timestamp fechaAgregado) {
+            Timestamp fechaAgregado,
+            String nombreProducto) {
         
         this.idItem = idItem;
         this.carritoId = carritoId;
@@ -33,6 +35,7 @@ public class ItemCarritos {
         this.fechaAgregado = fechaAgregado;
         
         this.subtotal = calcularSubtotal();
+        this.nombreProducto = nombreProducto;
     }
     private double calcularSubtotal() {
         return this.cantidad * this.precioUnitario;    
@@ -57,4 +60,7 @@ public class ItemCarritos {
     
     public Timestamp getfechaAgregado() { return fechaAgregado; }
     public void setfechaAgregado(Timestamp fechaAgregado) { this.fechaAgregado = fechaAgregado; }
+    
+    public String getnombreProducto() { return nombreProducto; }
+    public void setnombreProducto(String nombreProducto) { this.nombreProducto = nombreProducto; }
 }

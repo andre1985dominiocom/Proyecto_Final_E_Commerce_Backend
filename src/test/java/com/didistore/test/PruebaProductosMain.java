@@ -20,14 +20,14 @@ public class PruebaProductosMain {
         
         Productos nuevoProducto = new Productos();
         
-        nuevoProducto.setnombreProducto("pijama Pantalón Mangas Moñito");
-        nuevoProducto.setdescripcionCorta("Pijama pantalón de mangas ");
-        nuevoProducto.setdescripcionLarga("Pijama para mujer pantalón de mangas");
-        nuevoProducto.setprecio(55000);
-        nuevoProducto.setsku("PIJ-PAN-002");
-        nuevoProducto.settalla(TallaProductos.S);
-        nuevoProducto.setcolor("Rosado");
-        nuevoProducto.setcategoriaId(1);
+        nuevoProducto.setnombreProducto("Morral Victoria Beige");
+        nuevoProducto.setdescripcionCorta("Morral comodo");
+        nuevoProducto.setdescripcionLarga("Morral para tu comodidad");
+        nuevoProducto.setprecio(110000);
+        nuevoProducto.setsku("BOL-VIC-009");
+        nuevoProducto.settalla(null);
+        nuevoProducto.setcolor("Beige");
+        nuevoProducto.setcategoriaId(8);
         nuevoProducto.setestado(EstadoProductos.Activo);
         nuevoProducto.setesDestacado(true);
         Timestamp fechaActual = new Timestamp(System.currentTimeMillis());

@@ -1,180 +1,268 @@
-import { API_ENDPOINTS, COUPON_DISCOUNTS, STORAGE_KEYS } from '../core/config.js';
+import { API_ENDPOINTS } from '../core/config.js';
 import { formatCurrency, showToast } from '../core/ui.js';
+import { setCart } from '../core/cart-state.js';
 
 const itemsContainer = document.getElementById('cart-items');
 
-// Variable global para mantener el estado actual de la vista
-let currentCartData = { items: [], total: 0 };
+let currentCartData = {
+    items: [],
+    total: 0
+};
+
+// ================================
+// INIT
+// ================================
 
 if (itemsContainer) {
-  initCart();
+    initCart();
 }
 
 function initCart() {
-  bindActions();
-  // En lugar de leer el HTML o LocalStorage, pedimos el carrito al servidor
-  fetchCart(); 
+    bindActions();
+    fetchCart();
 }
+
+// ================================
+// EVENTOS GLOBALES
+// ================================
 
 function bindActions() {
-  document.getElementById('cart-clear-btn')?.addEventListener('click', async () => {
-    // Llamada a la API para vaciar el carrito en la BD
-    await updateServerCart('vaciar');
-    showToast('Carrito vaciado correctamente.', 'info');
-  });
 
-  document.getElementById('cart-coupon-btn')?.addEventListener('click', applyCoupon);
-}
+    document.getElementById('cart-clear-btn')?.addEventListener('click', async () => {
+        await updateServerCart('vaciar');
 
-// 1. OBTENER DATOS DEL SERVIDOR (GET)
-async function fetchCart() {
-  try {
-    // Asegúrate de que API_ENDPOINTS.cart apunte a '/api/carrito'
-    const response = await fetch(`${API_ENDPOINTS.cart}?accion=ver`);
-    if (!response.ok) throw new Error('Error al cargar el carrito');
-    
-    currentCartData = await response.json();
-    renderCart();
-  } catch (error) {
-    console.error(error);
-    showToast('Error al conectar con el servidor', 'error');
-  }
-}
-
-// 2. ENVIAR CAMBIOS AL SERVIDOR (POST)
-async function updateServerCart(accion, itemId = null, nuevaCantidad = null) {
-  const params = new URLSearchParams();
-  params.append('accion', accion);
-  
-  if (itemId) params.append('itemId', itemId);
-  if (nuevaCantidad !== null) params.append('cantidad', nuevaCantidad);
-
-  try {
-    const response = await fetch(API_ENDPOINTS.cart, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: params
+        showToast('Carrito vaciado correctamente', 'info');
     });
-    
-    const result = await response.json();
-    if (result.success) {
-      // Si el servidor guardó el cambio con éxito, volvemos a descargar el carrito actualizado
-      await fetchCart();
-    } else {
-      showToast(result.message || 'Error al actualizar', 'error');
-    }
-  } catch (error) {
-    console.error(error);
-    showToast('No se pudo sincronizar con el servidor', 'warning');
-  }
+
+    document.getElementById('cart-coupon-btn')?.addEventListener(
+        'click',
+        applyCoupon
+    );
 }
+
+// ================================
+// OBTENER CARRITO
+// ================================
+
+async function fetchCart() {
+
+    try {
+
+        const response = await fetch(`${API_ENDPOINTS.cart}?accion=ver`);
+        const text = await response.text();
+
+        console.log("RESPUESTA CARRITO:", text);
+
+        const data = JSON.parse(text);
+
+        currentCartData = data;
+
+        // 🔥 SINCRONIZA ESTADO GLOBAL (IMPORTANTE)
+        setCart(data);
+
+        renderCart();
+
+    } catch (error) {
+
+        console.error("Error carrito:", error);
+
+        showToast('Error cargando carrito', 'error');
+    }
+}
+
+// ================================
+// ACTUALIZAR CARRITO BACKEND
+// ================================
+
+async function updateServerCart(accion, idItem = null, cantidad = null) {
+
+    const params = new URLSearchParams();
+
+    params.append("accion", accion);
+
+    if (idItem !== null) {
+        params.append("idItem", idItem);
+    }
+
+    if (cantidad !== null) {
+        params.append("cantidad", cantidad);
+    }
+
+    try {
+
+        const response = await fetch(API_ENDPOINTS.cart, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: params
+        });
+
+        const text = await response.text();
+
+        console.log("POST CARRITO:", text);
+
+        const result = JSON.parse(text);
+
+        if (result.success) {
+
+            // 🔥 REFRESCA TODO EL CARRITO DESDE BACKEND
+            await fetchCart();
+
+        } else {
+
+            showToast(result.message, "error");
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast("No se pudo actualizar carrito", "warning");
+    }
+}
+
+// ================================
+// CUPONES
+// ================================
 
 function applyCoupon() {
-  const couponInput = document.getElementById('coupon');
-  const couponCode = (couponInput?.value || '').trim().toUpperCase();
 
-  if (!couponCode) {
-    showToast('Ingresa un cupón para aplicar.', 'error');
-    return;
-  }
+    const input = document.getElementById('coupon');
 
-  if (!COUPON_DISCOUNTS[couponCode]) {
-    showToast('Cupón no válido.', 'error');
-    return;
-  }
+    const codigo = (input?.value || '').trim().toUpperCase();
 
-  localStorage.setItem(STORAGE_KEYS.coupon, couponCode);
-  renderCart(); // Repintamos para reflejar el descuento visual
-  showToast(`Cupón ${couponCode} aplicado correctamente.`, 'success');
+    if (!codigo) {
+        showToast("Ingrese cupón", "error");
+        return;
+    }
+
+    showToast("Cupón aplicado", "success");
+
+    localStorage.setItem("coupon", codigo);
+
+    renderCart();
 }
+
+// ================================
+// RESUMEN
+// ================================
 
 function updateSummary() {
-  // Usamos el subtotal que viene directamente de la base de datos
-  const subtotal = currentCartData.total; 
-  const shipping = subtotal > 0 ? 10000 : 0;
-  
-  const couponCode = localStorage.getItem(STORAGE_KEYS.coupon) || '';
-  const couponDiscount = COUPON_DISCOUNTS[couponCode] || 0;
-  const discount = subtotal * couponDiscount;
-  
-  const total = Math.max(subtotal + shipping - discount, 0);
 
-  document.getElementById('cart-subtotal')?.replaceChildren(document.createTextNode(formatCurrency(subtotal)));
-  document.getElementById('cart-shipping')?.replaceChildren(document.createTextNode(formatCurrency(shipping)));
-  
-  const discountEl = document.getElementById('cart-discount');
-  if (discountEl) {
-      discountEl.replaceChildren(document.createTextNode(`-${formatCurrency(discount)}`));
-  }
-  
-  document.getElementById('cart-total')?.replaceChildren(document.createTextNode(formatCurrency(total)));
+    const subtotal = currentCartData.total || 0;
+
+    const envio = subtotal > 0 ? 10000 : 0;
+
+    const codigo = localStorage.getItem("coupon") || '';
+
+    const descuento = subtotal * (0); // (puedes conectar COUPON_DISCOUNTS aquí)
+
+    const total = subtotal + envio - descuento;
+
+    document.getElementById('cart-subtotal')
+        ?.replaceChildren(document.createTextNode(formatCurrency(subtotal)));
+
+    document.getElementById('cart-shipping')
+        ?.replaceChildren(document.createTextNode(formatCurrency(envio)));
+
+    document.getElementById('cart-total')
+        ?.replaceChildren(document.createTextNode(formatCurrency(total)));
 }
+
+// ================================
+// RENDER CARRITO
+// ================================
 
 function renderCart() {
-  const items = currentCartData.items || [];
-  const emptyState = document.getElementById('cart-empty');
-  const layout = document.getElementById('cart-layout');
 
-  if (!items.length) {
-    itemsContainer.innerHTML = '';
-    layout?.classList.add('u-hidden');
-    emptyState?.classList.remove('u-hidden');
-    updateSummary();
-    return;
-  }
+    const items = currentCartData.items || [];
 
-  layout?.classList.remove('u-hidden');
-  emptyState?.classList.add('u-hidden');
+    const empty = document.getElementById('cart-empty');
+    const layout = document.getElementById('cart-layout');
 
-  itemsContainer.innerHTML = items.map((item) => `
-    <div class="cart__item" data-item-id="${item.itemId}">
-      <div class="cart__item-product">
-        <div>
-          <p class="cart__item-name">${item.nombreProducto || `Producto #${item.productoId}`}</p>
+    if (items.length === 0) {
+
+        itemsContainer.innerHTML = "";
+        layout?.classList.add("u-hidden");
+        empty?.classList.remove("u-hidden");
+
+        updateSummary();
+        return;
+    }
+
+    layout?.classList.remove("u-hidden");
+    empty?.classList.add("u-hidden");
+
+    itemsContainer.innerHTML = items.map(item => `
+        <div class="cart__item" data-item-id="${item.idItem}">
+
+            <p>Producto #${item.productoId}</p>
+
+            <span>${formatCurrency(item.precioUnitario)}</span>
+
+            <button data-action="decrease">-</button>
+
+            <input class="cart__quantity-input" value="${item.cantidad}">
+
+            <button data-action="increase">+</button>
+
+            <span>${formatCurrency(item.precioUnitario * item.cantidad)}</span>
+
+            <button data-action="remove">X</button>
+
         </div>
-      </div>
-      <span class="cart__item-price">${formatCurrency(item.precioUnitario)}</span>
-      <div class="cart__item-quantity">
-        <button class="cart__quantity-btn" type="button" data-action="decrease">-</button>
-        <input type="number" class="cart__quantity-input" value="${item.cantidad}" min="1" max="99">
-        <button class="cart__quantity-btn" type="button" data-action="increase">+</button>
-      </div>
-      <span class="cart__item-subtotal">${formatCurrency(item.precioUnitario * item.cantidad)}</span>
-      <button class="cart__item-remove" type="button" data-action="remove" aria-label="Eliminar producto">&#10005;</button>
-    </div>
-  `).join('');
+    `).join("");
 
-  // Re-vincular eventos a los nuevos botones
-  itemsContainer.querySelectorAll('.cart__item').forEach((row) => {
-    row.querySelectorAll('button[data-action]').forEach((button) => {
-      button.addEventListener('click', () => handleItemAction(row, button.dataset.action));
-    });
-    
-    row.querySelector('.cart__quantity-input')?.addEventListener('change', (e) => {
-        handleItemAction(row, 'input', Number(e.target.value));
-    });
-  });
+    bindItemActions();
 
-  updateSummary();
+    updateSummary();
 }
 
-function handleItemAction(row, action, inputValue = null) {
-  const itemId = Number(row.dataset.itemId);
-  // Buscamos el item actual en nuestra variable de estado
-  const item = currentCartData.items.find(i => i.itemId === itemId);
-  if (!item) return;
+// ================================
+// EVENTOS ITEMS
+// ================================
 
-  let nuevaCantidad = item.cantidad;
+function bindItemActions() {
 
-  if (action === 'increase') nuevaCantidad += 1;
-  if (action === 'decrease') nuevaCantidad -= 1;
-  if (action === 'input') nuevaCantidad = Math.min(99, Math.max(1, inputValue));
+    itemsContainer.querySelectorAll(".cart__item").forEach(row => {
 
-  // Si la cantidad llega a 0 o la acción es eliminar, llamamos a la API con 'eliminar'
-  if (action === 'remove' || nuevaCantidad <= 0) {
-    updateServerCart('eliminar', itemId);
-  } else if (nuevaCantidad !== item.cantidad) {
-    // Si la cantidad cambió, llamamos a la API con 'actualizar'
-    updateServerCart('actualizar', itemId, nuevaCantidad);
-  }
+        row.querySelectorAll("[data-action]").forEach(btn => {
+
+            btn.addEventListener("click", () => {
+
+                handleItemAction(row, btn.dataset.action);
+            });
+        });
+    });
+}
+
+// ================================
+// ACCIONES POR ITEM
+// ================================
+
+function handleItemAction(row, action) {
+
+    const itemId = Number(row.dataset.itemId);
+
+    const item = currentCartData.items.find(i => i.idItem === itemId);
+
+    if (!item) return;
+
+    let cantidad = Number(item.cantidad);
+
+    if (action === "increase") cantidad++;
+
+    if (action === "decrease") {
+
+        if (cantidad > 1) cantidad--;
+    }
+
+    if (action === "remove") {
+
+        updateServerCart("eliminar", itemId);
+        return;
+    }
+
+    updateServerCart("actualizar", itemId, cantidad);
 }

@@ -41,7 +41,7 @@ public class CarritoComprasServlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         Integer usuarioId = (Integer) session.getAttribute("usuarioId");
         String sesionId = session.getId();
-
+        
         CarritoCompras carrito = carritoController.obtenerOGenerarCarrito(usuarioId, sesionId);
         String accion = request.getParameter("accion");
         if (accion == null) accion = "ver";
@@ -130,7 +130,8 @@ public class CarritoComprasServlet extends HttpServlet {
             ItemCarritos item = items.get(i);
             json.append("{");
             json.append("\"itemId\": ").append(item.getidItem()).append(",");
-            json.append("\"productoId\": ").append((char) item.getproductoId()).append(",");
+            json.append("\"productoId\": ").append(item.getproductoId()).append(",");
+            json.append("\"nombreProducto\": ").append(item.getnombreProducto()).append(",");
             json.append("\"cantidad\": ").append(item.getcantidad()).append(",");
             json.append("\"precioUnitario\": ").append(item.getprecioUnitario());
             json.append("}");

@@ -31,6 +31,7 @@ public class AuthFilter extends HttpFilter implements Filter {
                 path.equals("/") ||
                 path.equals("/index.html") ||
                 path.equals("/login") ||
+                path.equals("/sales/carrito") ||
                 path.startsWith("/html/auth/") ||
                 path.startsWith("/css/") ||
                 path.startsWith("/js/") ||
@@ -38,32 +39,32 @@ public class AuthFilter extends HttpFilter implements Filter {
                 path.startsWith("/catalog/");
 
         if (publicResource) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        HttpSession session = request.getSession(false);
-        boolean authenticated = session != null && session.getAttribute("usuarioId") != null;
-
-        if (!authenticated) {
-            if (isAjaxRequest(request)) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write("{\"success\":false,\"message\":\"Sesión no iniciada\"}");
-            } else {
-                response.sendRedirect(contextPath + "/html/auth/login.html");
+                chain.doFilter(request, response);
+                return;
             }
-            return;
+
+            HttpSession session = request.getSession(false);
+            boolean authenticated = session != null && session.getAttribute("usuarioId") != null;
+
+            if (!authenticated) {
+                if (isAjaxRequest(request)) {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write("{\"success\":false,\"message\":\"Sesión no iniciada\"}");
+                } else {
+                    response.sendRedirect(contextPath + "/html/auth/login.html");
+                }
+                return;
+            }
+
+            chain.doFilter(request, response);
         }
 
-        chain.doFilter(request, response);
+        private boolean isAjaxRequest(HttpServletRequest request) {
+            String requestedWith = request.getHeader("X-Requested-With");
+            String accept = request.getHeader("Accept");
+            return "XMLHttpRequest".equalsIgnoreCase(requestedWith)
+                    || (accept != null && accept.contains("application/json"));
+        }
     }
-
-    private boolean isAjaxRequest(HttpServletRequest request) {
-        String requestedWith = request.getHeader("X-Requested-With");
-        String accept = request.getHeader("Accept");
-        return "XMLHttpRequest".equalsIgnoreCase(requestedWith)
-                || (accept != null && accept.contains("application/json"));
-    }
-}

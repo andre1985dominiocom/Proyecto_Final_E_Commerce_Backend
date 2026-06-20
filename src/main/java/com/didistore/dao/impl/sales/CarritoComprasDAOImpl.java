@@ -142,7 +142,7 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
     @Override
     public boolean actualizarCantidad(int idItem, int cantidad) {
         
-        String sql = "UPDATE Item_Carrito SET Cantidad = ? WHERE ID_Item = ?";
+        String sql = "UPDATE Item_Carrito SET Cantidad = Cantidad + ? WHERE ID_Item = ?";
         
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -177,7 +177,17 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
     public List<ItemCarritos> listarItems(int carritoId) {
         
         List<ItemCarritos> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Item_Carrito WHERE Carrito_ID = ?";
+        String sql = "i.ID_Item," +
+                     "i.Carrito_ID," +
+                     "i.Producto_ID," +
+                     "i.Cantidad," +
+                     "i.Precio_unitario," +
+                     "i.Subtotal," +
+                     "p.nombre_Producto" +
+                     "FROM Item_Carrito i " +
+                     "INNER JOIN Productos p " +
+                     "ON p.ID_Producto = i.Producto_ID " +
+                     "WHERE i.Carrito_ID = ?;";
         
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -192,6 +202,7 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
                     item.setproductoId(rs.getInt("Producto_ID"));
                     item.setcantidad(rs.getInt("Cantidad"));
                     item.setprecioUnitario(rs.getDouble("Precio_unitario"));
+                    item.setnombreProducto(rs.getString("nombre_Producto"));
                     
                     // Opcional: si tu objeto 'ItemCarritos' tiene la propiedad subtotal,
                     // puedes recuperarla directamente de la columna calculada por MySQL:
@@ -255,6 +266,6 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         }
         
         carrito.setsesionId(rs.getString("Sesion_ID"));
-        return null;
+        return carrito;
     }
 }

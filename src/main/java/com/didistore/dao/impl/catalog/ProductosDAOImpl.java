@@ -405,9 +405,9 @@ public class ProductosDAOImpl implements IProductosDAO {
 
             while(rs.next()){
                 
-                 System.out.println("ID PRODUCTO: " + rs.getInt("id_Producto"));
-
-                 System.out.println("IMAGEN SQL: " + rs.getString("imagenUrl"));
+//                 System.out.println("ID PRODUCTO: " + rs.getInt("id_Producto"));
+//
+//                 System.out.println("IMAGEN SQL: " + rs.getString("imagenUrl"));
 
                 Productos producto = new Productos();
 
@@ -416,7 +416,7 @@ public class ProductosDAOImpl implements IProductosDAO {
                 producto.setdescripcionCorta(rs.getString("descripcion_Corta"));
                 producto.setprecio(rs.getFloat("precio"));
                 producto.setNombreCategoria(rs.getString("Nombre_categoria"));
-                producto.setImagenUrl(rs.getString("Url"));               
+                producto.setImagenUrl(rs.getString("imagenUrl"));               
                 lista.add(producto);
             }
         }catch(SQLException e){

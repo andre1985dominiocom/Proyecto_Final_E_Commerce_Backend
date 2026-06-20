@@ -19,13 +19,13 @@ public class PruebaImagenesProductos {
         ImagenesProductos imagen1 = new ImagenesProductos();
         
         imagen1.setProductoId(1);
-        imagen1.setUrl("assets/images/products/WhatsApp-Image-2025-08-29-at4.48.24-PM.jpg");
+        imagen1.setUrl("assets/images/products/WhatsApp-Image-2025-08-29-at-4.48.24-PM.jpg");
         imagen1.setFormato("jpg");
    
         ImagenesProductos imagen2 = new ImagenesProductos();
         
         imagen2.setProductoId(2);
-        imagen2.setUrl("assets/images/products/WhatsApp-Image-2025-08-29-at4.48.26-PM-4.jpg");
+        imagen2.setUrl("assets/images/products/WhatsApp-Image-2025-08-29-at-4.48.26-PM-4.jpg");
         imagen2.setFormato("jpg");
 
         boolean url1 = imagenDAO.insertarImagen(imagen1);
