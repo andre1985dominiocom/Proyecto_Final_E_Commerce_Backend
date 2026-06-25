@@ -43,7 +43,11 @@ public class PedidosDAOImpl implements IPedidosDAO {
     
             psPedido.setString(1, pedido.getnumeroPedido());
             psPedido.setInt(2, pedido.getusuarioId());
-            psPedido.setInt(3, pedido.getdireccionEnvioId());
+            if (pedido.getdireccionEnvioId() > 0) {
+                psPedido.setInt(3, pedido.getdireccionEnvioId());
+            } else {
+                psPedido.setNull(3, java.sql.Types.INTEGER);
+            }
     
             // Si getEstadoPedido() ya retorna el Enum 'EstadoPedidos', usamos .name()
             psPedido.setString(4, pedido.getestadoPedido().name()); 

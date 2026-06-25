@@ -1,4 +1,4 @@
-import { buildAppUrl } from './core/config.js';
+import { buildAppUrl, buildApiUrl, API_ENDPOINTS } from './core/config.js';
 import { getSession, clearSession } from './core/session.js';
 import "./catalog/catalog-public.js";
 
@@ -17,8 +17,11 @@ if (token) {
 }
 
 document.querySelectorAll('[data-logout-link], [data-logout-action="true"]').forEach((element) => {
-  element.addEventListener('click', (event) => {
+  element.addEventListener('click', async (event) => {
     event.preventDefault();
+    try {
+      await fetch(buildApiUrl(API_ENDPOINTS.logout), { method: 'POST' });
+    } catch (_) {}
     clearSession();
     window.location.href = buildAppUrl('/html/auth/login.html');
   });

@@ -1,6 +1,6 @@
-import { API_ENDPOINTS } from '../core/config.js';
+import { API_ENDPOINTS, buildApiUrl } from '../core/config.js';
 import { request } from '../core/http.js';
-import { setSession } from '../core/session.js';
+import { setSession, clearSession } from '../core/session.js';
 import { setButtonLoading, showToast } from '../core/ui.js';
 
 const form = document.getElementById('login-form');
@@ -104,10 +104,11 @@ async function handleLogin(event) {
 async function logout() {
 
     try {
-        const response = await fetch(bulidAppUrl("/logout"), { 
+        const response = await fetch(buildApiUrl(API_ENDPOINTS.logout), { 
             method:"POST"
-        }
-        )
+        });
+        clearSession();
+        window.location.href = '../auth/login.html';
     } catch(error) {
         console.error("Error cerrando sesión", error);
     }

@@ -30,15 +30,15 @@ public class DireccionesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession();
-        Integer usuarioId = (Integer) session.getAttribute("usuarioId");
+        HttpSession session = request.getSession(false);
+        Integer usuarioId = (session != null) ? (Integer) session.getAttribute("usuarioId") : null;
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         if (usuarioId == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("{\"error\": \"Usuario no autenticado\"}");
+            response.getWriter().write("{\"success\":false,\"error\": \"Usuario no autenticado\"}");
             return;
         }
 
@@ -52,16 +52,26 @@ public class DireccionesServlet extends HttpServlet {
             throws ServletException, IOException {
         
         request.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+
         String action = request.getParameter("action");
-        HttpSession session = request.getSession();
-        Integer usuarioId = (Integer) session.getAttribute("usuarioId");
+        HttpSession session = request.getSession(false);
+        Integer usuarioId = (session != null) ? (Integer) session.getAttribute("usuarioId") : null;
 
         if (usuarioId == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"success\":false,\"message\":\"Usuario no autenticado\"}");
+            return;
+        }
+
+        if (action == null || action.trim().isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("{\"success\":false,\"message\":\"Parámetro 'action' requerido\"}");
             return;
         }
 
         try {
+            boolean resultado = false;
             switch (action) {
                 case "agregar":
                     Direcciones nuevaDir = new Direcciones();
@@ -69,24 +79,32 @@ public class DireccionesServlet extends HttpServlet {
                     nuevaDir.setdireccion(request.getParameter("direccion"));
                     nuevaDir.setbarrio(request.getParameter("barrio"));
                     nuevaDir.setreferencia(request.getParameter("referencia"));
-                    nuevaDir.setciudadId(Integer.parseInt(request.getParameter("ciudadId")));
+                    String ciudadParam = request.getParameter("ciudadId");
+                    nuevaDir.setciudadId(ciudadParam != null && !ciudadParam.isEmpty() ? Integer.parseInt(ciudadParam) : 0);
                     nuevaDir.setestado(EstadoDirecciones.Activa);
-                    controller.agregarDireccion(nuevaDir);
+                    resultado = controller.agregarDireccion(nuevaDir);
                     break;
 
                 case "eliminar":
                     int idEliminar = Integer.parseInt(request.getParameter("idDireccion"));
-                    controller.eliminarDireccion(idEliminar);
+                    resultado = controller.eliminarDireccion(idEliminar);
                     break;
 
                 case "principal":
                     int idPrincipal = Integer.parseInt(request.getParameter("idDireccion"));
-                    controller.establecerPrincipal(usuarioId, idPrincipal); 
+                    resultado = controller.establecerPrincipal(usuarioId, idPrincipal);
                     break;
+
+                default:
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.getWriter().write("{\"success\":false,\"message\":\"Acción no reconocida\"}");
+                    return;
             }
-            response.setStatus(HttpServletResponse.SC_OK);
+            response.setStatus(resultado ? HttpServletResponse.SC_OK : HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("{\"success\":" + resultado + "}");
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("{\"success\":false,\"message\":\"Error interno\"}");
         }
     }    
 }

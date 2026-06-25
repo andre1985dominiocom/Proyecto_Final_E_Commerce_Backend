@@ -296,24 +296,29 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
     @Override 
     public boolean registrarUsuario(Usuarios usuario) {
         
-        String sql = "INSERT INTO usuarios (nombre, email, documento, contrasena, rol) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO usuarios (nombre, apellido, email, documento, contrasena, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion) VALUES (?,?,?,?,?,?,?,?,?,?)";
         
-        try(
-                
-            Connection con = Conexion.getConexion();
-            PreparedStatement ps = con.prepareStatement(sql);) {
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            java.sql.Timestamp ahora = new java.sql.Timestamp(System.currentTimeMillis());
+            String hashedPassword = com.didistore.util.PasswordUtil.encrypt(usuario.getcontrasena());
 
             ps.setString(1, usuario.getnombre());
-            ps.setString(2, usuario.getemail());
-            ps.setString(3, usuario.getdocumento());
-            ps.setString(4, usuario.getcontrasena());
-            ps.setString(5, "CLIENTE");
+            ps.setString(2, usuario.getapellido() != null ? usuario.getapellido() : "");
+            ps.setString(3, usuario.getemail());
+            ps.setString(4, usuario.getdocumento() != null ? usuario.getdocumento() : "");
+            ps.setString(5, hashedPassword);
+            ps.setInt(6, 3); // perfil_id = 3 (CLIENTE)
+            ps.setString(7, "Activo");
+            ps.setBoolean(8, true);
+            ps.setTimestamp(9, ahora);
+            ps.setTimestamp(10, ahora);
 
             return ps.executeUpdate() > 0;
-            } catch(Exception e) {
-                e.printStackTrace();
-
+        } catch (Exception e) {
+            System.err.println("Error al registrar usuario: " + e.getMessage());
             return false;
-            }
+        }
     }
 }

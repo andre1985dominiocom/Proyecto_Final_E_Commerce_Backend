@@ -1,12 +1,11 @@
-import { API_ENDPOINTS, COUPON_DISCOUNTS, STORAGE_KEYS, buildApiUrl } from '../core/config.js';
-import { request } from '../core/http.js';
+import { API_ENDPOINTS, buildApiUrl } from '../core/config.js';
 import {formatCurrency} from "../core/ui.js";
 
 document.addEventListener("DOMContentLoaded", cargarPedidos);
 
 async function cargarPedidos() {
 
-    const response = await fetch(`${API_ENDPOINTS.pedido}?accion=historial`);
+    const response = await fetch(buildApiUrl(`${API_ENDPOINTS.orders}?accion=historial`));
 
     const data = await response.json();
 
