@@ -101,19 +101,20 @@ public class DireccionesDAOImpl implements IDireccionesDAO {
                 ps.setString(3, direccion.getreferencia());
                 ps.setInt(4, direccion.getciudadId());
                 ps.setInt(5, direccion.getusuarioId());
-                ps.setString(6, direccion.getestado() != null ? direccion.getestado().name() : null);
-                ps.setTimestamp(7, direccion.getfechaCreacion());
+                ps.setString(6, direccion.getestado() != null ? direccion.getestado().name() : "Activa");
+                if (direccion.getfechaCreacion() != null) {
+                    ps.setTimestamp(7, direccion.getfechaCreacion());
+                } else {
+                    ps.setTimestamp(7, new java.sql.Timestamp(System.currentTimeMillis()));
+                }
                 ps.setBoolean(8, direccion.getesPrincipal());
                 
                 int filasAfectadas = ps.executeUpdate();
                 
-                if (!con.getAutoCommit()) {
-                    con.commit();
-                }
-
                 if (filasAfectadas > 0) {
                     System.out.println("¡Dirección insertada correctamente en la BD!");
-                }                          
+                    return true;
+                }
             } catch (SQLException e) {
             System.err.println("Error al insertar dirección: " + e.getMessage());
         }

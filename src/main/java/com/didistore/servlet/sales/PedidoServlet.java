@@ -106,7 +106,11 @@ public class PedidoServlet extends HttpServlet {
         try {
             if ("checkout".equals(accion)) {
                 // 1. Extraer datos del formulario de envío
-                int direccionEnvioId = Integer.parseInt(request.getParameter("direccionEnvioId"));
+                String dirParam = request.getParameter("direccionEnvioId");
+                int direccionEnvioId = 0;
+                if (dirParam != null && !dirParam.trim().isEmpty()) {
+                    try { direccionEnvioId = Integer.parseInt(dirParam.trim()); } catch (NumberFormatException ignored) {}
+                }
                 
                 String cuponParam = request.getParameter("cuponId");
                 int cuponId = (cuponParam != null && !cuponParam.isEmpty()) ? Integer.parseInt(cuponParam) : 0;

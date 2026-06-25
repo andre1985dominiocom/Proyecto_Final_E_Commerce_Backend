@@ -65,29 +65,24 @@ public class AdminInventariosController {
     
     public boolean crearInventario(Inventarios inventario) {
         
-        int productoId = 0;
-        int stockActual = 0;
-        int stockMinimo = 0;
-        int stockReservado = 0;
+        if (inventario == null) {
+            System.err.println("Datos de inventario inválidos: objeto nulo.");
+            return false;
+        }
         
         try {
-            if (productoId <= 0 || stockActual < 0 || stockMinimo < 0 || stockReservado < 0) {
-                System.err.println("Datos de inventario inválidos.");
+            if (inventario.getproductoId() <= 0 || inventario.getstockActual() < 0
+                    || inventario.getstockMinimo() < 0 || inventario.getstockReservado() < 0
+                    || inventario.getstockReservado() > inventario.getstockActual()) {
+                System.err.println("Datos de inventario inválidos: valores fuera de rango.");
                 return false;
             }
             
-            Inventarios nuevoInventario = new Inventarios();
-            nuevoInventario.setproductoId(productoId);
-            nuevoInventario.setstockActual(stockActual);
-            nuevoInventario.setstockMinimo(stockMinimo);
-            nuevoInventario.setstockReservado(stockReservado);
-            
             Timestamp fechaActual = new Timestamp(new Date().getTime());
-            nuevoInventario.setfechaCreacion(fechaActual);
-            nuevoInventario.setfechaActualizacion(fechaActual);
+            inventario.setfechaCreacion(fechaActual);
+            inventario.setfechaActualizacion(fechaActual);
             
-            boolean insertado = inventariosDAO.insertarInventario(nuevoInventario);
-            return insertado;
+            return inventariosDAO.insertarInventario(inventario);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
