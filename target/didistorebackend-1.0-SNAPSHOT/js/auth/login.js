@@ -100,3 +100,15 @@ async function handleLogin(event) {
     setButtonLoading(submitButton, false);
   }
 }
+
+async function logout() {
+
+    try {
+        const response = await fetch(bulidAppUrl("/logout"), { 
+            method:"POST"
+        }
+        )
+    } catch(error) {
+        console.error("Error cerrando sesión", error);
+    }
+}

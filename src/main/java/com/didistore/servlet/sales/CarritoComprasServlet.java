@@ -85,7 +85,7 @@ public class CarritoComprasServlet extends HttpServlet {
                 int cantidad = Integer.parseInt(request.getParameter("cantidad"));
                 double precioUnitario = Double.parseDouble(request.getParameter("precioUnitario"));
 
-                boolean exito = carritoController.agregarProductoAlCarrito(carrito.getidCarrito(), productoId, cantidad, precioUnitario);
+                boolean exito = carritoController.agregarProductoAlCarrito(carrito.getidCarrito(), usuarioId, productoId, cantidad, precioUnitario);
                 out.print("{\"success\": " + exito + ", \"message\": \"Producto procesado\"}");
 
             } else if ("actualizar".equals(accion)) {

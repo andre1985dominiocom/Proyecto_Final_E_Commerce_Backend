@@ -12,6 +12,12 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+// El sistema DidiStore utiliza una arquitectura monolítica desplegada en Apache Tomcat 
+// donde frontend y backend comparten el mismo origen. 
+// Por esta razón no se requiere configuración CORS. 
+// En una futura migración a una arquitectura desacoplada (SPA + API REST) 
+// se implementará un CorsFilter configurable mediante archivo de propiedades.
+
 @WebFilter("/*")
 public class CorsFilter implements Filter {
 

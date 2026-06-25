@@ -57,6 +57,20 @@ public class PedidoServlet extends HttpServlet {
             if ("historial".equals(accion)) {
                 List<Pedidos> historial = pedidoController.obtenerHistorialUsuario(usuarioId);
                 String jsonResponse = construirJsonHistorial(historial);
+                out.print(jsonResponse);               
+            } else if ("detalle".equals(accion)) {
+                int pedidoId = Integer.parseInt(request.getParameter("pedidoId"));
+                Pedidos pedido = pedidoController.obtenerDetallePedido(pedidoId);
+                
+                if (pedido == null) {
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    out.print("{\"succes\":false,\"message\":\"Pedido no encontrado\"}");
+                    return;
+                }
+                
+                List<DetallesPedidos> items = pedidoController.obtenerItemsPedido(pedidoId);
+                
+                String jsonResponse = construirJsonDetallePedido(pedido, items);
                 out.print(jsonResponse);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -92,7 +106,7 @@ public class PedidoServlet extends HttpServlet {
         try {
             if ("checkout".equals(accion)) {
                 // 1. Extraer datos del formulario de envío
-                int direccionEnvioId = Integer.parseInt(request.getParameter("direccionId"));
+                int direccionEnvioId = Integer.parseInt(request.getParameter("direccionEnvioId"));
                 
                 String cuponParam = request.getParameter("cuponId");
                 int cuponId = (cuponParam != null && !cuponParam.isEmpty()) ? Integer.parseInt(cuponParam) : 0;
@@ -121,7 +135,7 @@ public class PedidoServlet extends HttpServlet {
                     
                     // Calculamos el snapshot del subtotal del ítem en el momento exacto de la compra
                     double subtotalItem = item.getcantidad() * item.getprecioUnitario();
-                    detalle.setsubTotal(subtotalItem);
+                    detalle.setsubtotal(subtotalItem);
                     
                     detalles.add(detalle);
                     subtotalCarrito += subtotalItem;
@@ -171,6 +185,48 @@ public class PedidoServlet extends HttpServlet {
             }
         }
         json.append("]}");
+        return json.toString();
+    }
+
+    private String construirJsonDetallePedido(Pedidos pedido, List<DetallesPedidos> items) {
+       
+        StringBuilder json = new StringBuilder();
+
+        json.append("{");
+        json.append("\"success\":true,");
+
+        json.append("\"pedido\":{");
+        json.append("\"id\":").append(pedido.getidPedido()).append(",");
+        json.append("\"numeroPedido\":\"").append(pedido.getnumeroPedido()).append("\",");
+        json.append("\"estado\":\"").append(pedido.getestadoPedido()).append("\",");
+        json.append("\"subtotal\":").append(pedido.getsubTotal()).append(",");
+        json.append("\"descuento\":").append(pedido.getdescuento()).append(",");
+        json.append("\"iva\":").append(pedido.getiva()).append(",");
+        json.append("\"costoEnvio\":").append(pedido.getcostoEnvio()).append(",");
+        json.append("\"montoTotal\":").append(pedido.getmontoTotal());
+        json.append("},");
+
+        json.append("\"items\":[");
+
+        for (int i = 0; i < items.size(); i++) {
+
+        DetallesPedidos item = items.get(i);
+
+        json.append("{");
+        json.append("\"productoId\":").append(item.getproductoId()).append(",");
+        json.append("\"cantidad\":").append(item.getcantidad()).append(",");
+        json.append("\"precioUnitario\":").append(item.getprecioUnitario()).append(",");
+        json.append("\"subtotal\":").append(item.getsubtotal());
+        json.append("}");
+
+        if (i < items.size() - 1) {
+            json.append(",");
+        }
+    }
+
+        json.append("]");
+        json.append("}");
+        
         return json.toString();
     }
 }

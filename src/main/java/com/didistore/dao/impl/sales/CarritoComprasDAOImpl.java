@@ -252,7 +252,40 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
             e.printStackTrace();
         }
         return 0.0;
-    }    
+    }
+
+    @Override
+    public List<ItemCarritos> obtenerProductosPorUsuario(int usuarioId) {
+        
+        List<ItemCarritos> lista = new ArrayList<>();
+    
+    // Consulta SQL: Asume que tu tabla de items tiene relación con CarritoCompras
+    String sql = "SELECT i.* FROM ItemCarritos i " +
+                 "JOIN CarritoCompras c ON i.Carrito_Id = c.ID_Carrito " +
+                 "WHERE c.usuario_Id = ?";
+
+    try (Connection con = Conexion.getConexion();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        
+        ps.setInt(1, usuarioId);
+        ResultSet rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            ItemCarritos item = new ItemCarritos();
+            item.setidItem(rs.getInt("id_Item"));
+            item.setcarritoId(rs.getInt("carrito_Id"));
+            item.setproductoId(rs.getInt("producto_Id"));
+            item.setcantidad(rs.getInt("cantidad"));
+            item.setprecioUnitario(rs.getDouble("precio_Unitario"));
+            item.setnombreProducto(rs.getString("nombre_Producto"));
+            
+            lista.add(item);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener items del carrito: " + e.getMessage());
+    }
+        return lista;
+    }
 
     private CarritoCompras mapearCarrito(ResultSet rs) throws SQLException {
         

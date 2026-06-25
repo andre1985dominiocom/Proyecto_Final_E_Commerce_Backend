@@ -16,9 +16,15 @@ public interface IInventariosDAO {
     
     Inventarios consultarInventarioPorId(int idInventario);
     
-    void insertarInventario(Inventarios inventario);
+    boolean insertarInventario(Inventarios inventario);
     
     boolean actualizarInventario(Inventarios inventario);
     
     boolean eliminarInventario(int idInventario);
+    
+    int obtenerStockDisponible(int productoId);
+    
+    boolean hayStockSuficiente(int productoId, int cantidad); 
+    
+    boolean descontarStock(int productoId, int cantidad);
 }

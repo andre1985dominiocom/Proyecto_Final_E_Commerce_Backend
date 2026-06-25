@@ -36,8 +36,21 @@ public class UsuariosController {
         usuario.setfechaActualizacion(new Timestamp(System.currentTimeMillis()));
         usuariosDAO.actualizarUsuarios(usuario);
     }
+    
+    public Usuarios consultarUsuarioPorId(int idUsuario) {
+        
+        
+        return usuariosDAO.consultarUsuariosPorId(idUsuario);
+    }
 
     public void eliminarUsuario(int idUsuario) {
         usuariosDAO.eliminarUsuarios(idUsuario);
+    }
+    
+    public boolean registrarCliente(Usuarios usuario) {
+        
+        usuario.setperfilId(3);
+        
+        return usuariosDAO.registrarUsuario(usuario);
     }
 }

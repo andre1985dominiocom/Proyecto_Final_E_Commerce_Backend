@@ -111,7 +111,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
     }
 
     @Override
-    public void insertarInventario(Inventarios inventario) {
+    public boolean insertarInventario(Inventarios inventario) {
         
         String sql = "INSERT INTO Inventarios (Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion) VALUES (?, ?, ?, ?, ?, ?)";
         
@@ -135,8 +135,9 @@ public class InventariosDAOImpl implements IInventariosDAO {
                     System.out.println("¡Inventario insertado correctamente en la BD!");
                 }                          
             } catch (SQLException e) {
-                System.err.println("Error al listar inventario: " + e.getMessage());
+                System.err.println("Error al insertar inventario: " + e.getMessage());
         }
+        return false;
     }
 
     @Override
@@ -197,5 +198,54 @@ public class InventariosDAOImpl implements IInventariosDAO {
             System.err.println("Error al eliminar inventario: " + e.getMessage());
         }
         return false;
+    }
+    
+    @Override
+    public int obtenerStockDisponible(int productoId) {
+        
+        String sql = " SELECT (stock_Actual - stock_Reservado) AS disponible FROM inventarios WHERE producto_id = ? ";
+
+        try (
+            Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql); ) {
+            
+                ps.setInt(1, productoId);
+
+                ResultSet rs = ps.executeQuery();
+
+                if(rs.next()) {    
+                    return rs.getInt("disponible");
+                }
+                return 0;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return 0;        
+        }
+    }
+    
+    @Override
+    public boolean hayStockSuficiente(int productoId, int cantidad) {
+        
+        return obtenerStockDisponible(productoId) >= cantidad;
+    }
+
+    @Override
+    public boolean descontarStock(int productoId, int cantidad) {
+        
+        String sql = " UPDATE inventarios SET stock_actual = stock_actual - ? WHERE producto_id = ? AND stock_actual >= ? ";
+
+        try (
+            Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, cantidad);
+            ps.setInt(2, productoId);
+            ps.setInt(3, cantidad);
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

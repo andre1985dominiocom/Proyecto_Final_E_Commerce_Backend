@@ -91,5 +91,5 @@ public class Pedidos {
     public void setfechaPedido(Timestamp fechaPedido) { this.fechaPedido = fechaPedido; }
     
     public int getcarritoId() { return carritoId; }
-    public void setcarritoId(int carritoId) { this.costoEnvio = carritoId; }
+    public void setcarritoId(int carritoId) { this.carritoId = carritoId; }
 }

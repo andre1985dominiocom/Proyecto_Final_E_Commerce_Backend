@@ -4,6 +4,7 @@ package com.didistore.servlet.auth;
 import com.didistore.controller.auth.SesionesController;
 import com.didistore.dao.impl.auth.UsuariosDAOImpl;
 import com.didistore.model.auth.Usuarios;
+import com.didistore.model.auth.enums.EstadoUsuarios;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.HashMap;
@@ -88,6 +89,23 @@ public class LoginServlet extends HttpServlet {
             response.getWriter().write(gson.toJson(resultado));
             return;
         }
+        
+        if (usuario.getestado() == null || usuario.getestado() != EstadoUsuarios.Activo) {
+            
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            
+            resultado.put(
+                "success", 
+                    false );
+            
+            resultado.put(
+                "message",
+                "Usuario inactivo o bloqueado" );
+            
+            response.getWriter().write(gson.toJson(resultado));
+            
+            return;
+        }
 
         int perfilId = usuario.getperfilId();
         String rol = mapRol(perfilId);
@@ -97,7 +115,8 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("email", usuario.getemail());
         session.setAttribute("nombre", usuario.getnombre());
         session.setAttribute("apellido", usuario.getapellido());
-        session.setAttribute("perfilId", perfilId);
+        session.setAttribute("perfilId", usuario.getperfilId());
+        session.setAttribute("estado", usuario.getestado());
         session.setAttribute("rol", rol);
 
         Map<String, Object> usuarioData = new HashMap<>();
@@ -106,6 +125,7 @@ public class LoginServlet extends HttpServlet {
         usuarioData.put("nombre", usuario.getnombre());
         usuarioData.put("apellido", usuario.getapellido());
         usuarioData.put("perfilId", perfilId);
+        usuarioData.put("estado", usuario.getestado());
         usuarioData.put("rol", rol);
 
         resultado.put("success", true);

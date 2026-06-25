@@ -115,7 +115,7 @@ public class TokensRecuperacionServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
         resultado.put("success", true);
         resultado.put("message", "Token generado correctamente");
-        resultado.put("token", token.gettokenHash());
+        //resultado.put("token", token.gettokenHash());
 
         response.getWriter().write(gson.toJson(resultado));
     }

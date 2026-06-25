@@ -31,7 +31,8 @@ export const STORAGE_KEYS = {
 
 export const API_ENDPOINTS = {
   login: '/login',
-  users: '/admin/usuarios',
+  logout: '/logout',
+  users: '/auth/registro',
   products: '/admin/productos',
   categories: '/admin/categorias',
   inventory: '/admin/inventarios',

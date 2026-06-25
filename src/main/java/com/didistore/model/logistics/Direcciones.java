@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 public class Direcciones {
     private int idDireccion;
     private String direccion;
-    private int esPrincipal;
+    private boolean esPrincipal;
     private String barrio;
     private String referencia;
     private int ciudadId;
@@ -23,7 +23,7 @@ public class Direcciones {
     
     public Direcciones (int idDireccion,
             String direccion,
-            int esPrincipal,
+            boolean esPrincipal,
             String barrio,
             String referencia,
             int ciudadId,
@@ -48,8 +48,8 @@ public class Direcciones {
     public String getdireccion() { return direccion; }
     public void setdireccion(String direccion) { this.direccion = direccion; }
     
-    public int getesPrincipal() { return esPrincipal; }
-    public void setesPrincipal(int esPrincipal) { this.esPrincipal = esPrincipal; }
+    public boolean getesPrincipal() { return esPrincipal; }
+    public void setesPrincipal(boolean esPrincipal) { this.esPrincipal = esPrincipal; }
     
     public String getbarrio() { return barrio; }
     public void setbarrio(String barrio) { this.barrio = barrio; }

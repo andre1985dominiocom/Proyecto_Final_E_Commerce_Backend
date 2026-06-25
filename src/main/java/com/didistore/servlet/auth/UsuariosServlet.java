@@ -120,7 +120,9 @@ public class UsuariosServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         BufferedReader reader = request.getReader();
+        
         Usuarios usuario = gson.fromJson(reader, Usuarios.class);
+        Usuarios usuarioBD = usuariosController.consultarUsuarioPorId(usuario.getidUsuario());
 
         Map<String, Object> resultado = new HashMap<>();
 
@@ -131,8 +133,36 @@ public class UsuariosServlet extends HttpServlet {
             response.getWriter().write(gson.toJson(resultado));
             return;
         }
+        
+        if (usuarioBD == null) {
+            resultado.put("success", false);
+            resultado.put("message", "Usuario no existe");
+            response.getWriter().write(gson.toJson(resultado));
+            return;
+        }
+        
+        usuarioBD.setnombre(usuario.getnombre());
+        usuarioBD.setapellido(usuario.getapellido());
+        usuarioBD.setemail(usuario.getemail());
+        usuarioBD.setdocumento(usuario.getdocumento());
+        usuarioBD.setperfilId(usuario.getperfilId());
+        usuarioBD.setestado(usuario.getestado());
+        
+        String password = usuario.getcontrasena();
+        
+        if (password != null && !password.trim().isEmpty()) {
+            
+            if (!password.startsWith("$2a$") &&
+                !password.startsWith("$2b$") &&
+                !password.startsWith("$2y$")) {
+                
+                usuarioBD.setcontrasena(PasswordUtil.encrypt(password));
+            } else {
+                usuarioBD.setcontrasena(password);
+            }
+        }
 
-        usuariosController.actualizarUsuario(usuario);
+        usuariosController.actualizarUsuario(usuarioBD);
 
         response.setStatus(HttpServletResponse.SC_OK);
         resultado.put("success", true);

@@ -25,10 +25,12 @@ public class PedidosDAOImpl implements IPedidosDAO {
         
         String sqlPedido = "INSERT INTO Pedidos (Numero_pedido, Usuario_ID, Direccion_envio_ID, Estado_pedido, Subtotal, Descuento, IVA, Costo_envio, Monto_Total, Cupon_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String sqlDetalle = "INSERT INTO Detalles_Pedidos (Pedido_ID, Producto_ID, Cantidad, Precio_unitario, Subtotal) VALUES (?, ?, ?, ?, ?)";
-
+        String sqlInventario = " UPDATE Inventarios SET Stock_actual = Stock_actual - ? WHERE Producto_ID = ? AND Stock_actual >= ? ";
+        
         Connection con = null;
         PreparedStatement psPedido = null;
         PreparedStatement psDetalle = null;
+        PreparedStatement psInventario = null;
         ResultSet rs = null;
 
         try {
@@ -82,12 +84,26 @@ public class PedidosDAOImpl implements IPedidosDAO {
                     psDetalle.setInt(2, detalle.getproductoId());
                     psDetalle.setInt(3, detalle.getcantidad());
                     psDetalle.setDouble(4, detalle.getprecioUnitario());
-                    psDetalle.setDouble(5, detalle.getsubTotal()); 
+                    psDetalle.setDouble(5, detalle.getsubtotal()); 
                     psDetalle.addBatch(); // Empaquetamos para procesar en lote
                 }
 
                 psDetalle.executeBatch();
+                
+                psInventario = con.prepareStatement(sqlInventario);
+                
+                for (DetallesPedidos detalle : detalles) {
 
+                    psInventario.setInt(1, detalle.getcantidad());
+                    psInventario.setInt(2, detalle.getproductoId());
+                    psInventario.setInt(3, detalle.getcantidad());
+
+                    int filas = psInventario.executeUpdate();
+
+                    if (filas == 0) {
+                        throw new SQLException("Stock insuficiente para producto " + detalle.getproductoId());
+                    }            
+                }
             // Si todo se ejecutó sin errores, guardamos los cambios definitivamente
             con.commit();
             return true;
@@ -109,12 +125,13 @@ public class PedidosDAOImpl implements IPedidosDAO {
                 if (rs != null) rs.close();
                 if (psPedido != null) psPedido.close();
                 if (psDetalle != null) psDetalle.close();
+                if (psInventario != null) psInventario.close();
                 if (con != null) con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return false;
         }
+        return false;
     }
 
     @Override
@@ -221,7 +238,7 @@ public class PedidosDAOImpl implements IPedidosDAO {
                     detalle.setproductoId(rs.getInt("Producto_ID"));
                     detalle.setcantidad(rs.getInt("Cantidad"));
                     detalle.setprecioUnitario(rs.getDouble("Precio_unitario"));
-                    detalle.setsubTotal(rs.getDouble("Subtotal")); // Snapshot financiero de la BD
+                    detalle.setsubtotal(rs.getDouble("Subtotal")); // Snapshot financiero de la BD
                     
                     lista.add(detalle);
                 }
@@ -236,9 +253,9 @@ public class PedidosDAOImpl implements IPedidosDAO {
     public double calcularVentasMesActual() {
         // Suma el total de pedidos cuyo estado sea 'Pagado' o 'Entregado' dentro del mes en curso
         String sql = "SELECT SUM(Total) AS total_mes FROM Pedidos " +
-                 "WHERE Estado_pedido IN ('Pendiente_Pago', 'Pagado', 'En_Preparación', 'Despacahado', 'En_Transito', Entregado', 'Cancelado', 'Devuelto') " +
-                 "AND MONTH(Fecha_creacion) = MONTH(CURRENT_DATE()) " +
-                 "AND YEAR(Fecha_creacion) = YEAR(CURRENT_DATE())";
+                 "WHERE Estado_pedido IN ('Pendiente_Pago', 'Pagado', 'En_Preparación', 'Despachado', 'En_Transito', 'Entregado', 'Cancelado', 'Devuelto') " +
+                 "AND MONTH(Fecha_pedido) = MONTH(CURRENT_DATE()) " +
+                 "AND YEAR(Fecha_pedido) = YEAR(CURRENT_DATE())";
     
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -270,7 +287,7 @@ public class PedidosDAOImpl implements IPedidosDAO {
         }
         return 0;
     }
-
+    
     private Pedidos mapearPedido(ResultSet rs) throws SQLException {
         Pedidos pedido = new Pedidos();
         pedido.setidPedido(rs.getInt("ID_Pedido"));

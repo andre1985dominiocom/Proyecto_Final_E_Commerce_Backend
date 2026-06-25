@@ -51,11 +51,11 @@ public class RoleFilter extends HttpFilter implements Filter {
 
         HttpSession session = request.getSession(false);
 
-        if (session == null || session.getAttribute("rol") == null) {
-            chain.doFilter(request, response);
+        if (session == null) {
+            response.sendError(401);
             return;
         }
-
+        
         String rol = String.valueOf(session.getAttribute("rol")).trim().toUpperCase();
 
         if (path.startsWith("/admin/usuarios")

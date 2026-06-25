@@ -2,6 +2,7 @@ com\didistore\dao\interfaces\sales\IHistorialEstadoPedidosDAO.class
 com\didistore\servlet\auth\PermisosServlet.class
 com\didistore\model\logistics\Direcciones.class
 com\didistore\servlet\admin\AdminProductosServlet.class
+com\didistore\dao\impl\logistics\DireccionesDAOImpl.class
 com\didistore\dao\interfaces\catalog\IProductosDAO.class
 com\didistore\dao\interfaces\catalog\IInventariosDAO.class
 com\didistore\servlet\auth\LoginServlet$LoginRequest.class
@@ -26,6 +27,7 @@ com\didistore\dao\impl\catalog\CategoriasDAOImpl.class
 com\didistore\servlet\catalog\ProductosServlet.class
 com\didistore\controller\auth\PermisosController.class
 com\didistore\model\sales\enums\EstadoPedidos.class
+com\didistore\servlet\auth\LogoutServlet.class
 com\didistore\model\auth\Telefonos.class
 com\didistore\dao\interfaces\sales\ICarritoComprasDAO.class
 com\didistore\dao\impl\auth\TokensRecuperacionDAOImpl.class
@@ -77,12 +79,15 @@ com\didistore\model\marketing\Devoluciones.class
 com\didistore\dao\impl\catalog\WishlistDAOImpl.class
 com\didistore\dao\impl\sales\CarritoComprasDAOImpl.class
 com\didistore\util\ResponseUtil.class
+com\didistore\controller\logistics\DireccionesController.class
+com\didistore\servlet\auth\RegistroServlet.class
 com\didistore\servlet\catalog\CategoriasServlet.class
 com\didistore\controller\auth\UsuariosController.class
 com\didistore\dao\interfaces\auth\ITelefonosDAO.class
 com\didistore\config\filter\RoleFilter.class
 com\didistore\servlet\admin\AdminDashboardServlet.class
 com\didistore\controller\sales\PedidoController.class
+com\didistore\dao\interfaces\logistics\IDireccionesDAO.class
 com\didistore\servlet\admin\AdminCategoriasServlet.class
 com\didistore\dao\impl\auth\SesionesDAOImpl.class
 com\didistore\dao\interfaces\auth\IUsuariosDAO.class
@@ -108,6 +113,7 @@ com\didistore\model\sales\enums\MetodoPagos.class
 com\didistore\model\logistics\Departamentos.class
 com\didistore\controller\auth\TokensRecuperacionController.class
 com\didistore\servlet\auth\TokensRecuperacionServlet.class
+com\didistore\servlet\logistics\DireccionesServlet.class
 com\didistore\dao\interfaces\logistics\DepartamentosDAO.class
 com\didistore\dao\interfaces\sales\IPagosDAO.class
 com\didistore\dao\impl\sales\PedidosDAOImpl.class

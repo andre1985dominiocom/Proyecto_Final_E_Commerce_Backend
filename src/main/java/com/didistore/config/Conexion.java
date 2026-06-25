@@ -1,8 +1,11 @@
 package com.didistore.config;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 
 /**
@@ -11,27 +14,37 @@ import java.sql.SQLException;
  */
 public class Conexion {
     
-    private static final String DATABASE = "db_e_commerce_didistore";
-    private static final String URL = "jdbc:mysql://localhost:3306/" + DATABASE;
-    private static final String USER = "root";
-    private static final String PASSWORD = "6719980";
-    
-    private static Connection conexion = null;
-    
-    public static Connection getConexion() {
-        
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
-            if (conexion == null || conexion.isClosed()) {
-            conexion = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Conexión exitosa a: " + DATABASE);
+    private static final Properties props = new Properties();
+
+        static {
+             try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+
+                try (InputStream input =
+                        Conexion.class.getClassLoader().getResourceAsStream("database.properties")) {
+
+                    if (input == null) {
+                        throw new RuntimeException("No se encontró database.properties");
+                    }
+                    props.load(input);
+                }
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Driver MySQL no encontrado", e);
+            } catch (IOException e) {
+                throw new RuntimeException("Error cargando database.properties",e);
             }
-        } catch (ClassNotFoundException ex) {
-            System.err.println("Error: No se encontró el driver de MySQL (Revisa el pom.xml)");
-        } catch (SQLException e) {
-        System.err.println("Error de conexión: " + e.getMessage());
         }
-        return conexion;
+    
+    public static Connection getConexion() throws SQLException {
+
+        String dbName = props.getProperty("db.name");
+        String dbUser = props.getProperty("db.user");
+        String dbPassword = props.getProperty("db.password");
+        String dbHost = props.getProperty("db.host");
+        String dbPort = props.getProperty("db.port");
+
+        String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
+
+        return DriverManager.getConnection(url, dbUser, dbPassword);
     }
 }

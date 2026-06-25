@@ -34,4 +34,6 @@ public interface ICarritoComprasDAO {
     boolean vaciarCarrito(int carritoId);
     
     double obtenerTotal(int carritoId);
+    
+    List<ItemCarritos> obtenerProductosPorUsuario(int usuarioId);
 }

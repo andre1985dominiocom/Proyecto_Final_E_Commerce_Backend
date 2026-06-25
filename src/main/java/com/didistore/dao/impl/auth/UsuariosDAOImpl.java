@@ -59,7 +59,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
 
         List<Usuarios> lista = new ArrayList<>();
 
-        String sql = "SELECT id_Usuario, email, contrasena, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login FROM usuarios";
+        String sql = "SELECT id_Usuario, email, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login FROM usuarios";
 
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -70,7 +70,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
 
                 usuario.setidUsuario(rs.getInt("id_Usuario"));
                 usuario.setemail(rs.getString("email"));
-                usuario.setcontrasena(rs.getString("contrasena"));
+                //usuario.setcontrasena(rs.getString("contrasena"));
                 usuario.setnombre(rs.getString("nombre"));
                 usuario.setapellido(rs.getString("apellido"));
                 usuario.setdocumento(rs.getString("documento"));
@@ -104,16 +104,16 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
 
     // Método para consultar un usuario por su ID.
     @Override
-    public Usuarios consultarUsuariosPorId(int usuarioId) {
+    public Usuarios consultarUsuariosPorId(int idUsuario) {
 
-        String sql = "SELECT id_Usuario, email, contrasena, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login FROM usuarios WHERE id_Usuario = ?";
+        String sql = "SELECT id_Usuario, email, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login FROM usuarios WHERE id_Usuario = ?";
 
         Usuarios usuario = null;
 
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, usuarioId);
+            ps.setInt(1, idUsuario);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -121,7 +121,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
 
                     usuario.setidUsuario(rs.getInt("id_Usuario"));
                     usuario.setemail(rs.getString("email"));
-                    usuario.setcontrasena(rs.getString("contrasena"));
+                    //usuario.setcontrasena(rs.getString("contrasena"));
                     usuario.setnombre(rs.getString("nombre"));
                     usuario.setapellido(rs.getString("apellido"));
                     usuario.setdocumento(rs.getString("documento"));
@@ -156,7 +156,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
     @Override
     public Usuarios consultarUsuariosPorEmail(String email) {
 
-        String sql = "SELECT id_Usuario, email, contrasena, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login FROM usuarios WHERE email = ?";
+        String sql = "SELECT id_Usuario, email, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login FROM usuarios WHERE email = ?";
 
         Usuarios usuario = null;
 
@@ -171,7 +171,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
 
                     usuario.setidUsuario(rs.getInt("id_Usuario"));
                     usuario.setemail(rs.getString("email"));
-                    usuario.setcontrasena(rs.getString("contrasena"));
+                    //usuario.setcontrasena(rs.getString("contrasena"));
                     usuario.setnombre(rs.getString("nombre"));
                     usuario.setapellido(rs.getString("apellido"));
                     usuario.setdocumento(rs.getString("documento"));
@@ -291,5 +291,29 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         } catch (SQLException e) {
             System.err.println("Error al eliminar usuario: " + e.getMessage());
         }
+    }
+    
+    @Override 
+    public boolean registrarUsuario(Usuarios usuario) {
+        
+        String sql = "INSERT INTO usuarios (nombre, email, documento, contrasena, rol) VALUES (?,?,?,?,?)";
+        
+        try(
+                
+            Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql);) {
+
+            ps.setString(1, usuario.getnombre());
+            ps.setString(2, usuario.getemail());
+            ps.setString(3, usuario.getdocumento());
+            ps.setString(4, usuario.getcontrasena());
+            ps.setString(5, "CLIENTE");
+
+            return ps.executeUpdate() > 0;
+            } catch(Exception e) {
+                e.printStackTrace();
+
+            return false;
+            }
     }
 }

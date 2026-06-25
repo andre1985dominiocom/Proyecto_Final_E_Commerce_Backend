@@ -27,10 +27,10 @@ public class AdminDashboardController {
             PrintWriter out = response.getWriter();
 
             // Aquí llamarías a los métodos de tus DAOs para traer datos reales
-            double ventasMes = 0;  pedidosDAO.calcularVentasMesActual();
-            int pedidosNuevos = 0; pedidosDAO.contarPedidosNuevos();
-            int totalUsuarios = 0; usuariosDAO.listarUsuarios();
-            int productosActivos = 0; productosDAO.listarProductos();
+            double ventasMes = pedidosDAO.calcularVentasMesActual();
+            int pedidosNuevos = pedidosDAO.contarPedidosNuevos();
+            int totalUsuarios = usuariosDAO.listarUsuarios().size();
+            int productosActivos = productosDAO.listarProductos().size();
 
             // Construcción manual de respuesta JSON estándar
             String json = String.format(

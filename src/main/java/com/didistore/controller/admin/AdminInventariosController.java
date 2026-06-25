@@ -4,7 +4,9 @@ package com.didistore.controller.admin;
 import com.didistore.dao.impl.catalog.InventariosDAOImpl;
 import com.didistore.dao.interfaces.catalog.IInventariosDAO;
 import com.didistore.model.catalog.Inventarios;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,6 +61,37 @@ public class AdminInventariosController {
         }
 
         return inventariosDAO.actualizarInventario(inventario);
+    }
+    
+    public boolean crearInventario(Inventarios inventario) {
+        
+        int productoId = 0;
+        int stockActual = 0;
+        int stockMinimo = 0;
+        int stockReservado = 0;
+        
+        try {
+            if (productoId <= 0 || stockActual < 0 || stockMinimo < 0 || stockReservado < 0) {
+                System.err.println("Datos de inventario inválidos.");
+                return false;
+            }
+            
+            Inventarios nuevoInventario = new Inventarios();
+            nuevoInventario.setproductoId(productoId);
+            nuevoInventario.setstockActual(stockActual);
+            nuevoInventario.setstockMinimo(stockMinimo);
+            nuevoInventario.setstockReservado(stockReservado);
+            
+            Timestamp fechaActual = new Timestamp(new Date().getTime());
+            nuevoInventario.setfechaCreacion(fechaActual);
+            nuevoInventario.setfechaActualizacion(fechaActual);
+            
+            boolean insertado = inventariosDAO.insertarInventario(nuevoInventario);
+            return insertado;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }       
     }
     
     public boolean eliminarInventario(int idInventario) {
