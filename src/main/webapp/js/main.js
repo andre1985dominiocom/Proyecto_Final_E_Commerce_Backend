@@ -1,8 +1,10 @@
 import { buildAppUrl, buildApiUrl, API_ENDPOINTS } from './core/config.js';
 import { getSession, clearSession } from './core/session.js';
+import { initCartBadge } from './core/cart-badge.js';
 import "./catalog/catalog-public.js";
 
 const { token, user } = getSession();
+initCartBadge();
 
 if (token) {
   document.querySelectorAll('[data-auth-link]').forEach((link) => {
