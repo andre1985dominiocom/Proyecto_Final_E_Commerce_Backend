@@ -177,7 +177,8 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
     public List<ItemCarritos> listarItems(int carritoId) {
         
         List<ItemCarritos> lista = new ArrayList<>();
-        String sql = "i.ID_Item," +
+        String sql = "SELECT, " +
+                     "i.ID_Item," +
                      "i.Carrito_ID," +
                      "i.Producto_ID," +
                      "i.Cantidad," +

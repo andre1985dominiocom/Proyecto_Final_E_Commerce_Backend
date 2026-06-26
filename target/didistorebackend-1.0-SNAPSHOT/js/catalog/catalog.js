@@ -262,7 +262,8 @@ function setupAddToCart(cards) {
         } else {
           showToast(result.message || 'No se pudo agregar el producto al carrito.', 'error');
         }
-      } catch (_) {
+      } catch (error) {
+        console.error('Error agregando producto al carrito:', error);
         showToast('No se pudo conectar con el carrito.', 'error');
       }
     });
