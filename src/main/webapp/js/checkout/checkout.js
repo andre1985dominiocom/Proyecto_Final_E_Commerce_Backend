@@ -62,6 +62,7 @@ async function procesarPedido(e) {
     const cuponInput = document.getElementById("coupon-code") || document.getElementById("cupon");
     if (cuponInput && cuponInput.value) {
         const cuponValor = cuponInput.value.trim();
+        // Backend espera cuponId numérico; códigos textuales se omiten para evitar NumberFormatException.
         if (/^\d+$/.test(cuponValor)) {
             params.append("cuponId", cuponValor);
         }
