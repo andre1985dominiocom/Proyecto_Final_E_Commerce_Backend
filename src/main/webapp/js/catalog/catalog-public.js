@@ -171,12 +171,9 @@ function mostrarProductos(productos){
                 });
             }
 
-            const contador = document.querySelector(".badge--count");
-
-            if(contador) {
-
-            contador.textContent = cantidadTotal;
-            }
+            document.querySelectorAll(".badge--cart").forEach((contador) => {
+                contador.textContent = cantidadTotal;
+            });
         } catch(error) {
         console.error("Error contador carrito", error);
         }

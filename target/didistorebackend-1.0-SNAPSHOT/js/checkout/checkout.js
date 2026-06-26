@@ -54,14 +54,17 @@ async function procesarPedido(e) {
     params.append("accion", "checkout");
 
     // direccionEnvioId: intentar obtener del campo si existe, si no usar 0
-    const direccionSelect = document.getElementById("direccionEnvioId");
+    const direccionSelect = document.getElementById("direccionEnvioId") || form?.querySelector('[name="direccionEnvioId"]');
     const direccionId = direccionSelect ? (direccionSelect.value || 0) : 0;
     params.append("direccionEnvioId", direccionId);
 
     // Cupon si existe
     const cuponInput = document.getElementById("coupon-code") || document.getElementById("cupon");
     if (cuponInput && cuponInput.value) {
-        params.append("cuponId", cuponInput.value.trim());
+        const cuponValor = cuponInput.value.trim();
+        if (/^\d+$/.test(cuponValor)) {
+            params.append("cuponId", cuponValor);
+        }
     }
 
     try {

@@ -1,6 +1,5 @@
-import { CATALOG_ENDPOINTS, STORAGE_KEYS } from '../core/config.js';
+import { API_ENDPOINTS, CATALOG_ENDPOINTS, buildApiUrl } from '../core/config.js';
 import { request } from '../core/http.js';
-import { getJSON, setJSON } from '../core/storage.js';
 import { formatCurrency, showToast } from '../core/ui.js';
 
 const catalogGrid = document.querySelector('.catalog__grid');
@@ -233,21 +232,39 @@ function setupAddToCart(cards) {
   cards.forEach((card) => {
     const button = card.querySelector('.product-card__btn--cart');
     if (!button) return;
-    button.addEventListener('click', () => {
-      const cart = getJSON(STORAGE_KEYS.cart, []);
+    button.addEventListener('click', async () => {
       const name = card.querySelector('.product-card__name')?.textContent?.trim() || 'Producto';
-      const price = Number(card.dataset.price || 0);
-      const id = card.dataset.id || name;
+      const productoId = Number(card.dataset.id || 0);
+      const precioUnitario = Number(card.dataset.price || 0);
 
-      const existingItem = cart.find((item) => item.id === id);
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        cart.push({ id, name, price, quantity: 1 });
+      if (!productoId || !precioUnitario) {
+        showToast('No se pudo identificar el producto.', 'error');
+        return;
       }
 
-      setJSON(STORAGE_KEYS.cart, cart);
-      showToast(`${name} agregado al carrito.`, 'success');
+      const params = new URLSearchParams();
+      params.append('accion', 'agregar');
+      params.append('productoId', String(productoId));
+      params.append('cantidad', '1');
+      params.append('precioUnitario', String(precioUnitario));
+
+      try {
+        const response = await fetch(buildApiUrl(API_ENDPOINTS.cart), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showToast(`${name} agregado al carrito.`, 'success');
+        } else {
+          showToast(result.message || 'No se pudo agregar el producto al carrito.', 'error');
+        }
+      } catch (_) {
+        showToast('No se pudo conectar con el carrito.', 'error');
+      }
     });
   });
 }
