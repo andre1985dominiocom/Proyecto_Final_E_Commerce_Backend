@@ -16,6 +16,9 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz ICarritoComprasDAO para manejar operaciones relacionadas
+// con el carrito de compras y sus items.
 public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
 
     // Métodos carritos de compras
@@ -35,13 +38,14 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
                 ps.setString(2, carrito.getsesionId());
             }
             
-            return ps.executeUpdate() > 0;           
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
-    }  
+    }
 
+    // Método para buscar un carrito de compras por el ID del usuario
     @Override
     public CarritoCompras buscarPorUsuario(int usuarioId) {
         
@@ -63,13 +67,14 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         return null;
     }
 
+    // Método para buscar un carrito de compras por el ID de la sesión
     @Override
     public CarritoCompras buscarPorSesion(String sesionId) {
         
         String sql = "SELECT * FROM Carrito_compras WHERE Sesion_ID = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setString(1, sesionId);
             
@@ -84,13 +89,14 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         return null;
     }
     
+    // Método para actualizar la fecha de actualización del carrito de compras
     @Override
     public boolean actualizarPorFecha(int idCarrito) {
         
         String sql = "UPDATE Carrito_Compras SET Fecha_actualizacion = CURRENT_TIMESTAMP WHERE ID_Carrito = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, idCarrito);
             return ps.executeUpdate() > 0;
@@ -100,6 +106,7 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         return false;
     }
     
+    // Método para eliminar un carrito de compras y sus items asociados
     @Override
     public boolean eliminarCarrito(int idCarrito) {
         
@@ -108,7 +115,7 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         String sql = "DELETE FROM Carrito_Compras WHERE ID_Carrito = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, idCarrito);
             return ps.executeUpdate() > 0;
@@ -125,7 +132,7 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         String sql = "INSERT INTO Item_Carrito (Carrito_ID, Producto_ID, Cantidad, Precio_unitario) VALUES (?, ?, ?, ?)";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, item.getcarritoId());
             ps.setInt(2, item.getproductoId());
@@ -139,13 +146,14 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         return false;
     }
 
+    // Método para actualizar la cantidad de un item en el carrito de compras
     @Override
     public boolean actualizarCantidad(int idItem, int cantidad) {
         
         String sql = "UPDATE Item_Carrito SET Cantidad = Cantidad + ? WHERE ID_Item = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, cantidad);
             ps.setInt(2, idItem);
@@ -157,13 +165,14 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         return false;
     }
 
+    // Método para eliminar un item del carrito de compras
     @Override
     public boolean eliminarItem(int itemId) {
         
         String sql = "DELETE FROM Item_Carrito WHERE ID_Item = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, itemId);
             return ps.executeUpdate() > 0;
@@ -173,25 +182,26 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         return false;
     }
 
+    // Método para listar todos los items de un carrito de compras específico
     @Override
     public List<ItemCarritos> listarItems(int carritoId) {
         
         List<ItemCarritos> lista = new ArrayList<>();
         String sql = "SELECT, " +
-                     "i.ID_Item," +
-                     "i.Carrito_ID," +
-                     "i.Producto_ID," +
-                     "i.Cantidad," +
-                     "i.Precio_unitario," +
-                     "i.Subtotal," +
-                     "p.nombre_Producto" +
-                     "FROM Item_Carrito i " +
-                     "INNER JOIN Productos p " +
-                     "ON p.ID_Producto = i.Producto_ID " +
-                     "WHERE i.Carrito_ID = ?;";
+                    "i.ID_Item," +
+                    "i.Carrito_ID," +
+                    "i.Producto_ID," +
+                    "i.Cantidad," +
+                    "i.Precio_unitario," +
+                    "i.Subtotal," +
+                    "p.nombre_Producto" +
+                    "FROM Item_Carrito i " +
+                    "INNER JOIN Productos p " +
+                    "ON p.ID_Producto = i.Producto_ID " +
+                    "WHERE i.Carrito_ID = ?;";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, carritoId);
             
@@ -205,26 +215,23 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
                     item.setprecioUnitario(rs.getDouble("Precio_unitario"));
                     item.setnombreProducto(rs.getString("nombre_Producto"));
                     
-                    // Opcional: si tu objeto 'ItemCarritos' tiene la propiedad subtotal,
-                    // puedes recuperarla directamente de la columna calculada por MySQL:
-                    // item.setSubtotal(rs.getDouble("Subtotal"));
-                    
                     lista.add(item);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-       return lista;
+        return lista;
     }
 
+    // Método para vaciar todos los items de un carrito de compras específico
     @Override
     public boolean vaciarCarrito(int carritoId) {
         
         String sql = "DELETE FROM Item_Carrito WHERE Carrito_ID = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, carritoId);
             return ps.executeUpdate() > 0; 
@@ -234,13 +241,14 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         return false;
     }
     
+    // Método para obtener el total de un carrito de compras específico
     @Override
     public double obtenerTotal(int carritoId) {
         
         String sql = "SELECT SUM(Subtotal) AS Total FROM Item_Carrito WHERE Carrito_ID = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, carritoId);
             
@@ -255,6 +263,7 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         return 0.0;
     }
 
+    // Método para obtener todos los productos de un carrito de compras por el ID del usuario
     @Override
     public List<ItemCarritos> obtenerProductosPorUsuario(int usuarioId) {
         
@@ -262,11 +271,11 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
     
     // Consulta SQL: Asume que tu tabla de items tiene relación con CarritoCompras
     String sql = "SELECT i.* FROM ItemCarritos i " +
-                 "JOIN CarritoCompras c ON i.Carrito_Id = c.ID_Carrito " +
-                 "WHERE c.usuario_Id = ?";
+                "JOIN CarritoCompras c ON i.Carrito_Id = c.ID_Carrito " +
+                "WHERE c.usuario_Id = ?";
 
     try (Connection con = Conexion.getConexion();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+        PreparedStatement ps = con.prepareStatement(sql)) {
         
         ps.setInt(1, usuarioId);
         ResultSet rs = ps.executeQuery();
@@ -288,6 +297,7 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         return lista;
     }
 
+    // Método privado para mapear un ResultSet a un objeto CarritoCompras
     private CarritoCompras mapearCarrito(ResultSet rs) throws SQLException {
         
         CarritoCompras carrito = new CarritoCompras();

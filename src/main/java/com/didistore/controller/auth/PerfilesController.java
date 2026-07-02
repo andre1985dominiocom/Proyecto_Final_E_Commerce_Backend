@@ -10,9 +10,11 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las operaciones relacionadas con los perfiles de usuario.
 public class PerfilesController {
 
-     private final IPerfilesDAO perfilesDAO;
+    private final IPerfilesDAO perfilesDAO;
 
     public PerfilesController() {
         this.perfilesDAO = new PerfilesDAOImpl();
@@ -47,4 +49,4 @@ public class PerfilesController {
             perfilesDAO.eliminarPerfiles(perfilId);
         }
     }
-}                              
+}

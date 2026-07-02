@@ -17,12 +17,14 @@ import java.util.Map;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Servlet para validar un token de recuperación de contraseña.
 @WebServlet("/auth/validar-token")
 public class ValidarTokenServlet extends HttpServlet {
     
     private final Gson gson = new Gson();
     private final TokensRecuperacionController tokenController = new TokensRecuperacionController();
 
+    // Maneja las solicitudes GET para validar un token de recuperación de contraseña.
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

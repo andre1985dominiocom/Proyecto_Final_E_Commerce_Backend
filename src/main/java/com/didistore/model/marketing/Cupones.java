@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa un cupón de descuento en el sistema de marketing.
 public class Cupones {
     private int idCupon;
     private String codigo;
@@ -24,8 +26,10 @@ public class Cupones {
     private EstadoCupones estado;
     private Timestamp fechaCreacion;
     
+    // Constructor vacío para la clase Cupones.
     public Cupones() {}
-    
+
+    // Constructor que inicializa todos los atributos de la clase Cupones.
     public Cupones(int idCupon,
             String codigo,
             TipoDescuentos tipoDescuento,
@@ -51,6 +55,7 @@ public class Cupones {
         this.fechaCreacion = fechaCreacion;
     }
     
+    // Getters y Setters para los atributos de la clase Cupones.
     public int getidCupon() { return idCupon; }
     public void setidCupon(int idCupon) { this.idCupon = idCupon; }
     

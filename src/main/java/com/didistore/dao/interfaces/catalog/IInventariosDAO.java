@@ -8,6 +8,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para la gestión de inventarios en la base de datos
 public interface IInventariosDAO {
     
     List<Inventarios> listarInventario();

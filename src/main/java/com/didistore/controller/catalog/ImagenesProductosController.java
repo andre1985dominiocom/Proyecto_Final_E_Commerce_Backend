@@ -11,6 +11,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las operaciones relacionadas con las imágenes de productos.
 public class ImagenesProductosController {
     
     private final IImagenesProductosDAO imagenesDAO;

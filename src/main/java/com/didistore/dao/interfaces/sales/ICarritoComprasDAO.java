@@ -9,6 +9,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para el manejo de los carritos de compras y sus items
 public interface ICarritoComprasDAO {
     
      // Carrito de compras

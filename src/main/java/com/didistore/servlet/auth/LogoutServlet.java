@@ -15,10 +15,12 @@ import java.io.PrintWriter;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir cerrar sesión desde el cliente, eliminando la sesión del servidor y devolviendo un mensaje de éxito.
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
     
-     @Override
+    // Procesar la solicitud de cierre de sesión, invalidando la sesión actual y devolviendo un mensaje JSON de éxito.
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
 
@@ -33,16 +35,18 @@ public class LogoutServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter(); out.print("""
             {
-              "ok": true,
-              "message": "Sesión cerrada correctamente"
+            "ok": true,
+            "message": "Sesión cerrada correctamente"
             }
         """);
     }
 
+    // Permitir que la solicitud GET también cierre la sesión,
+    // llamando al método doPost para manejar la lógica de cierre de sesión.
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
 
         doPost(request,response);
-    }    
+    }
 }

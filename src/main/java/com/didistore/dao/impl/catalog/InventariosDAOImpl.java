@@ -15,8 +15,11 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz IInventariosDAO para realizar operaciones CRUD en la tabla Inventarios
 public class InventariosDAOImpl implements IInventariosDAO {
 
+    // Implementación del método listarInventario() para obtener todos los registros de la tabla Inventarios
     @Override
     public List<Inventarios> listarInventario() {
         
@@ -25,8 +28,8 @@ public class InventariosDAOImpl implements IInventariosDAO {
         String sql = "SELECT Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion  FROM Inventarios";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Inventarios inventario = new Inventarios();
@@ -47,6 +50,8 @@ public class InventariosDAOImpl implements IInventariosDAO {
         return lista;
     }
 
+    // Implementación del método listarPorProducto() para obtener los registros
+    // de la tabla Inventarios filtrados por el ID del producto
     @Override
     public List<Inventarios> listarPorProducto(int productoId) {
         
@@ -55,7 +60,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
         String sql = "SELECT Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion  FROM Inventarios WHERE Producto_ID = ?";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, productoId);
             
@@ -75,19 +80,20 @@ public class InventariosDAOImpl implements IInventariosDAO {
         }
         } catch (SQLException e) {
             System.err.println("Error al listar inventario por ID: " + e.getMessage());
-        }  
+        }
         return lista;
     }
 
+    // Implementación del método consultarInventarioPorId() para obtener un registro
     @Override
     public Inventarios consultarInventarioPorId(int idInventario) {
         
-        String sql = "SELECT  FROM Inventarios Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion  WHERE ID_inventario = ?";
+        String sql = "SELECT Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion  FROM Inventarios WHERE ID_inventario = ?";
 
         Inventarios inventario = null;
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idInventario);
 
@@ -110,6 +116,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
         return inventario;
     }
 
+    // Implementación del método insertarInventario() para insertar un nuevo registro en la tabla Inventarios
     @Override
     public boolean insertarInventario(Inventarios inventario) {
         
@@ -133,20 +140,21 @@ public class InventariosDAOImpl implements IInventariosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Inventario insertado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
                 System.err.println("Error al insertar inventario: " + e.getMessage());
         }
         return false;
     }
 
+    // Implementación del método actualizarInventario() para actualizar un registro existente en la tabla Inventarios
     @Override
     public boolean actualizarInventario(Inventarios inventario) {
         
-        String sql = "UPDATE Inventario SET producto_id = ?, Stock_actual = ?, Stock_minimo = ?, Stock_reservado = ?, Fecha_creacion = ?, Fecha_actualizacion = ? WHERE ID_Inventario = ?";
+        String sql = "UPDATE Inventarios SET producto_id = ?, Stock_actual = ?, Stock_minimo = ?, Stock_reservado = ?, Fecha_creacion = ?, Fecha_actualizacion = ? WHERE ID_Inventario = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, inventario.getproductoId());
             ps.setInt(2, inventario.getstockActual());
@@ -173,13 +181,14 @@ public class InventariosDAOImpl implements IInventariosDAO {
         return false;
     }
 
+    // Implementación del método eliminarInventario() para eliminar un registro existente en la tabla Inventarios
     @Override
     public boolean eliminarInventario(int idInventario) {
         
-        String sql = "DELETE FROM Inventario WHERE ID_Inventario = ?";
+        String sql = "DELETE FROM Inventarios WHERE ID_Inventario = ?";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idInventario);
 
@@ -200,6 +209,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
         return false;
     }
     
+    // Implementación del método obtenerStockDisponible() para obtener el stock disponible de un producto específico
     @Override
     public int obtenerStockDisponible(int productoId) {
         
@@ -213,22 +223,25 @@ public class InventariosDAOImpl implements IInventariosDAO {
 
                 ResultSet rs = ps.executeQuery();
 
-                if(rs.next()) {    
+                if(rs.next()) {
                     return rs.getInt("disponible");
                 }
                 return 0;
         } catch(Exception e) {
             e.printStackTrace();
-            return 0;        
+            return 0;
         }
     }
     
+    // Implementación del método hayStockSuficiente() para verificar
+    // si hay suficiente stock disponible para un producto específico
     @Override
     public boolean hayStockSuficiente(int productoId, int cantidad) {
         
         return obtenerStockDisponible(productoId) >= cantidad;
     }
 
+    // Implementación del método descontarStock() para descontar una cantidad específica de stock de un producto
     @Override
     public boolean descontarStock(int productoId, int cantidad) {
         

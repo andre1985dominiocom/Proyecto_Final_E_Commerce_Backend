@@ -9,6 +9,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Intefaz para la gestión de direcciones de usuarios en la base de datos.
 public interface IDireccionesDAO {
     
     List<Direcciones> listarPorUsuario(int usuarioId);

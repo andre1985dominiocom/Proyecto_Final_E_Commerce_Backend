@@ -10,6 +10,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las operaciones relacionadas con la lista de deseos (wishlist) de los usuarios.
 public class WishlistController {
     
     private final IWishlistDAO wishlistDAO;
@@ -44,5 +46,5 @@ public class WishlistController {
     public boolean comprobarEstado(int usuarioId, int productoId) {
         if (usuarioId <= 0 || productoId <= 0) return false;
         return wishlistDAO.perteneceAlWishlist(usuarioId, productoId);
-    }    
+    }
 }

@@ -10,6 +10,9 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador de la entidad Categorias, maneja la lógica de negocio
+// y las operaciones relacionadas con las categorías del catálogo.
 public class CategoriasController  {
     
     private final ICategoriasDAO categoriasDAO;

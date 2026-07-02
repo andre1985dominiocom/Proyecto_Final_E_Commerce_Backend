@@ -13,6 +13,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para la gestión de inventarios en el panel de administración.
 public class AdminInventariosController {
     
     private final IInventariosDAO inventariosDAO;
@@ -86,7 +88,7 @@ public class AdminInventariosController {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }       
+        }
     }
     
     public boolean eliminarInventario(int idInventario) {

@@ -7,6 +7,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa un item de un carrito de compras
 public class ItemCarritos {
     private int idItem;
     private int carritoId;
@@ -17,8 +19,10 @@ public class ItemCarritos {
     private Timestamp fechaAgregado;
     private String nombreProducto;
     
+    // Constructor vacío que permite crear un objeto ItemCarritos sin inicializar sus atributos
     public ItemCarritos() {}
     
+    // Constructor que permite crear un objeto ItemCarritos con todos sus atributos inicializados
     public ItemCarritos(int idItem,
             int carritoId,
             int productoId,
@@ -34,13 +38,16 @@ public class ItemCarritos {
         this.precioUnitario = precioUnitario;
         this.fechaAgregado = fechaAgregado;
         
-        this.subtotal = calcularSubtotal();
+        this.subtotal = calcularSubtotal(); // Calcula el subtotal al crear el objeto
         this.nombreProducto = nombreProducto;
     }
+
+    // Método privado que calcula el subtotal del item multiplicando la cantidad por el precio unitario
     private double calcularSubtotal() {
-        return this.cantidad * this.precioUnitario;    
+        return this.cantidad * this.precioUnitario;
     }
     
+    // Getters y setters para los atributos de la clase ItemCarritos
     public int getidItem() { return idItem; }
     public void setidItem(int id_Item) { this.idItem = id_Item; }
     

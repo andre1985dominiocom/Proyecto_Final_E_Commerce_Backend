@@ -20,12 +20,20 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir el acceso a este servlet solo a usuarios autenticados,
+// se puede implementar un filtro de autenticación que verifique
+// si el usuario ha iniciado sesión antes de permitir el acceso a este servlet.
+// Esto se puede hacer mediante la creación de un filtro que intercepte las solicitudes
+// y verifique la sesión del usuario. Si el usuario no está autenticado,
+// se puede redirigir a una página de inicio de sesión o devolver un error de autorización.
 @WebServlet("/auth/telefonos")
 public class TelefonosServlet extends HttpServlet {
 
     private final Gson gson = new Gson();
     private final TelefonosController telefonosController = new TelefonosController();
 
+    // GET /auth/telefonos?usuarioId=1 -> Obtener el teléfono del usuario con ID 1
+    // GET /auth/telefonos -> Obtener todos los teléfonos
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -58,6 +66,8 @@ public class TelefonosServlet extends HttpServlet {
         }
     }
 
+    // POST /auth/telefonos -> Agregar un nuevo teléfono
+    // El cuerpo de la solicitud debe contener un JSON con los campos usuarioId, numero y tipo
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -105,6 +115,7 @@ public class TelefonosServlet extends HttpServlet {
         response.getWriter().write(gson.toJson(resultado));
     }
 
+    // Clase interna para mapear la solicitud JSON a un objeto Java
     public static class TelefonoRequest {
         private int usuarioId;
         private String numero;

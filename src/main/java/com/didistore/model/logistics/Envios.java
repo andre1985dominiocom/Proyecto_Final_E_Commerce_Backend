@@ -9,6 +9,9 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa un envío de un pedido a una dirección específica,
+// incluyendo información sobre la transportadora, número de guía, estado del envío y fechas relevantes.
 public class Envios {
     private int idEnvio;
     private int pedidoId;
@@ -23,8 +26,10 @@ public class Envios {
     private Timestamp fechaCreacion;
     private Timestamp fechaActualizacion;
 
+    // Constructor vacío para la clase Envios
     public Envios() {}
 
+    // Constructor completo para la clase Envios, que inicializa todos los atributos de la clase.
     public Envios (int idEnvio,
             int pedidoId,
             int direccionId,
@@ -52,6 +57,7 @@ public class Envios {
         this.fechaActualizacion = fechaActualizacion;
     }
     
+    // Getters y Setters para los atributos de la clase Envios
     public int getidEnvio() { return idEnvio; }
     public void setidEnvio(int idEnvio) { this.idEnvio = idEnvio; }
     

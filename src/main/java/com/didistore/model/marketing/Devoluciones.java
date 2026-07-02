@@ -9,6 +9,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvaez Lache
  */
+
+// Clase que representa una devolución de un pedido en el sistema de marketing de DidiStore.
 public class Devoluciones {
     private int idDevolucion;
     private int pedidoId;
@@ -20,8 +22,10 @@ public class Devoluciones {
     private Timestamp fechaResolucion;
     private double montoReembolso;
     
+    // Constructor vacío para la clase Devoluciones.
     public Devoluciones() {}
     
+    // Constructor que inicializa todos los atributos de la clase Devoluciones.
     public Devoluciones (int idDevolucion,
             int pedidoId,
             int usuarioId,
@@ -43,6 +47,7 @@ public class Devoluciones {
         this.montoReembolso = montoReembolso;
     }
     
+    // Getters y Setters para los atributos de la clase Devoluciones.
     public int getidDevolucion() { return idDevolucion; }
     public void setidDevolucion(int idDevolucion) { this.idDevolucion = idDevolucion; }
     

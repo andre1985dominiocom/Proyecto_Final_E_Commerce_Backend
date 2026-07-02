@@ -22,6 +22,7 @@ import java.util.Map;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Servlet para manejar las operaciones del carrito de compras
 @WebServlet("/sales/carrito")
 public class CarritoComprasServlet extends HttpServlet {
     
@@ -34,6 +35,7 @@ public class CarritoComprasServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
     }
 
+    // Manejo de solicitudes GET para ver el carrito
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -69,6 +71,7 @@ public class CarritoComprasServlet extends HttpServlet {
         out.flush();
     }
 
+    // Manejo de solicitudes POST para modificar el carrito
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {

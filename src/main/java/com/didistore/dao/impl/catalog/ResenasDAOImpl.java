@@ -12,10 +12,15 @@ import com.didistore.model.catalog.enums.EstadoResenas;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author Sergio Andrés Álvarez Lache
+ */
+
+// Implementación de la interfaz IResenasDAO para gestionar las reseñas de productos en la base de datos
 public class ResenasDAOImpl implements IResenasDAO {
     
     // Implementación de los métodos para gestionar las reseñas de productos
-
     @Override
     public void agregarResena(Resenas resena) {
         // Lógica para agregar una nueva reseña a la base de datos
@@ -37,13 +42,14 @@ public class ResenasDAOImpl implements IResenasDAO {
         }
     }
 
+    // Implementación de los métodos para gestionar las reseñas de productos
     @Override
     public boolean eliminarResena(int idResena) {
         // Lógica para eliminar una reseña de la base de datos
         String sql = "DELETE FROM Resenas WHERE ID_Resena = ?";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idResena);
 
@@ -62,6 +68,7 @@ public class ResenasDAOImpl implements IResenasDAO {
         return false;
     }
 
+    // Implementación de los métodos para gestionar las reseñas de productos
     @Override
     public List<Resenas> obtenerResenasPorProducto(int productoId) {
         // Lógica para obtener todas las reseñas de un producto específico
@@ -70,14 +77,14 @@ public class ResenasDAOImpl implements IResenasDAO {
         String sql = "SELECT Usuario_ID, Producto_ID, Calificacion, Comentario, Estado FROM Resenas WHERE Producto_ID = ?";
         
         try (Connection con = Conexion.getConexion();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+        PreparedStatement ps = con.prepareStatement(sql)) {
 
-        ps.setInt(1, productoId);   
+        ps.setInt(1, productoId);
 
         try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 lista.add(mapearResena(rs));
-                }               
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,6 +92,7 @@ public class ResenasDAOImpl implements IResenasDAO {
         return lista;
     }
 
+    // Implementación de los métodos para gestionar las reseñas de productos
     @Override
     public List<Resenas> obtenerResenasPorUsuario(int usuarioId) {
         // Lógica para obtener todas las reseñas realizadas por un usuario específico
@@ -93,7 +101,7 @@ public class ResenasDAOImpl implements IResenasDAO {
         String sql = "SELECT Usuario_ID, Producto_ID, Calificacion, Comentario, Estado FROM Resenas WHERE Usuario_ID = ?";
         
         try (Connection con = Conexion.getConexion();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+        PreparedStatement ps = con.prepareStatement(sql)) {
 
         ps.setInt(1, usuarioId);
 
@@ -108,6 +116,7 @@ public class ResenasDAOImpl implements IResenasDAO {
         return lista;
     }
 
+    // Implementación de los métodos para gestionar las reseñas de productos
     @Override
     public List<Resenas> obtenerResenasPorEstado(String estado) {
         // Lógica para obtener todas las reseñas con un estado específico (aprobada, pendiente, rechazada)
@@ -117,7 +126,7 @@ public class ResenasDAOImpl implements IResenasDAO {
         String sql = "SELECT Usuario_ID, Producto_ID, Calificacion, Comentario, Estado FROM Resenas WHERE Estado = ?";
         
         try (Connection con = Conexion.getConexion();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+        PreparedStatement ps = con.prepareStatement(sql)) {
 
         ps.setString(1, estado);
 
@@ -132,13 +141,14 @@ public class ResenasDAOImpl implements IResenasDAO {
         return lista;
     }
 
+    // Implementación de los métodos para gestionar las reseñas de productos
     @Override
     public boolean actualizarResena(int idResena, String nuevoComentario, int nuevaCalificacion) {
         // Lógica para actualizar el comentario y la calificación de una reseña existente
         String sql = "UPDATE Resenas SET Calificacion = ?, Comentario = ? WHERE ID_Resena = ?";
                 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, nuevaCalificacion);
             ps.setString(2, nuevoComentario);
@@ -160,10 +170,10 @@ public class ResenasDAOImpl implements IResenasDAO {
         return false;
     }
 
+    // Implementación de los métodos para gestionar las reseñas de productos
     @Override
     public Resenas obtenerResenaPorId(int idResena) {
         // Lógica para obtener una reseña específica por su ID
-         
         String sql = "SELECT Usuario_ID, Producto_ID, Calificacion, Comentario, Estado FROM Resenas WHERE ID_Resena = ?";
         
         try (Connection con = Conexion.getConexion();
@@ -182,6 +192,7 @@ public class ResenasDAOImpl implements IResenasDAO {
         return null;
     }
 
+    // Implementación de los métodos para gestionar las reseñas de productos
     @Override
     public Resenas obtenerResenaPorUsuarioYProducto(int usuarioId, int productoId) {
         // Lógica para obtener la reseña realizada por un usuario específico en un producto específico
@@ -189,7 +200,7 @@ public class ResenasDAOImpl implements IResenasDAO {
         String sql = "SELECT Usuario_ID, Producto_ID, Calificacion, Comentario, Estado FROM Resenas WHERE Usuario_ID = ? AND Producto_ID = ?";
         
         try (Connection con = Conexion.getConexion();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+        PreparedStatement ps = con.prepareStatement(sql)) {
 
         ps.setInt(1, usuarioId);
         ps.setInt(2, productoId);
@@ -201,16 +212,18 @@ public class ResenasDAOImpl implements IResenasDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }   
+        }
         return null;
     }
 
+    // Implementación de los métodos para gestionar las reseñas de productos
     @Override
     public Resenas consultarResena(int idResena) {
 
         return obtenerResenaPorId(idResena);
     }
 
+    // Método privado para mapear los resultados de la consulta a un objeto Resenas
     private Resenas mapearResena(ResultSet rs) throws SQLException {
         
         Resenas resena = new Resenas();

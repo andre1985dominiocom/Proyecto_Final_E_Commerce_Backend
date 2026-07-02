@@ -10,9 +10,11 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las operaciones relacionadas con los permisos de los perfiles.
 public class PerfilPermisosController {
 
-     private final IPerfilPermisosDAO perfilPermisosDAO;
+    private final IPerfilPermisosDAO perfilPermisosDAO;
 
     public PerfilPermisosController() {
         this.perfilPermisosDAO = new PerfilPermisosDAOImpl();

@@ -16,14 +16,17 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz IHistorialEstadoPedidosDAO para manejar el historial de cambios de estado de los pedidos.
 public class HistorialEstadoPedidosDAOImpl implements IHistorialEstadoPedidosDAO {
     
+    // Registra un cambio de estado en el historial de un pedido.
     @Override
     public boolean registrarCambioEstado(HistorialEstadoPedidos historial) {
         String sql = "INSERT INTO Historial_Estados_Pedido (Pedido_ID, Estado_anterior, Estado_nuevo, Usuario_ID, Fecha_cambio, Notas) VALUES (?, ?, ?, ?, ?, ?)";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, historial.getpedidoId());
             // Soporta que el estado anterior sea null (por ejemplo, cuando el pedido se crea por primera vez)
@@ -41,6 +44,7 @@ public class HistorialEstadoPedidosDAOImpl implements IHistorialEstadoPedidosDAO
         return false;
     }
     
+    // Lista todos los cambios de estado de un pedido específico, ordenados por fecha de cambio.
     @Override
     public List<HistorialEstadoPedidos> listarHistorialPorPedido(int pedidoId) {
         // Ordenado por fecha de forma ascendente para mostrar la línea de tiempo correctamente
@@ -48,7 +52,7 @@ public class HistorialEstadoPedidosDAOImpl implements IHistorialEstadoPedidosDAO
         List<HistorialEstadoPedidos> lista = new ArrayList<>();
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, pedidoId);
             
@@ -63,14 +67,15 @@ public class HistorialEstadoPedidosDAOImpl implements IHistorialEstadoPedidosDAO
         return lista;
     }
     
-     @Override
+    // Obtiene el último cambio de estado de un pedido específico.
+    @Override
     public HistorialEstadoPedidos obtenerUltimoEstado(int pedidoId) {
         // Trae solo el registro más reciente basado en la fecha de cambio o el ID autoincremental
         String sql = "SELECT * FROM Historial_Estados_Pedido WHERE Pedido_ID = ? ORDER BY Fecha_cambio DESC LIMIT 1";
         HistorialEstadoPedidos historial = null;
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, pedidoId);
             
@@ -85,6 +90,7 @@ public class HistorialEstadoPedidosDAOImpl implements IHistorialEstadoPedidosDAO
         return historial;
     }
     
+    // Mapea un ResultSet a un objeto HistorialEstadoPedidos.
     private HistorialEstadoPedidos mapearHistorial(ResultSet rs) throws SQLException {
         
         HistorialEstadoPedidos historial = new HistorialEstadoPedidos();

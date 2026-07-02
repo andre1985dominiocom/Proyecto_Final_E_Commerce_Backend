@@ -8,6 +8,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa el historial de cambios de estado de los pedidos.
 public class HistorialEstadoPedidos {
     private int idHistorial;
     private int pedidoId;
@@ -17,8 +19,10 @@ public class HistorialEstadoPedidos {
     private Timestamp fechaCambio;
     private String notas;
     
+    // Constructor vacío que permite crear una instancia de la clase sin inicializar sus atributos.
     public HistorialEstadoPedidos() {}
     
+    // Constructor que permite crear una instancia de la clase con todos sus atributos inicializados.
     public HistorialEstadoPedidos(int idHistorial,
             int pedidoId,
             EstadoPedidos estadoAnterior,
@@ -36,6 +40,7 @@ public class HistorialEstadoPedidos {
         this.notas = notas;
     }
     
+    // Métodos getter y setter para acceder y modificar los atributos de la clase.
     public int getidHistorial() { return idHistorial; }
     public void setidHistorial(int idHistorial) { this.idHistorial = idHistorial; }
     

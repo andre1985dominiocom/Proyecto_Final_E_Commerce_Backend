@@ -17,12 +17,14 @@ import java.util.List;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir el acceso al catalogo de productos desde la ruta /catalog/productos
 @WebServlet("/catalog/productos")
 public class ProductosServlet extends HttpServlet {
     
     private final ProductosController productoController = new ProductosController();
     private final Gson gson = new Gson();
 
+    // Manejar las solicitudes GET para obtener productos
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -30,7 +32,7 @@ public class ProductosServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         
-         String vista = request.getParameter("vista");
+        String vista = request.getParameter("vista");
 
 
         if ("publica".equals(vista)) {
@@ -47,7 +49,7 @@ public class ProductosServlet extends HttpServlet {
         String idProductoParam = request.getParameter("idProducto");
         String idCategoriaParam = request.getParameter("idCategoria");
         String nombreProductoParam = request.getParameter("nombreProducto");
-     
+
         if (idProductoParam != null && !idProductoParam.trim().isEmpty()) {
             try {
                 int idProducto = Integer.parseInt(idProductoParam);

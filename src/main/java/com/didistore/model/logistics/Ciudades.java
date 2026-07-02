@@ -5,6 +5,8 @@ package com.didistore.model.logistics;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa la entidad Ciudades
 public class Ciudades {
     
     private int idCiudad;
@@ -12,8 +14,10 @@ public class Ciudades {
     private int departamentoId;
     private String codigoPostal;
     
+    // Constructor vacío que permite crear un objeto de la clase Ciudades sin inicializar sus atributos
     public Ciudades() {}
     
+    // Constructor que permite crear un objeto de la clase Ciudades con todos sus atributos inicializados
     public Ciudades (int idCiudad,
             String nombreCiudad,
             int departamentoId,
@@ -25,6 +29,7 @@ public class Ciudades {
         this.codigoPostal = codigoPostal;
     }
     
+    // Métodos getter y setter para cada atributo de la clase Ciudades
     public int getidCiudad() { return idCiudad; }
     public void setidCiudad(int idCiudad) { this.idCiudad = idCiudad; }
     

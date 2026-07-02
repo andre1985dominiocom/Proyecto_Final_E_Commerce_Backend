@@ -11,6 +11,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador de usuarios, maneja la lógica de negocio y la comunicación con el DAO
 public class UsuariosController {
     
     private final IUsuariosDAO usuariosDAO;

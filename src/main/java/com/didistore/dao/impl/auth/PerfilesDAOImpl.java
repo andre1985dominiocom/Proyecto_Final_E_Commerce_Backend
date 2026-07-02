@@ -15,8 +15,12 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz IPerfilesDAO para realizar operaciones CRUD en la tabla Perfiles de la base de datos.
 public class PerfilesDAOImpl implements IPerfilesDAO {
     
+    // Método para insertar un nuevo perfil en la base de datos.
+    @Override
     public void insertarPerfiles(Perfiles perfil) {
         
         String sql = "INSERT INTO Perfiles (Nombre_perfil,"
@@ -27,7 +31,7 @@ public class PerfilesDAOImpl implements IPerfilesDAO {
             
                 ps.setString(1, perfil.getnombrePerfil());
                 ps.setString(2, perfil.getdescripcionPerfil());
-               
+
                 int filasAfectadas = ps.executeUpdate();
                 
                 if (!con.getAutoCommit()) {
@@ -36,12 +40,13 @@ public class PerfilesDAOImpl implements IPerfilesDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Perfil insertado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
                 System.err.println("Error al listar perfil: " + e.getMessage());
-        }   
+        }
     }
 
+    // Método para listar todos los perfiles de la base de datos.
     @Override
     public List<Perfiles> listarPerfiles() {
         
@@ -65,6 +70,7 @@ public class PerfilesDAOImpl implements IPerfilesDAO {
         return lista;
     }
 
+    // Método para consultar un perfil específico por su ID.
     @Override
     public Perfiles consultarPerfiles(int idPerfil) {
         
@@ -91,6 +97,7 @@ public class PerfilesDAOImpl implements IPerfilesDAO {
         return perfil;
     }
 
+    // Método para actualizar un perfil existente en la base de datos.
     @Override
     public void actualizarPerfiles(Perfiles perfil) {
         
@@ -111,12 +118,13 @@ public class PerfilesDAOImpl implements IPerfilesDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Perfil actualizado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al actualizar perfil: " + e.getMessage());
-        }               
+        }
     }
 
+    // Método para eliminar un perfil de la base de datos por su ID.
     @Override
     public void eliminarPerfiles(int idPerfil) {
         
@@ -135,9 +143,9 @@ public class PerfilesDAOImpl implements IPerfilesDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Permiso eliminado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al eliminar permiso: " + e.getMessage());
-        }                   
+        }
     }
 }

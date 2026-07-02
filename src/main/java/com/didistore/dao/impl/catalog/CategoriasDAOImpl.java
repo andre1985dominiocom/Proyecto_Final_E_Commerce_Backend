@@ -17,8 +17,11 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz ICategoriasDAO para realizar operaciones CRUD en la tabla Categorias de la base de datos.
 public class CategoriasDAOImpl implements ICategoriasDAO {
 
+    // Implementación del método para insertar una nueva categoría en la base de datos.
     @Override
     public boolean insertarCategorias(Categorias categoria) {
         String sql = "INSERT INTO Categorias (nombre_Categoria, "
@@ -53,13 +56,14 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
                         }
                     }
                     return true;
-                }                          
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
         }
         return false;
     }
 
+    // Implementación del método para actualizar una categoría existente en la base de datos.
     @Override
     public boolean actualizarCategorias(Categorias categoria) {
         
@@ -73,7 +77,7 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
             
             ps.setString(1, categoria.getnombreCategoria());
             ps.setString(2, categoria.getdescripcion());
-          
+
                 if (categoria.getcategoriaPadreId() == null) {
                     ps.setNull(3, Types.INTEGER);
                 } else {
@@ -85,10 +89,11 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
                 return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-        }   
+        }
         return false;
     }
 
+    // Implementación del método para eliminar una categoría de la base de datos.
     @Override
     public boolean eliminarCategorias(int idCategoria) {
         
@@ -106,6 +111,7 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
         return false;
     }
 
+    // Implementación del método para obtener una categoría por su ID.
     @Override
     public Categorias obtenerCategoriaPorId(int idCategoria) {
         
@@ -124,18 +130,18 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-       return null;
+        return null;
     }
 
     @Override
     public List<Categorias> obtenerTodasLasCategorias() {
         
-       List<Categorias> lista = new ArrayList<>();
+        List<Categorias> lista = new ArrayList<>();
         
        String sql = "SELECT * FROM Categorias ORDER BY ID_Categoria ASC";
         
-       try (Connection con = Conexion.getConexion();
-            PreparedStatement ps = con.prepareStatement(sql);           
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery()) {
             
             while (rs.next()) {
@@ -145,8 +151,9 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
             e.printStackTrace();
         }
         return lista;
-    }   
-       
+    }
+
+    // Implementación del método para obtener todas las categorías raíz (categorías sin padre).
     @Override
     public List<Categorias> obtenerCategoriasRaiz() {
         
@@ -155,7 +162,7 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
         String sql = "SELECT * FROM Categorias WHERE Categoria_padre_ID IS NULL ORDER BY Nombre_categoria ASC";
         
         try (Connection con = Conexion.getConexion();
-            PreparedStatement ps = con.prepareStatement(sql);           
+            PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery()) {
             
             while (rs.next()) {
@@ -166,7 +173,8 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
         }
         return lista;
     }
- 
+
+    // Implementación del método para obtener todas las subcategorías de una categoría padre específica.
     @Override
     public List<Categorias> obtenerSubcategorias(int categoriaPadreId) {
         
@@ -190,6 +198,7 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
         return lista;
     }
 
+    // Método privado para mapear un ResultSet a un objeto Categorias.
     private Categorias mapearCategoria(ResultSet rs) throws SQLException {
         
         Categorias cat = new Categorias();
@@ -208,16 +217,17 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
         return cat;
     }
 
+    // Implementación del método para buscar una categoría por su nombre.
     @Override
     public Categorias buscarCategoriaPorNombre(String nombreCategoria) {
-         
+
         String sql = "SELECT ID_Categoria, nombre_Categoria, "
                 + "Descripcion, "
                 + "Categoria_padre_ID, "
                 + "Fecha_creacion FROM Categorias WHERE nombre_Categoria = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setString(1, nombreCategoria);
             
@@ -231,4 +241,4 @@ public class CategoriasDAOImpl implements ICategoriasDAO {
         }
         return null;
     }
-} 
+}

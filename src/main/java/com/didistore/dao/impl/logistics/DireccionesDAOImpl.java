@@ -16,19 +16,22 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz IDireccionesDAO para la gestión de direcciones en la base de datos.
 public class DireccionesDAOImpl implements IDireccionesDAO {
 
+    // Método para listar todas las direcciones asociadas a un usuario específico.
     @Override
     public List<Direcciones> listarPorUsuario(int usuarioId) {
         List<Direcciones> lista = new ArrayList<>();
         
         String sql = "SELECT * FROM Direcciones WHERE Usuario_ID = ?";
         
-         try (Connection con = Conexion.getConexion();
+        try (Connection con = Conexion.getConexion();
                 PreparedStatement ps = con.prepareStatement(sql)) {
-             
-             ps.setInt(1, usuarioId);
-             
+
+            ps.setInt(1, usuarioId);
+
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
                     Direcciones direccion = new Direcciones();
@@ -47,13 +50,14 @@ public class DireccionesDAOImpl implements IDireccionesDAO {
                     
                     lista.add(direccion);
                 }
-            }        
+            }
         } catch (SQLException e) {
                 e.printStackTrace();
-        }                
+        }
         return lista;
     }
 
+    // Método para buscar una dirección específica por su ID.
     @Override
     public Direcciones buscarPorId(int idDireccion) {
         
@@ -61,9 +65,9 @@ public class DireccionesDAOImpl implements IDireccionesDAO {
         
         try (Connection con = Conexion.getConexion();
                 PreparedStatement ps = con.prepareStatement(sql)) {
-             
-             ps.setInt(1, idDireccion);
-             
+
+            ps.setInt(1, idDireccion);
+
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
                     Direcciones direccion = new Direcciones();
@@ -88,6 +92,7 @@ public class DireccionesDAOImpl implements IDireccionesDAO {
         return null;
     }
 
+    // Método para crear una nueva dirección en la base de datos.
     @Override
     public boolean crearDireccion(Direcciones direccion) {
         
@@ -121,13 +126,14 @@ public class DireccionesDAOImpl implements IDireccionesDAO {
         return false;
     }
 
+    // Método para actualizar una dirección existente en la base de datos.
     @Override
     public boolean actualizarDireccion(Direcciones direccion) {
         
         String sql = "UPDATE Direcciones SET Direccion = ?, Barrio = ?, Referencia = ?, Ciudad_ID = ?, Usuario_ID = ?, Estado = ?, Fecha_creacion = ?, Es_principal = ? WHERE ID_Direccion = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, direccion.getdireccion());
             ps.setString(2, direccion.getbarrio());
@@ -152,13 +158,14 @@ public class DireccionesDAOImpl implements IDireccionesDAO {
         return false;
     }
 
+    // Método para eliminar una dirección de la base de datos.
     @Override
     public boolean eliminarDireccion(int idDireccion) {
         
         String sql = "DELETE FROM Direcciones WHERE ID_Direccion = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idDireccion);
 
@@ -175,6 +182,7 @@ public class DireccionesDAOImpl implements IDireccionesDAO {
         return false;
     }
 
+    // Método para marcar una dirección como principal para un usuario específico.
     @Override
     public boolean marcarPrincipal(int usuarioId, int idDireccion) {
         
@@ -211,17 +219,18 @@ public class DireccionesDAOImpl implements IDireccionesDAO {
             }
         } catch (SQLException e) {
             System.err.println("Error en la transacción de dirección principal: " + e.getMessage());
-            return false;      
-        }  
+            return false;
+        }
     }
 
+    // Método para realizar un borrado lógico de una dirección, cambiando su estado en lugar de eliminarla físicamente.
     @Override
     public boolean borradoDireccionLogico(int idDireccion, EstadoDirecciones nuevoEstado) {
-         
+
         String sql = "UPDATE Direcciones SET Estado = ? WHERE ID_Direccion = ?";
     
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, nuevoEstado.name());
             ps.setInt(2, idDireccion);

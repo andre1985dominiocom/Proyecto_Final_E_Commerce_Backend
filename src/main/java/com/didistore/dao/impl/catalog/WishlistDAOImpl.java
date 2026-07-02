@@ -15,15 +15,18 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz IWishlistDAO para manejar operaciones relacionadas con el wishlist en la base de datos.
 public class WishlistDAOImpl implements IWishlistDAO {
 
+    // Agrega un producto al wishlist de un usuario.
     @Override
     public boolean agregarAlWishlist(Wishlist wishlist) {
         
         String sql = "INSERT INTO Wishlist (Usuario_ID, Producto_ID) VALUES (?, ?)";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, wishlist.getusuarioId());
             ps.setInt(2, wishlist.getproductoId());
@@ -38,13 +41,14 @@ public class WishlistDAOImpl implements IWishlistDAO {
         return false;
     }
 
+    // Elimina un producto del wishlist de un usuario.
     @Override
     public boolean eliminarDelWishlist(int usuarioId, int productoId) {
         
         String sql = "DELETE FROM Wishlist WHERE Usuario_ID = ? AND Producto_ID = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, usuarioId);
             ps.setInt(2, productoId);
@@ -59,13 +63,14 @@ public class WishlistDAOImpl implements IWishlistDAO {
         return false;
     }
 
+    // Obtiene la lista de productos en el wishlist de un usuario.
     @Override
     public List<Wishlist> obtenerWishlistPorUsuario(int usuarioId) {
         
         List<Wishlist> lista = new ArrayList<>();
         String sql = "SELECT ID_Wishlist, Usuario_ID, Producto_ID FROM Wishlist WHERE Usuario_ID = ?";
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, usuarioId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -79,13 +84,14 @@ public class WishlistDAOImpl implements IWishlistDAO {
         return lista;
     }
 
+    // Verifica si un producto pertenece al wishlist de un usuario.
     @Override
     public boolean perteneceAlWishlist(int usuarioId, int productoId) {
         
         String sql = "SELECT 1 FROM Wishlist WHERE Usuario_ID = ? AND Producto_ID = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, usuarioId);
             ps.setInt(2, productoId);
@@ -99,6 +105,7 @@ public class WishlistDAOImpl implements IWishlistDAO {
         return false;
     }
 
+    // Mapea un ResultSet a un objeto Wishlist.
     private Wishlist mapearWishlist(ResultSet rs) throws SQLException {
         
         Wishlist wishlist = new Wishlist();
@@ -107,5 +114,5 @@ public class WishlistDAOImpl implements IWishlistDAO {
         wishlist.setproductoId(rs.getInt("Producto_ID"));
         
         return wishlist;
-    }   
+    }
 }

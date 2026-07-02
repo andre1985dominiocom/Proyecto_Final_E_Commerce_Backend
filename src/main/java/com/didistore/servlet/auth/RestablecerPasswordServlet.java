@@ -21,6 +21,7 @@ import java.util.Map;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Servlet para restablecer la contraseña de un usuario mediante un token de recuperación.
 @WebServlet("/auth/restablecer-password")
 public class RestablecerPasswordServlet extends HttpServlet {
         
@@ -28,6 +29,7 @@ public class RestablecerPasswordServlet extends HttpServlet {
     private final TokensRecuperacionController tokenController = new TokensRecuperacionController();
     private final UsuariosDAOImpl usuariosDAO = new UsuariosDAOImpl();
 
+    // Maneja las solicitudes POST para restablecer la contraseña de un usuario.
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -90,6 +92,7 @@ public class RestablecerPasswordServlet extends HttpServlet {
         response.getWriter().write(gson.toJson(resultado));
     }
 
+    // Clase interna para representar la solicitud de restablecimiento de contraseña.
     public static class RestablecerRequest {
         private String token;
         private String nuevaContrasena;
@@ -109,5 +112,5 @@ public class RestablecerPasswordServlet extends HttpServlet {
         public void setnuevaContrasena(String nuevaContrasena) {
             this.nuevaContrasena = nuevaContrasena;
         }
-    }  
+    }
 }

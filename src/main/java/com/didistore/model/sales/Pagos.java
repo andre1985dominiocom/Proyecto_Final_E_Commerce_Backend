@@ -9,6 +9,10 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa un pago realizado por un cliente en la tienda.
+// Contiene información sobre el método de pago, el estado del pago, el monto,
+// las referencias de transacción e interna, los datos de la pasarela de pago y las fechas de pago y creación.
 public class Pagos {
     private int idPago;
     private int pedidoId;
@@ -21,8 +25,10 @@ public class Pagos {
     private Timestamp fechaPago;
     private Timestamp fechaCreacion;
     
+    // Constructor vacío para la clase Pagos.
     public Pagos() {}
-    
+
+    // Constructor que inicializa todos los atributos de la clase Pagos.
     public Pagos(int idPago,
             int pedidoId,
             MetodoPagos metodoPago,
@@ -46,6 +52,7 @@ public class Pagos {
         this.fechaCreacion = fechaCreacion;
     }
     
+    // Getters y Setters para los atributos de la clase Pagos.
     public int getidPago() { return idPago; }
     public void setidPago(int idPago) { this.idPago = idPago; }
     

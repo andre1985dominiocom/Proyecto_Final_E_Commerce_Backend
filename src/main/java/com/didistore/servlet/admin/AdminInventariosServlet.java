@@ -20,12 +20,14 @@ import java.util.Map;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir que el servlet maneje solicitudes desde cualquier origen (CORS)
 @WebServlet("/admin/inventarios")
 public class AdminInventariosServlet extends HttpServlet {
     
     private AdminInventariosController inventarioController;
     private Gson gson;
 
+    // --- Inicialización del servlet ---
     @Override
     public void init() throws ServletException {
         this.inventarioController = new AdminInventariosController();
@@ -97,7 +99,7 @@ public class AdminInventariosServlet extends HttpServlet {
                 
                 resultado.put(
                     "success",
-                     false );
+                    false );
                 
                 resultado.put(
                     "message",
@@ -115,7 +117,7 @@ public class AdminInventariosServlet extends HttpServlet {
                 
                 resultado.put(
                     "success",
-                     true );
+                    true );
                 
                 resultado.put(
                     "message",
@@ -125,7 +127,7 @@ public class AdminInventariosServlet extends HttpServlet {
                 
                 resultado.put(
                     "success",
-                     false );
+                    false );
                 
                 resultado.put(
                     "message",
@@ -136,7 +138,7 @@ public class AdminInventariosServlet extends HttpServlet {
             
             resultado.put(
                 "success",
-                 false );
+                false );
             
             resultado.put(
                 "message",
@@ -228,5 +230,5 @@ public class AdminInventariosServlet extends HttpServlet {
             }
         }
         return gson.fromJson(sb.toString(), claseDestino);
-    }   
+    }
 }

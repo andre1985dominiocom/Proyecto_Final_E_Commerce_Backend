@@ -11,6 +11,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las operaciones relacionadas con los productos en el catálogo.
 public class ProductosController {
 
     private final IProductosDAO productosDAO;

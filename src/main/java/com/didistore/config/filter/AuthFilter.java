@@ -16,9 +16,14 @@ import jakarta.servlet.http.HttpSession;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// @WebFilter("/*") indica que este filtro se aplicará a todas las solicitudes entrantes al servidor web.
+// Esto significa que cada vez que un usuario intente acceder a cualquier recurso de la aplicación,
+// el filtro AuthFilter se ejecutará antes de que la solicitud llegue al destino final.
 @WebFilter("/*")
 public class AuthFilter extends HttpFilter implements Filter {
 
+    // El método doFilter es el núcleo del filtro. Se ejecuta para cada solicitud entrante
+    // y determina si el usuario tiene acceso al recurso solicitado.
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {

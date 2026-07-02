@@ -7,6 +7,8 @@ import com.didistore.model.catalog.enums.EstadoResenas;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa la entidad Resenas en el catálogo de productos.
 public class Resenas {
     private int idResena;
     private int usuarioId;
@@ -15,8 +17,10 @@ public class Resenas {
     private String comentario;
     private EstadoResenas estado;
     
+    // Constructor vacío para la clase Resenas.
     public Resenas() {}
     
+    // Constructor que inicializa los atributos de la clase Resenas.
     public Resenas(int idResena,
             int usuarioId,
             int productoId,
@@ -29,9 +33,9 @@ public class Resenas {
         this.productoId = productoId;
         this.calificacion = calificacion;
         this.comentario = comentario;
-        this.estado = estado;        
+        this.estado = estado;
     }
-    
+    // Métodos getter y setter para los atributos de la clase Resenas.
     public int getidResena() { return idResena; }
     public void setidResena(int idResena) { this.idResena = idResena; }
     

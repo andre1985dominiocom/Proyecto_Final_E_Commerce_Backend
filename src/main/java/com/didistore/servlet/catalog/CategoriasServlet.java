@@ -17,12 +17,15 @@ import java.util.List;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir el acceso al catalogo de categorias a todos los usuarios, sin necesidad de autenticación
 @WebServlet("/catalog/categorias")
 public class CategoriasServlet extends HttpServlet {
     
     private final CategoriasController categoriaController = new CategoriasController();
     private final Gson gson = new Gson();
 
+    // GET método para obtener la lista de categorías o una categoría específica por su ID,
+    // nombre o ID de categoría padre
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

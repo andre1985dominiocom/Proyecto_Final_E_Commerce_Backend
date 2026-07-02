@@ -15,6 +15,8 @@ import java.io.PrintWriter;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para administrar el dashboard del administrador
 public class AdminDashboardController {
     
     private final IPedidosDAO pedidosDAO = new PedidosDAOImpl();

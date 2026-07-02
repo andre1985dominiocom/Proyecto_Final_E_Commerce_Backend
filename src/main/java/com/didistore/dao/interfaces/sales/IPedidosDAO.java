@@ -10,6 +10,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para la gestión de Pedidos y Detalles de Pedidos
 public interface IPedidosDAO {
     
     // Métodos para Pedidos

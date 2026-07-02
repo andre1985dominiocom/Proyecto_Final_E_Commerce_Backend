@@ -17,11 +17,14 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz IProductosDAO para realizar operaciones CRUD en la tabla Productos de la base de datos.
 public class ProductosDAOImpl implements IProductosDAO {
     
+    // Método para insertar un nuevo producto en la base de datos.
     @Override
     public void insertarProductos(Productos producto) {
-           
+
         String sql = "INSERT INTO Productos (nombre_Producto, "
                 + "descripcion_Corta, "
                 + "descripcion_Larga, "
@@ -59,19 +62,20 @@ public class ProductosDAOImpl implements IProductosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Producto insertado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al insertar productos: " + e.getMessage());
         }
     }
 
+    // Método para actualizar un producto existente en la base de datos.
     @Override
     public void actualizarProductos(Productos producto) {
         
         String sql = "UPDATE productos SET nombre_producto = ?, descripcion_corta = ?, descripcion_larga = ?, precio = ?, SKU = ?, talla = ?, color = ?, categoria_id = ?, estado = ?, es_destacado = ?, fecha_creacion = ?, fecha_actualizacion = ? WHERE id_Producto = ?";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, producto.getnombreProducto());
             ps.setString(2, producto.getdescripcionCorta());
@@ -102,8 +106,9 @@ public class ProductosDAOImpl implements IProductosDAO {
         }
     }
 
+    // Método para listar todos los productos de la base de datos.
     @Override
-   public List<Productos> listarProductos() {
+    public List<Productos> listarProductos() {
 
         List<Productos> lista = new ArrayList<>();
 
@@ -171,6 +176,7 @@ public class ProductosDAOImpl implements IProductosDAO {
         return lista;
     }
 
+    // Método para consultar un producto por su ID en la base de datos.
     @Override
     public Productos consultarProductosPorId(int idProducto) {
         
@@ -190,7 +196,7 @@ public class ProductosDAOImpl implements IProductosDAO {
         Productos producto = null;
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idProducto);
 
@@ -230,13 +236,14 @@ public class ProductosDAOImpl implements IProductosDAO {
         return producto;
     }
     
+    // Método para eliminar un producto de la base de datos por su ID.
     @Override
     public void eliminarProductos(int idProducto) {
         
         String sql = "DELETE FROM productos WHERE id_Producto = ?";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idProducto);
 
@@ -255,6 +262,7 @@ public class ProductosDAOImpl implements IProductosDAO {
         }
     }
 
+    // Método para buscar un producto por su nombre en la base de datos.
     @Override
     public Productos buscarProductoPorNombre(String nombreProducto) {
         
@@ -274,7 +282,7 @@ public class ProductosDAOImpl implements IProductosDAO {
         Productos producto = null;
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setString(1, nombreProducto);
             
@@ -314,6 +322,7 @@ public class ProductosDAOImpl implements IProductosDAO {
         return producto;
     }
 
+    // Método para listar productos por categoría en la base de datos.
     @Override
     public List<Productos> listarProductoPorCategoria(int idCategoria) {
         List<Productos> lista = new ArrayList<>();
@@ -333,7 +342,7 @@ public class ProductosDAOImpl implements IProductosDAO {
             + "FROM Productos WHERE categoria_Id = ?";
 
     try (Connection con = Conexion.getConexion();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+        PreparedStatement ps = con.prepareStatement(sql)) {
 
         ps.setInt(1, idCategoria);
 
@@ -371,9 +380,10 @@ public class ProductosDAOImpl implements IProductosDAO {
     } catch (SQLException e) {
         System.err.println("Error al listar productos por categoría: " + e.getMessage());
         }
-        return lista;       
+        return lista;
     }
 
+    // Método para listar productos activos para el catálogo público en la base de datos.
     @Override
     public List<Productos> listarCatalogoPublico() {
         
@@ -405,10 +415,6 @@ public class ProductosDAOImpl implements IProductosDAO {
 
             while(rs.next()){
                 
-//                 System.out.println("ID PRODUCTO: " + rs.getInt("id_Producto"));
-//
-//                 System.out.println("IMAGEN SQL: " + rs.getString("imagenUrl"));
-
                 Productos producto = new Productos();
 
                 producto.setidProducto(rs.getInt("id_Producto"));
@@ -416,7 +422,7 @@ public class ProductosDAOImpl implements IProductosDAO {
                 producto.setdescripcionCorta(rs.getString("descripcion_Corta"));
                 producto.setprecio(rs.getFloat("precio"));
                 producto.setNombreCategoria(rs.getString("Nombre_categoria"));
-                producto.setImagenUrl(rs.getString("imagenUrl"));               
+                producto.setImagenUrl(rs.getString("imagenUrl"));
                 lista.add(producto);
             }
         }catch(SQLException e){

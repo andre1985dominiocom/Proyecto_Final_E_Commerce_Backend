@@ -18,8 +18,12 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz IPedidosDAO para manejar operaciones relacionadas
+// con pedidos y detalles de pedidos en la base de datos.
 public class PedidosDAOImpl implements IPedidosDAO {
 
+    // Implementación del método para crear un pedido junto con sus detalles y actualizar el inventario.
     @Override
     public boolean crearPedido(Pedidos pedido, List<DetallesPedidos> detalles) {
         
@@ -106,7 +110,7 @@ public class PedidosDAOImpl implements IPedidosDAO {
 
                     if (filas == 0) {
                         throw new SQLException("Stock insuficiente para producto " + detalle.getproductoId());
-                    }            
+                    }
                 }
             // Si todo se ejecutó sin errores, guardamos los cambios definitivamente
             con.commit();
@@ -138,13 +142,14 @@ public class PedidosDAOImpl implements IPedidosDAO {
         return false;
     }
 
+    // Implementación del método para buscar un pedido por su ID.
     @Override
     public Pedidos buscarPorId(int idPedido) {
         
         String sql = "SELECT * FROM Pedidos WHERE ID_Pedido = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, idPedido);
             
@@ -159,13 +164,14 @@ public class PedidosDAOImpl implements IPedidosDAO {
         return null;
     }
 
+    // Implementación del método para buscar un pedido por su número de pedido.
     @Override
     public Pedidos buscarPorNumeroPedido(String numeroPedido) {
         
         String sql = "SELECT * FROM Pedidos WHERE Numero_pedido = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setString(1, numeroPedido);
             
@@ -180,6 +186,8 @@ public class PedidosDAOImpl implements IPedidosDAO {
         return null;
     }
 
+    // Implementación del método para listar todos los pedidos de un usuario específico,
+    // ordenados por fecha de pedido descendente.
     @Override
     public List<Pedidos> listarPorUsuario(int usuarioId) {
         
@@ -188,7 +196,7 @@ public class PedidosDAOImpl implements IPedidosDAO {
         String sql = "SELECT * FROM Pedidos WHERE Usuario_ID = ? ORDER BY Fecha_pedido DESC";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, usuarioId);
             
@@ -203,13 +211,14 @@ public class PedidosDAOImpl implements IPedidosDAO {
         return lista;
     }
 
+    // Implementación del método para actualizar el estado de un pedido específico.
     @Override
     public boolean actualizarEstado(int idPedido, EstadoPedidos nuevoEstado) {
         
         String sql = "UPDATE Pedidos SET Estado_pedido = ? WHERE ID_Pedido = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             // Convertimos el objeto enum de Java a String usando .name() para MySQL
             ps.setString(1, nuevoEstado.name());
@@ -222,6 +231,7 @@ public class PedidosDAOImpl implements IPedidosDAO {
         return false;
     }
 
+    // Implementación del método para listar todos los detalles de un pedido específico.
     @Override
     public List<DetallesPedidos> listarDetallesPorPedido(int pedidoId) {
         
@@ -229,7 +239,7 @@ public class PedidosDAOImpl implements IPedidosDAO {
         String sql = "SELECT * FROM Detalles_Pedidos WHERE Pedido_ID = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, pedidoId);
             
@@ -253,13 +263,14 @@ public class PedidosDAOImpl implements IPedidosDAO {
         return  lista;
     }
     
+    // Implementación del método para calcular las ventas totales del mes actual.
     @Override
     public double calcularVentasMesActual() {
         // Suma el total de pedidos cuyo estado sea 'Pagado' o 'Entregado' dentro del mes en curso
         String sql = "SELECT SUM(Total) AS total_mes FROM Pedidos " +
-                 "WHERE Estado_pedido IN ('Pendiente_Pago', 'Pagado', 'En_Preparación', 'Despachado', 'En_Transito', 'Entregado', 'Cancelado', 'Devuelto') " +
-                 "AND MONTH(Fecha_pedido) = MONTH(CURRENT_DATE()) " +
-                 "AND YEAR(Fecha_pedido) = YEAR(CURRENT_DATE())";
+                "WHERE Estado_pedido IN ('Pendiente_Pago', 'Pagado', 'En_Preparación', 'Despachado', 'En_Transito', 'Entregado', 'Cancelado', 'Devuelto') " +
+                "AND MONTH(Fecha_pedido) = MONTH(CURRENT_DATE()) " +
+                "AND YEAR(Fecha_pedido) = YEAR(CURRENT_DATE())";
     
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -274,6 +285,7 @@ public class PedidosDAOImpl implements IPedidosDAO {
         return 0.0;
     }
     
+    // Implementación del método para contar los pedidos nuevos (pendientes) que requieren atención inmediata.
     @Override
     public int contarPedidosNuevos() {
         // Cuenta los pedidos que requieren atención inmediata (ej: estado PENDIENTE)
@@ -292,6 +304,7 @@ public class PedidosDAOImpl implements IPedidosDAO {
         return 0;
     }
     
+    // Método privado para mapear un ResultSet a un objeto Pedidos.
     private Pedidos mapearPedido(ResultSet rs) throws SQLException {
         Pedidos pedido = new Pedidos();
         pedido.setidPedido(rs.getInt("ID_Pedido"));
@@ -315,7 +328,7 @@ public class PedidosDAOImpl implements IPedidosDAO {
         int cuponId = rs.getInt("Cupon_ID");
         if (!rs.wasNull()) {
             pedido.setcuponId(cuponId);
-        }    
+        }
         return pedido;
     }
 }

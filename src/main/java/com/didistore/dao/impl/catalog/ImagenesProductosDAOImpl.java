@@ -15,8 +15,12 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz IImagenesProductosDAO para realizar operaciones CRUD
+// en la tabla Imagenes_Productos de la base de datos.
 public class ImagenesProductosDAOImpl implements IImagenesProductosDAO {
 
+    // Implementación del método listarImagenes() para obtener todas las imágenes de productos
     @Override
     public List<ImagenesProductos> listarImagenes() {
         
@@ -24,8 +28,8 @@ public class ImagenesProductosDAOImpl implements IImagenesProductosDAO {
         String sql = "SELECT id_imagen, producto_id, url, formato FROM imagenes_productos";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 ImagenesProductos imagen = new ImagenesProductos();
@@ -38,9 +42,10 @@ public class ImagenesProductosDAOImpl implements IImagenesProductosDAO {
         } catch (SQLException e) {
             System.err.println("Error al listar imágenes: " + e.getMessage());
         }
-        return lista;       
+        return lista;
     }
 
+    // Implementación del método listarPorProducto() para obtener todas las imágenes de un producto específico
     @Override
     public List<ImagenesProductos> listarPorProducto(int productoId) {
         
@@ -48,7 +53,7 @@ public class ImagenesProductosDAOImpl implements IImagenesProductosDAO {
         String sql = "SELECT id_imagen, producto_id, url, formato FROM Imagenes_Productos WHERE producto_id = ?";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, productoId);
 
@@ -68,13 +73,14 @@ public class ImagenesProductosDAOImpl implements IImagenesProductosDAO {
         return lista;
     }
 
+    // Implementación del método insertarImagen() para agregar una nueva imagen de producto a la base de datos
     @Override
     public boolean insertarImagen(ImagenesProductos imagen) {
         
         String sql = "INSERT INTO Imagenes_Productos (producto_id, url, formato) VALUES (?, ?, ?)";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, imagen.getProductoId());
             ps.setString(2, imagen.getUrl());
@@ -97,13 +103,14 @@ public class ImagenesProductosDAOImpl implements IImagenesProductosDAO {
         return false;
     }
 
+    // Implementación del método eliminarImagen() para eliminar una imagen de producto de la base de datos
     @Override
     public boolean eliminarImagen(int idImagen) {
         
         String sql = "DELETE FROM Imagenes_Productos WHERE id_imagen = ?";
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idImagen);
 
@@ -124,6 +131,7 @@ public class ImagenesProductosDAOImpl implements IImagenesProductosDAO {
         return false;
     }
 
+    // Implementación del método consultarImagenPorId() para obtener una imagen de producto específica por su ID
     @Override
     public ImagenesProductos consultarImagenPorId(int idImagen) {
         
@@ -132,7 +140,7 @@ public class ImagenesProductosDAOImpl implements IImagenesProductosDAO {
         ImagenesProductos imagenProducto = null;
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idImagen);
 
@@ -153,13 +161,15 @@ public class ImagenesProductosDAOImpl implements IImagenesProductosDAO {
         return imagenProducto;
     }
 
+    // Implementación del método actualizarImagen() para actualizar los datos de una
+    // imagen de producto existente en la base de datos
     @Override
     public boolean actualizarImagen(ImagenesProductos imagen) {
         
-         String sql = "UPDATE Imagenes_Productos SET producto_id = ?, url = ?, formato = ? WHERE id_imagen = ?";
+        String sql = "UPDATE Imagenes_Productos SET producto_id = ?, url = ?, formato = ? WHERE id_imagen = ?";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, imagen.getProductoId());
             ps.setString(2, imagen.getUrl());
@@ -180,6 +190,6 @@ public class ImagenesProductosDAOImpl implements IImagenesProductosDAO {
         } catch (SQLException e) {
             System.err.println("Error al actualizar imagen: " + e.getMessage());
         }
-        return false;      
+        return false;
     }
 }

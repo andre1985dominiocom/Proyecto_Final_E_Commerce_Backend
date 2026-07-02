@@ -19,6 +19,10 @@ import java.util.List;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Servlet para manejar las direcciones de los usuarios.
+// Permite obtener la lista de direcciones, agregar nuevas direcciones,
+// eliminar direcciones existentes y establecer una dirección como principal.
+// Todas las respuestas se devuelven en formato JSON.
 @WebServlet("/logistics/direccion")
 public class DireccionesServlet extends HttpServlet {
     
@@ -106,5 +110,5 @@ public class DireccionesServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"success\":false,\"message\":\"Error interno\"}");
         }
-    }    
+    }
 }

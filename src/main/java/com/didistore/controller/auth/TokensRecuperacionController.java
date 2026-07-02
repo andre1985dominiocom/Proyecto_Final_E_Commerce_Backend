@@ -11,6 +11,8 @@ import java.util.UUID;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las operaciones relacionadas con los tokens de recuperación de contraseña.
 public class TokensRecuperacionController {
 
     private final ITokensRecuperacionDAO tokensDAO;
@@ -58,8 +60,8 @@ public class TokensRecuperacionController {
         
         if (token.getusado()) {
             return false;
-        } 
-       
+        }
+
         Timestamp ahora = new Timestamp(System.currentTimeMillis());
         
         return token.getfechaExpiracion() != null && token.getfechaExpiracion().after(ahora);

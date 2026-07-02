@@ -14,6 +14,7 @@ import java.io.IOException;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir el acceso a esta ruta solo a usuarios con rol de administrador
 @WebServlet("/admin/dashboard-data")
 public class AdminDashboardServlet extends HttpServlet {
     

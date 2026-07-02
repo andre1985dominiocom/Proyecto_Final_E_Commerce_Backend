@@ -13,6 +13,9 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para la gestión del carrito de compras, incluyendo operaciones
+// como agregar productos, modificar cantidades, eliminar ítems y calcular el total del carrito.
 public class CarritoController {
     
     ICarritoComprasDAO carritoDAO;
@@ -53,7 +56,7 @@ public class CarritoController {
                 carrito = TrumanPorSesion(sesionId);
             }
         }
-        return carrito;   
+        return carrito;
     }
     
     public boolean agregarProductoAlCarrito(int carritoId, int usuarioId, int productoId, int cantidad, double precioUnitario) {

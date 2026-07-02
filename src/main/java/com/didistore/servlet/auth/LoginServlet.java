@@ -20,6 +20,8 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Permitir solicitudes CORS desde cualquier origen
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
@@ -27,6 +29,7 @@ public class LoginServlet extends HttpServlet {
     private final SesionesController sesionesController = new SesionesController();
     private final UsuariosDAOImpl usuariosDAO = new UsuariosDAOImpl();
 
+    // Permitir solicitudes get para verificar que el servlet está activo
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -35,6 +38,7 @@ public class LoginServlet extends HttpServlet {
         response.getWriter().write("LoginServlet activo");
     }
 
+    // Permitir solicitudes post para iniciar sesión
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -95,7 +99,7 @@ public class LoginServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             
             resultado.put(
-                "success", 
+                "success",
                     false );
             
             resultado.put(
@@ -137,6 +141,7 @@ public class LoginServlet extends HttpServlet {
         response.getWriter().write(gson.toJson(resultado));
     }
 
+    // Método para mapear el perfilId a un rol
     private String mapRol(int perfilId) {
         switch (perfilId) {
             case 1:
@@ -150,6 +155,7 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
+    // Clase interna para representar la solicitud de inicio de sesión
     public static class LoginRequest {
         private String email;
         private String contrasena;

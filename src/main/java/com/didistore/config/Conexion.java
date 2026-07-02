@@ -12,12 +12,16 @@ import java.util.Properties;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase para manejar la conexión a la base de datos MySQL
 public class Conexion {
     
+    // Propiedades para almacenar la configuración de la base de datos
     private static final Properties props = new Properties();
 
+    // Bloque estático para cargar el driver de MySQL y las propiedades de la base de datos
         static {
-             try {
+            try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
 
                 try (InputStream input =
@@ -35,6 +39,7 @@ public class Conexion {
             }
         }
     
+    // Método para obtener la conexión a la base de datos
     public static Connection getConexion() throws SQLException {
 
         String dbName = props.getProperty("db.name");

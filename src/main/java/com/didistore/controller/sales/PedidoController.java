@@ -17,6 +17,8 @@ import java.util.UUID;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador de Pedidos: Encapsula la lógica de negocio relacionada con la gestión de pedidos.
 public class PedidoController {
     
     private final IPedidosDAO pedidosDAO;

@@ -11,6 +11,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las operaciones relacionadas con las direcciones de los usuarios.
 public class DireccionesController {
     
     private final IDireccionesDAO direccionesDAO;
@@ -45,5 +47,5 @@ public class DireccionesController {
     
     public boolean establecerPrincipal(int usuarioId, int idDireccion) {
         return direccionesDAO.marcarPrincipal(usuarioId, idDireccion);
-    }    
+    }
 }

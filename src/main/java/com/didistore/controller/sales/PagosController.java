@@ -19,6 +19,8 @@ import java.io.PrintWriter;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las solicitudes relacionadas con los pagos
 public class PagosController {
     
     private final IPagosDAO pagosDAO;
@@ -84,5 +86,5 @@ public class PagosController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } 
+    }
 }

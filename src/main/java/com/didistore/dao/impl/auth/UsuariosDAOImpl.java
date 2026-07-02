@@ -299,7 +299,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         String sql = "INSERT INTO usuarios (nombre, apellido, email, documento, contrasena, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion) VALUES (?,?,?,?,?,?,?,?,?,?)";
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             java.sql.Timestamp ahora = new java.sql.Timestamp(System.currentTimeMillis());
             String hashedPassword = com.didistore.util.PasswordUtil.encrypt(usuario.getcontrasena());

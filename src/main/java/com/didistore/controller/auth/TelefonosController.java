@@ -13,6 +13,9 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador de la entidad Telefonos, maneja la lógica de negocio
+// y las operaciones relacionadas con los teléfonos de los usuarios.
 public class TelefonosController {
 
     private final ITelefonosDAO telefonosDAO;

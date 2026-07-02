@@ -14,6 +14,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// DAO (Data Access Object) clase para acceder a la tabla "ciudades" en la base de datos
 public class CiudadesDAO {
     
     public List<Ciudades> listar() {
@@ -30,7 +32,6 @@ public class CiudadesDAO {
                 city.setnombreCiudad(rs.getString("nombre_Ciudad"));
                 city.setdepartamentoId(rs.getInt("departamento_Id"));
                 city.setcodigoPostal(rs.getString("codigo_Postal"));
-                     
                 lista.add(city);
             }
         } catch (SQLException e) {

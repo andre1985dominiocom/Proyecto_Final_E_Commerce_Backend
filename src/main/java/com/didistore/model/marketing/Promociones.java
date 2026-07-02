@@ -9,6 +9,10 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa una promoción en el sistema de marketing de la tienda.
+// Contiene información sobre la promoción, como su nombre, descripción, tipo de descuento, valor del descuento,
+// fechas de inicio y fin, estado y otros atributos relacionados.
 public class Promociones {
     private int idPromocion;
     private String nombrePromocion;
@@ -24,8 +28,10 @@ public class Promociones {
     private Timestamp fechaCreacion;
     private Timestamp fechaActualizacion;
     
+    // Constructor vacío para crear una instancia de Promociones sin inicializar sus atributos.
     public Promociones() {}
     
+    // Constructor que permite crear una instancia de Promociones con todos sus atributos inicializados.
     public Promociones(int idPromocion,
             String nombrePromocion,
             String descripcion,
@@ -55,6 +61,7 @@ public class Promociones {
         this.fechaActualizacion = fechaActualizacion;
     }
     
+    // Métodos getter y setter para acceder y modificar los atributos de la clase Promociones.
     public int getidPromocion() { return idPromocion; }
     public void setidPromocion(int idPromocion) { this.idPromocion = idPromocion; }
     

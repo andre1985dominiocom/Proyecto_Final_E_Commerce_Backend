@@ -8,6 +8,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz que define los métodos para la gestión de productos en el catálogo.
 public interface IProductosDAO {
     
     void insertarProductos(Productos producto);

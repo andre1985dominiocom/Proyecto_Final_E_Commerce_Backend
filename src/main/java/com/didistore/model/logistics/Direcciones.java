@@ -8,6 +8,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa la entidad Direcciones
 public class Direcciones {
     private int idDireccion;
     private String direccion;
@@ -19,8 +21,10 @@ public class Direcciones {
     private EstadoDirecciones estado;
     private Timestamp fechaCreacion;
     
+    // Constructor vacío que permite crear un objeto Direcciones sin inicializar sus atributos
     public Direcciones() {}
     
+    // Constructor que permite crear un objeto Direcciones con todos sus atributos inicializados
     public Direcciones (int idDireccion,
             String direccion,
             boolean esPrincipal,
@@ -42,6 +46,7 @@ public class Direcciones {
         this.fechaCreacion = fechaCreacion;
     }
     
+    // Métodos getter y setter para cada atributo de la clase Direcciones
     public int getidDireccion() { return idDireccion; }
     public void setidDireccion(int idDireccion) { this.idDireccion = idDireccion; }
     

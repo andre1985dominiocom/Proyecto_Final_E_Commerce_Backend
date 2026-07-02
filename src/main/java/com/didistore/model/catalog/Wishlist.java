@@ -5,13 +5,17 @@ package com.didistore.model.catalog;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa la entidad Wishlist en el catálogo de productos.
 public class Wishlist {
     private int idWishlist;
     private int usuarioId;
     private int productoId;
     
+    // Constructor vacío para la clase Wishlist.
     public Wishlist() {}
     
+    // Constructor que inicializa los atributos de la clase Wishlist.
     public Wishlist(int idWishlist,
             int usuarioId,
             int productoId) {
@@ -21,6 +25,7 @@ public class Wishlist {
         this.productoId = productoId;
     }
     
+    // Métodos getter y setter para los atributos de la clase Wishlist.
     public int getidWishlist() { return idWishlist; }
     public void setidWishlist(int idWishlist) { this.idWishlist = idWishlist; }
     

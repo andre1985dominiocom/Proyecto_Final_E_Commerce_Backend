@@ -20,17 +20,20 @@ import java.util.Map;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir solicitudes desde cualquier origen (CORS)
 @WebServlet("/auth/registro")
 public class RegistroServlet extends HttpServlet {
     
     private UsuariosController registroController;
     private final Gson gson = new Gson();
 
+    // Inicializar el controlador de registro al iniciar el servlet
     @Override
     public void init() {
         registroController = new UsuariosController();
     }
 
+    // Manejar solicitudes POST para registrar un nuevo cliente
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -85,6 +88,7 @@ public class RegistroServlet extends HttpServlet {
         out.write(gson.toJson(resultado));
     }
 
+    // Clase interna para mapear la solicitud JSON de registro
     public static class RegistroRequest {
         private String nombre;
         private String apellido;

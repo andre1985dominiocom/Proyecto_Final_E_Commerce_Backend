@@ -8,6 +8,10 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para la gestión de categorías en el catálogo de productos.
+// Define los métodos necesarios para insertar, actualizar, eliminar y obtener categorías,
+// así como para buscar subcategorías y categorías raíz.
 public interface ICategoriasDAO {
     
     boolean insertarCategorias(Categorias categoria);
