@@ -131,7 +131,7 @@ public class CarritoComprasServlet extends HttpServlet {
             json.append("{");
             json.append("\"itemId\": ").append(item.getidItem()).append(",");
             json.append("\"productoId\": ").append(item.getproductoId()).append(",");
-            json.append("\"nombreProducto\": ").append(item.getnombreProducto()).append(",");
+            json.append("\"nombreProducto\": \"").append(item.getnombreProducto()).append("\",");
             json.append("\"cantidad\": ").append(item.getcantidad()).append(",");
             json.append("\"precioUnitario\": ").append(item.getprecioUnitario());
             json.append("}");

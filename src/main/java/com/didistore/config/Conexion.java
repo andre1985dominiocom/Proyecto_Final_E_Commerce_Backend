@@ -11,10 +11,15 @@ import java.sql.SQLException;
  */
 public class Conexion {
     
-    private static final String DATABASE = "db_e_commerce_didistore";
-    private static final String URL = "jdbc:mysql://localhost:3306/" + DATABASE;
-    private static final String USER = "root";
-    private static final String PASSWORD = "6719980";
+    private static final String DATABASE = System.getenv("DB_NAME") != null
+            ? System.getenv("DB_NAME") : "db_e_commerce_didistore";
+    private static final String URL = "jdbc:mysql://"
+            + (System.getenv("DB_HOST") != null ? System.getenv("DB_HOST") : "localhost")
+            + ":3306/" + DATABASE;
+    private static final String USER = System.getenv("DB_USER") != null
+            ? System.getenv("DB_USER") : "root";
+    private static final String PASSWORD = System.getenv("DB_PASSWORD") != null
+            ? System.getenv("DB_PASSWORD") : "";
     
     private static Connection conexion = null;
     
