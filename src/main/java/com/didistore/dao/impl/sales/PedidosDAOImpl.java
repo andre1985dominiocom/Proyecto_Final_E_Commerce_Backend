@@ -289,6 +289,7 @@ public class PedidosDAOImpl implements IPedidosDAO {
         pedido.setiva(rs.getDouble("IVA"));
         pedido.setcostoEnvio(rs.getDouble("Costo_envio"));
         pedido.setmontoTotal(rs.getDouble("Monto_Total"));
+        pedido.setfechaPedido(rs.getTimestamp("Fecha_pedido"));
         
         // Manejo de nulos seguro para el Cupon_ID
         int cuponId = rs.getInt("Cupon_ID");

@@ -49,7 +49,7 @@ public class PagosDAOImpl implements IPagosDAO {
     @Override
     public boolean cancelarPago(int idPago) {
         
-        String sql = "UPDATE Pagos SET Estado_pago = ? = WHERE ID_Pago = ?";
+        String sql = "UPDATE Pagos SET Estado_pago = ? WHERE ID_Pago = ?";
         
         try (Connection con = Conexion.getConexion();
         PreparedStatement ps = con.prepareStatement(sql)) {

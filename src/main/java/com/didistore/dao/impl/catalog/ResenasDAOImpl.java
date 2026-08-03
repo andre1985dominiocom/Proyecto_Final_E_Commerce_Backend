@@ -55,6 +55,7 @@ public class ResenasDAOImpl implements IResenasDAO {
 
             if (filasAfectadas > 0) {
                 System.out.println("¡Reseña eliminada correctamente en la BD!");
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();

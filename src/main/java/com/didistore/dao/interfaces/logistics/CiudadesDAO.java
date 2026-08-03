@@ -18,7 +18,7 @@ public class CiudadesDAO {
     
     public List<Ciudades> listar() {
         List<Ciudades> lista = new ArrayList<>();
-        String sql = "SELECT id_Ciudades, nombre_Ciudad, departamento_Id, codigo_Postal FROM ciudades";
+        String sql = "SELECT id_Ciudad, nombre_Ciudad, departamento_Id, codigo_Postal FROM ciudades";
         
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql);

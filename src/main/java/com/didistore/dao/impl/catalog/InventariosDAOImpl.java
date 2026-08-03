@@ -22,7 +22,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
         
         List<Inventarios> lista = new ArrayList<>();
 
-        String sql = "SELECT Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion  FROM Inventarios";
+        String sql = "SELECT ID_Inventario, Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion FROM Inventarios";
 
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -31,6 +31,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
             while (rs.next()) {
                 Inventarios inventario = new Inventarios();
 
+                inventario.setidInventario(rs.getInt("ID_Inventario"));
                 inventario.setproductoId(rs.getInt("Producto_ID"));
                 inventario.setstockActual(rs.getInt("Stock_actual"));
                 inventario.setstockMinimo(rs.getInt("Stock_minimo"));
@@ -52,7 +53,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
         
         List<Inventarios> lista = new ArrayList<>();
         
-        String sql = "SELECT Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion  FROM Inventarios WHERE Producto_ID = ?";
+        String sql = "SELECT ID_Inventario, Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion FROM Inventarios WHERE Producto_ID = ?";
 
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -63,6 +64,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
             while (rs.next()) {
                 Inventarios inventario = new Inventarios();
 
+                inventario.setidInventario(rs.getInt("ID_Inventario"));
                 inventario.setproductoId(rs.getInt("Producto_ID"));
                 inventario.setstockActual(rs.getInt("Stock_actual"));
                 inventario.setstockMinimo(rs.getInt("Stock_minimo"));
@@ -82,7 +84,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
     @Override
     public Inventarios consultarInventarioPorId(int idInventario) {
         
-        String sql = "SELECT  FROM Inventarios Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion  WHERE ID_inventario = ?";
+        String sql = "SELECT ID_Inventario, Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion FROM Inventarios WHERE ID_Inventario = ?";
 
         Inventarios inventario = null;
 
@@ -95,6 +97,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
                 if (rs.next()) {
                     inventario = new Inventarios();
 
+                inventario.setidInventario(rs.getInt("ID_Inventario"));
                 inventario.setproductoId(rs.getInt("Producto_ID"));
                 inventario.setstockActual(rs.getInt("Stock_actual"));
                 inventario.setstockMinimo(rs.getInt("Stock_minimo"));
@@ -142,7 +145,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
     @Override
     public boolean actualizarInventario(Inventarios inventario) {
         
-        String sql = "UPDATE Inventario SET producto_id = ?, Stock_actual = ?, Stock_minimo = ?, Stock_reservado = ?, Fecha_creacion = ?, Fecha_actualizacion = ? WHERE ID_Inventario = ?";
+        String sql = "UPDATE Inventarios SET producto_id = ?, Stock_actual = ?, Stock_minimo = ?, Stock_reservado = ?, Fecha_creacion = ?, Fecha_actualizacion = ? WHERE ID_Inventario = ?";
         
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -175,7 +178,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
     @Override
     public boolean eliminarInventario(int idInventario) {
         
-        String sql = "DELETE FROM Inventario WHERE ID_Inventario = ?";
+        String sql = "DELETE FROM Inventarios WHERE ID_Inventario = ?";
 
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {

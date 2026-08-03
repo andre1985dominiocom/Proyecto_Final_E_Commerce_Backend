@@ -142,7 +142,7 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
     @Override
     public boolean actualizarCantidad(int idItem, int cantidad) {
         
-        String sql = "UPDATE Item_Carrito SET Cantidad = Cantidad + ? WHERE ID_Item = ?";
+        String sql = "UPDATE Item_Carrito SET Cantidad = ? WHERE ID_Item = ?";
         
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
