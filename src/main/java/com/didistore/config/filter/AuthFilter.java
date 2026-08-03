@@ -42,7 +42,10 @@ public class AuthFilter extends HttpFilter implements Filter {
                 path.startsWith("/css/") ||
                 path.startsWith("/js/") ||
                 path.startsWith("/assets/") ||
-                path.startsWith("/catalog/");
+                path.startsWith("/catalog/") ||
+                path.startsWith("/auth/recuperacion") ||
+                path.startsWith("/auth/validar-token") ||
+                path.startsWith("/auth/restablecer-password");
 
         if (publicResource) {
                 chain.doFilter(request, response);

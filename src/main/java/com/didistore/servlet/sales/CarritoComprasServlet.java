@@ -131,4 +131,5 @@ public class CarritoComprasServlet extends HttpServlet {
         resultado.put("total", total);
         resultado.put("items", items);
         return gson.toJson(resultado);
-    }}
+    }
+}

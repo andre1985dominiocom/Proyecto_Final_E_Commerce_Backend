@@ -121,14 +121,14 @@ public class PedidosDAOImpl implements IPedidosDAO {
             if (con != null) {
                 try {
                     con.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
-        }
             e.printStackTrace();
-            
+
         } finally {
-            // El bloque finally ahora cerrará de forma segura todos los objetos abiertos
+            // El bloque finally cierra de forma segura todos los objetos abiertos
             try {
                 if (rs != null) rs.close();
                 if (psPedido != null) psPedido.close();
@@ -266,11 +266,11 @@ public class PedidosDAOImpl implements IPedidosDAO {
     // Implementación del método para calcular las ventas totales del mes actual.
     @Override
     public double calcularVentasMesActual() {
-        // Suma el total de pedidos cuyo estado sea 'Pagado' o 'Entregado' dentro del mes en curso
-        String sql = "SELECT SUM(Total) AS total_mes FROM Pedidos " +
-                "WHERE Estado_pedido IN ('Pendiente_Pago', 'Pagado', 'En_Preparación', 'Despachado', 'En_Transito', 'Entregado', 'Cancelado', 'Devuelto') " +
-                "AND MONTH(Fecha_pedido) = MONTH(CURRENT_DATE()) " +
-                "AND YEAR(Fecha_pedido) = YEAR(CURRENT_DATE())";
+        // Suma el total de pedidos dentro del mes en curso
+        String sql = "SELECT SUM(Monto_Total) AS total_mes FROM Pedidos " +
+                 "WHERE Estado_pedido IN ('Pendiente_Pago', 'Pagado', 'En_Preparacion', 'Despachado', 'En_Transito', 'Entregado', 'Cancelado', 'Devuelto') " +
+                 "AND MONTH(Fecha_pedido) = MONTH(CURRENT_DATE()) " +
+                 "AND YEAR(Fecha_pedido) = YEAR(CURRENT_DATE())";
     
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -288,8 +288,8 @@ public class PedidosDAOImpl implements IPedidosDAO {
     // Implementación del método para contar los pedidos nuevos (pendientes) que requieren atención inmediata.
     @Override
     public int contarPedidosNuevos() {
-        // Cuenta los pedidos que requieren atención inmediata (ej: estado PENDIENTE)
-        String sql = "SELECT COUNT(*) AS nuevos FROM Pedidos WHERE Estado_pedido = 'PENDIENTE'";
+        // Cuenta los pedidos que requieren atención inmediata (estado Pendiente_Pago)
+        String sql = "SELECT COUNT(*) AS nuevos FROM Pedidos WHERE Estado_pedido = 'Pendiente_Pago'";
     
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -323,6 +323,7 @@ public class PedidosDAOImpl implements IPedidosDAO {
         pedido.setiva(rs.getDouble("IVA"));
         pedido.setcostoEnvio(rs.getDouble("Costo_envio"));
         pedido.setmontoTotal(rs.getDouble("Monto_Total"));
+        pedido.setfechaPedido(rs.getTimestamp("Fecha_pedido"));
         
         // Manejo de nulos seguro para el Cupon_ID
         int cuponId = rs.getInt("Cupon_ID");

@@ -37,7 +37,7 @@ public class PasswordUtil {
         
         // Método para verificar si una contraseña en texto plano coincide con una contraseña encriptada.
         public static boolean verify(String plainPassword, String hashedPassword) {
-            if (plainPassword == null || plainPassword.isBlank() || plainPassword == null || hashedPassword.isBlank()) {
+            if (plainPassword == null || plainPassword.isBlank() || hashedPassword == null || hashedPassword.isBlank()) {
                 return false;
             }
             try {

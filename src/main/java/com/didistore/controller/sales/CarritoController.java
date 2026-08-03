@@ -53,7 +53,7 @@ public class CarritoController {
             if (usuarioId != null && usuarioId != 0) {
                 carrito = carritoDAO.buscarPorUsuario(usuarioId);
             } else {
-                carrito = TrumanPorSesion(sesionId);
+                carrito = buscarPorSesion(sesionId);
             }
         }
         return carrito;
@@ -125,7 +125,7 @@ public class CarritoController {
         return carritoDAO.obtenerTotal(carritoId);
     }
     
-    private CarritoCompras TrumanPorSesion(String sesionId) {
+    private CarritoCompras buscarPorSesion(String sesionId) {
         return carritoDAO.buscarPorSesion(sesionId);
     }
 }
