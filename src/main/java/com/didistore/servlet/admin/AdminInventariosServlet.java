@@ -87,13 +87,6 @@ public class AdminInventariosServlet extends HttpServlet {
         
         Map<String, Object> resultado = new HashMap<>();
         
-<<<<<<< HEAD
-        // Aquí llamarías a un método de tu controlador para insertar (ej: insertarInventario)
-        // Como tu controlador actual maneja actualización, si lo necesitas lo puedes implementar en el DAO.
-        response.setStatus(HttpServletResponse.SC_CREATED); // 201
-        response.getWriter().write(gson.toJson(
-                java.util.Collections.singletonMap("mensaje", "Funcionalidad POST lista para insertar")));
-=======
         try {
             BufferedReader reader = request.getReader();
             
@@ -152,7 +145,6 @@ public class AdminInventariosServlet extends HttpServlet {
                 e.getMessage() );
         }
         response.getWriter().write(gson.toJson(resultado));
->>>>>>> origin/main
     }
 
     /**

@@ -1,7 +1,0 @@
-/* Admin promotions page styles */
-
-.admin-promo-discount {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: var(--color-danger-dark);
-}

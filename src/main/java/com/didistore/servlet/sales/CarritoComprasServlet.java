@@ -127,34 +127,9 @@ public class CarritoComprasServlet extends HttpServlet {
      * Construye la respuesta JSON del carrito usando Gson para un encoding seguro.
      */
     private String construirJsonCarrito(List<ItemCarritos> items, double total) {
-<<<<<<< HEAD
-        StringBuilder json = new StringBuilder();
-        json.append("{");
-        json.append("\"total\": ").append(total).append(",");
-        json.append("\"items\": [");
-        
-        for (int i = 0; i < items.size(); i++) {
-            ItemCarritos item = items.get(i);
-            json.append("{");
-            json.append("\"itemId\": ").append(item.getidItem()).append(",");
-            json.append("\"productoId\": ").append(item.getproductoId()).append(",");
-            json.append("\"nombreProducto\": \"").append(item.getnombreProducto()).append("\",");
-            json.append("\"cantidad\": ").append(item.getcantidad()).append(",");
-            json.append("\"precioUnitario\": ").append(item.getprecioUnitario());
-            json.append("}");
-            if (i < items.size() - 1) {
-                json.append(",");
-            }
-        }        
-        json.append("]");
-        json.append("}");
-        return json.toString();
-    }   
-}
-=======
         Map<String, Object> resultado = new HashMap<>();
         resultado.put("total", total);
         resultado.put("items", items);
         return gson.toJson(resultado);
-    }}
->>>>>>> origin/main
+    }
+}

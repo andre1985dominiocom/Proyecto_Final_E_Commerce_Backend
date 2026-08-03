@@ -16,28 +16,6 @@ import java.util.Properties;
 // Clase para manejar la conexión a la base de datos MySQL
 public class Conexion {
     
-<<<<<<< HEAD
-    private static final String DATABASE = System.getenv("DB_NAME") != null
-            ? System.getenv("DB_NAME") : "db_e_commerce_didistore";
-    private static final String URL = "jdbc:mysql://"
-            + (System.getenv("DB_HOST") != null ? System.getenv("DB_HOST") : "localhost")
-            + ":3306/" + DATABASE;
-    private static final String USER = System.getenv("DB_USER") != null
-            ? System.getenv("DB_USER") : "root";
-    private static final String PASSWORD = System.getenv("DB_PASSWORD") != null
-            ? System.getenv("DB_PASSWORD") : "";
-    
-    private static Connection conexion = null;
-    
-    public static Connection getConexion() {
-        
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
-            if (conexion == null || conexion.isClosed()) {
-            conexion = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Conexión exitosa a: " + DATABASE);
-=======
     // Propiedades para almacenar la configuración de la base de datos
     private static final Properties props = new Properties();
 
@@ -58,7 +36,6 @@ public class Conexion {
                 throw new RuntimeException("Driver MySQL no encontrado", e);
             } catch (IOException e) {
                 throw new RuntimeException("Error cargando database.properties",e);
->>>>>>> origin/main
             }
         }
     

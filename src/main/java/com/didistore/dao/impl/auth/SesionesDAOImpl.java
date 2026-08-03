@@ -41,11 +41,7 @@ public class SesionesDAOImpl implements ISesionesDAO{
                 ps.setString(5, sesion.getip());
                 ps.setString(6, sesion.getuserAgent());
                 ps.setInt(7, sesion.getrevocada());
-<<<<<<< HEAD
                
-=======
-
->>>>>>> origin/main
                 int filasAfectadas = ps.executeUpdate();
                 
                 if (!con.getAutoCommit()) {

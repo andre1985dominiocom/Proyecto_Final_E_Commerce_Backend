@@ -90,11 +90,7 @@ public class InventariosDAOImpl implements IInventariosDAO {
     @Override
     public Inventarios consultarInventarioPorId(int idInventario) {
         
-<<<<<<< HEAD
         String sql = "SELECT ID_Inventario, Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion FROM Inventarios WHERE ID_Inventario = ?";
-=======
-        String sql = "SELECT Producto_ID, Stock_actual, Stock_minimo, Stock_reservado, Fecha_creacion, Fecha_actualizacion  FROM Inventarios WHERE ID_inventario = ?";
->>>>>>> origin/main
 
         Inventarios inventario = null;
 
