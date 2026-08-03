@@ -86,7 +86,8 @@ public class AdminInventariosServlet extends HttpServlet {
         // Aquí llamarías a un método de tu controlador para insertar (ej: insertarInventario)
         // Como tu controlador actual maneja actualización, si lo necesitas lo puedes implementar en el DAO.
         response.setStatus(HttpServletResponse.SC_CREATED); // 201
-        response.getWriter().write("{\"mensaje\": \"Funcionalidad POST lista para insertar\"}" + inventarioNuevo);
+        response.getWriter().write(gson.toJson(
+                java.util.Collections.singletonMap("mensaje", "Funcionalidad POST lista para insertar")));
     }
 
     /**
