@@ -1,13 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.didistore.util;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author DELL
+ * @author Sergio Andrés Álvarez Lache
  */
 public class SessionUtil {
     
+    public static Integer obtenerUsuarioId(HttpServletRequest request) {
+
+            HttpSession session = request.getSession(false);
+
+            if (session == null) {
+            return null;
+            }
+
+            return (Integer) session.getAttribute("usuarioId");
+        }
+
+    public static boolean usuarioAutenticado(HttpServletRequest request) {
+
+            return obtenerUsuarioId(request) != null;
+    } 
 }

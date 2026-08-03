@@ -31,18 +31,21 @@ export const STORAGE_KEYS = {
 
 export const API_ENDPOINTS = {
   login: '/login',
-  users: '/admin/usuarios',
+  logout: '/logout',
+  users: '/auth/registro',
   products: '/admin/productos',
   categories: '/admin/categorias',
   inventory: '/admin/inventarios',
   cart: '/sales/carrito',
+  pedido: '/sales/pedido',
   orders: '/sales/pedido',
   promotions: '/catalog/productos',
   checkout: '/sales/pedido',
   passwordRecovery: '/auth/recuperacion',
   validateToken: '/auth/validar-token',
   resetPassword: '/auth/restablecer-password',
-  dashboard: '/admin/dashboard-data'
+  dashboard: '/admin/dashboard-data',
+  direcciones: '/logistics/direccion'
 };
 
 export const CATALOG_ENDPOINTS = {

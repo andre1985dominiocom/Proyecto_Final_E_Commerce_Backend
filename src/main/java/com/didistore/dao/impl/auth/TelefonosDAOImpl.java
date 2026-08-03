@@ -16,8 +16,11 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz ITelefonosDAO para realizar operaciones CRUD en la tabla "telefonos" de la base de datos.
 public class TelefonosDAOImpl implements ITelefonosDAO {
 
+    // Implementación del método para insertar un nuevo registro de teléfono en la base de datos.
     @Override
     public void insertarTelefono(Telefonos telefono) {
         
@@ -51,6 +54,7 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
         
     }
 
+    // Implementación del método para consultar un registro de teléfono por su ID en la base de datos.
     @Override
     public Telefonos consultarTelefono(int idTelefono) {
         
@@ -85,6 +89,7 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
         
     }
 
+    // Implementación del método para consultar un registro de teléfono por el ID del usuario en la base de datos.
     @Override
     public Telefonos consultarTelefonoPorUsuario(int usuarioId) {
         
@@ -118,6 +123,7 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
         return telefono;
     }
 
+    // Implementación del método para listar todos los registros de teléfonos en la base de datos.
     @Override
     public List<Telefonos> listarTelefono() {
         
@@ -148,14 +154,15 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
         return lista;
     }
 
+    // Implementación del método para actualizar un registro de teléfono en la base de datos.
     @Override
     public void actualizarTelefono(Telefonos telefono) {
         
-        String sql = "UPDATE telefonos (SET Usuario_ID = ?,"
-                + "SET tipo = ?,"
-                + "SET numero = ?,"
-                + "SET es_verificado = ?,"
-                + "SET fecha_agregado = ?) WHERE ID_Telefono = ?";
+        String sql = "UPDATE telefonos SET Usuario_ID = ?,"
+                + "tipo = ?,"
+                + "numero = ?,"
+                + "es_verificado = ?,"
+                + "fecha_agregado = ? WHERE ID_Telefono = ?";
         
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql)) {
@@ -165,6 +172,7 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
                 ps.setString(3, telefono.getnumero());
                 ps.setInt(4, telefono.getesVerificado());
                 ps.setTimestamp(5, telefono.getfechaAgregado());
+                ps.setInt(6, telefono.getidTelefono());
 
                 int filasAfectadas = ps.executeUpdate();
                 
@@ -180,6 +188,7 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
         }
     }
 
+    // Implementación del método para eliminar un registro de teléfono por su ID en la base de datos.
     @Override
     public void eliminarTelefonoPorUsuario(int usuarioId) {
         
@@ -204,6 +213,7 @@ public class TelefonosDAOImpl implements ITelefonosDAO {
         }
     }
 
+    // Implementación del método para eliminar un registro de teléfono por su ID en la base de datos.
     @Override
     public void eliminarTelefonoPorId(int idTelefono) {
         

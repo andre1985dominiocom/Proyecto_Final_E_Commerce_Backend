@@ -15,8 +15,13 @@ import com.didistore.dao.interfaces.auth.IPerfilPermisosDAO;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz IPerfilPermisosDAO para realizar operaciones
+// CRUD en la tabla Perfil_permiso de la base de datos.
 public class PerfilPermisosDAOImpl implements IPerfilPermisosDAO {
     
+    // Método para insertar un nuevo registro en la tabla Perfil_permiso.
+    @Override
     public boolean insertarPerfilPermisos(PerfilPermisos perfilPermiso) {
         
     String sql = "INSERT INTO Perfil_permiso (ID_perfil,"
@@ -27,7 +32,7 @@ public class PerfilPermisosDAOImpl implements IPerfilPermisosDAO {
             
                 ps.setInt(1, perfilPermiso.getidPerfil());
                 ps.setInt(2, perfilPermiso.getidPermiso());
-               
+
                 int filasAfectadas = ps.executeUpdate();
                 
                 if (!con.getAutoCommit()) {
@@ -36,13 +41,14 @@ public class PerfilPermisosDAOImpl implements IPerfilPermisosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Perfil permisos insertado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
                 System.err.println("Error al listar perfil permiso: " + e.getMessage());
-        }   
+        }
         return false;
-    }    
+    }
 
+    // Método para listar todos los registros de la tabla Perfil_permiso.
     @Override
     public List<PerfilPermisos> listarPermisosPorPerfil(int idPerfil) {
         
@@ -63,13 +69,14 @@ public class PerfilPermisosDAOImpl implements IPerfilPermisosDAO {
                 permiso.setidPermiso(rs.getInt("ID_Permiso"));
                 lista.add(permiso);
             }
-        }           
+        }
     } catch (SQLException e) {
         System.err.println("Error al listar permisos por perfil: " + e.getMessage());
         }
         return lista;
     }
 
+    // Método para listar todos los registros de la tabla Perfil_permiso por ID de permiso.
     @Override
     public List<PerfilPermisos> listarPerfilesPorPermiso(int idPermiso) {
         
@@ -85,18 +92,19 @@ public class PerfilPermisosDAOImpl implements IPerfilPermisosDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 
                 while (rs.next()) {
-                PerfilPermisos perfil = new PerfilPermisos();   
+                PerfilPermisos perfil = new PerfilPermisos();
                 perfil.setidPerfil(rs.getInt("ID_Perfil"));
                 perfil.setidPermiso(rs.getInt("ID_Permiso"));
                 lista.add(perfil);
             }
-        }    
+        }
     } catch (SQLException e) {
             System.err.println("Error al listar perfiles por permiso: " + e.getMessage());
         }
-       return lista;
+        return lista;
     }
 
+    // Método para eliminar un registro de la tabla Perfil_permiso por ID de perfil y ID de permiso.
     @Override
     public void eliminarPerfilPermisos(int idPerfil, int idPermiso) {
         
@@ -116,12 +124,13 @@ public class PerfilPermisosDAOImpl implements IPerfilPermisosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Perfil permiso eliminado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al eliminar perfil permiso: " + e.getMessage());
-        }                
+        }
     }
 
+    // Método para consultar un registro de la tabla Perfil_permiso por ID de perfil y ID de permiso.
     @Override
     public PerfilPermisos consultarPerfilPermisosPorId(int idPerfil, int idPermiso) {
         
@@ -142,23 +151,23 @@ public class PerfilPermisosDAOImpl implements IPerfilPermisosDAO {
                     perfilPermiso.setidPerfil(rs.getInt("ID_Perfil"));
                     perfilPermiso.setidPermiso(rs.getInt("ID_Permiso"));
                 }
-            } 
+            }
         } catch (SQLException e) {
             System.err.println("Error al consultar perfil permiso por ID: " + e.getMessage());
         }
         return perfilPermiso;
     }
         
-
+    // Método para actualizar un registro de la tabla Perfil_permiso por ID de perfil y ID de permiso.
     @Override
     public void actualizarPerfilPermisos(PerfilPermisos perfilPermiso) {
-       
+
         String sql = "UPDATE Perfil_permiso SET ID_Permiso = ?, WHERE"
                 + "ID_Perfil = ? AND ID_Permiso = ?";
         
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql)) {
-                     
+
                 ps.setInt(2, perfilPermiso.getidPermiso());
                 ps.setInt(1, perfilPermiso.getidPerfil());
                 ps.setInt(3, perfilPermiso.getidPermiso());
@@ -171,9 +180,9 @@ public class PerfilPermisosDAOImpl implements IPerfilPermisosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Perfil permiso actualizado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al actualizar perfil permiso: " + e.getMessage());
-        }               
-    }      
+        }
+    }
 }

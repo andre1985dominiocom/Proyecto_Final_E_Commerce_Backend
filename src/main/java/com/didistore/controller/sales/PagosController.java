@@ -1,8 +1,12 @@
 
 package com.didistore.controller.sales;
 
+import com.didistore.dao.impl.sales.HistorialEstadoPedidosDAOImpl;
 import com.didistore.dao.impl.sales.PagosDAOImpl;
+import com.didistore.dao.impl.sales.PedidosDAOImpl;
+import com.didistore.dao.interfaces.sales.IHistorialEstadoPedidosDAO;
 import com.didistore.dao.interfaces.sales.IPagosDAO;
+import com.didistore.dao.interfaces.sales.IPedidosDAO;
 import com.didistore.model.sales.Pagos;
 import com.didistore.model.sales.enums.EstadoPagos;
 import com.didistore.model.sales.enums.MetodoPagos;
@@ -15,12 +19,18 @@ import java.io.PrintWriter;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las solicitudes relacionadas con los pagos
 public class PagosController {
     
     private final IPagosDAO pagosDAO;
+    private final IPedidosDAO pedidosDAO;
+    private final IHistorialEstadoPedidosDAO historialDAO;
     
     public PagosController() {
         this.pagosDAO = new PagosDAOImpl();
+        this.pedidosDAO = new PedidosDAOImpl();
+        this.historialDAO = new HistorialEstadoPedidosDAOImpl();
     }
     
     public void procesarConsulta(HttpServletRequest request, HttpServletResponse response) {
@@ -76,5 +86,5 @@ public class PagosController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } 
+    }
 }

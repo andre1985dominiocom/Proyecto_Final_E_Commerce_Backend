@@ -18,12 +18,14 @@ import java.util.List;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permite realizar operaciones CRUD sobre la relación entre perfiles y permisos
 @WebServlet("/auth/perfil-permisos")
 public class PerfilPermisosServlet extends HttpServlet {
     
     private final Gson gson = new Gson();
     private final PerfilPermisosController perfilPermisosController = new PerfilPermisosController();
 
+    // GET: Consultar la relación perfil-permiso, listar permisos por perfil o listar perfiles por permiso
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -74,6 +76,7 @@ public class PerfilPermisosServlet extends HttpServlet {
         }
     }
 
+    // POST: Asignar un permiso a un perfil
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -98,7 +101,7 @@ public class PerfilPermisosServlet extends HttpServlet {
             response.getWriter().write("{\"message\":\"No se pudo asignar el permiso al perfil\"}");
         }
     }
-
+    // DELETE: Eliminar la relación perfil-permiso
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -126,5 +129,5 @@ public class PerfilPermisosServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("{\"message\":\"Faltan idPerfil e idPermiso\"}");
         }
-    }  
+    }
 }

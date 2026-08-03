@@ -1,8 +1,10 @@
-import { buildAppUrl } from './core/config.js';
+import { buildAppUrl, buildApiUrl, API_ENDPOINTS } from './core/config.js';
 import { getSession, clearSession } from './core/session.js';
+import { initCartBadge } from './core/cart-badge.js';
 import "./catalog/catalog-public.js";
 
 const { token, user } = getSession();
+initCartBadge();
 
 if (token) {
   document.querySelectorAll('[data-auth-link]').forEach((link) => {
@@ -17,8 +19,11 @@ if (token) {
 }
 
 document.querySelectorAll('[data-logout-link], [data-logout-action="true"]').forEach((element) => {
-  element.addEventListener('click', (event) => {
+  element.addEventListener('click', async (event) => {
     event.preventDefault();
+    try {
+      await fetch(buildApiUrl(API_ENDPOINTS.logout), { method: 'POST' });
+    } catch (_) {}
     clearSession();
     window.location.href = buildAppUrl('/html/auth/login.html');
   });

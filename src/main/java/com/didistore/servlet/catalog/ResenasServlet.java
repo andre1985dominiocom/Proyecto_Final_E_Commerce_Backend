@@ -18,14 +18,16 @@ import java.util.List;
  * @author Sergio Sergio Andrés Álvarez Lache
  */
 
+// Permitir solicitudes de origen cruzado (CORS) para todas las rutas de este servlet
 @WebServlet("/catalog/resena")
 public class ResenasServlet extends HttpServlet  {
     
     private final ResenasController resenasController = new ResenasController();
     private final Gson gson = new Gson();
 
+    // Manejar solicitudes GET para obtener reseñas de un producto específico
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         response.setContentType("application/json");
@@ -47,6 +49,7 @@ public class ResenasServlet extends HttpServlet  {
         out.flush();
     }
 
+    // Manejar solicitudes POST para registrar una nueva reseña
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {

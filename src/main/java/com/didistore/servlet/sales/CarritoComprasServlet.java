@@ -4,6 +4,7 @@ package com.didistore.servlet.sales;
 import com.didistore.controller.sales.CarritoController;
 import com.didistore.model.sales.CarritoCompras;
 import com.didistore.model.sales.ItemCarritos;
+import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,17 +13,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Servlet para manejar las operaciones del carrito de compras
 @WebServlet("/sales/carrito")
 public class CarritoComprasServlet extends HttpServlet {
     
     private final CarritoController carritoController = new CarritoController();
+    private final Gson gson = new Gson();
 
     // Configuración de cabeceras comunes para responder JSON
     private void configurarCabecerasJSON(HttpServletResponse response) {
@@ -30,6 +35,7 @@ public class CarritoComprasServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
     }
 
+    // Manejo de solicitudes GET para ver el carrito
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -65,6 +71,7 @@ public class CarritoComprasServlet extends HttpServlet {
         out.flush();
     }
 
+    // Manejo de solicitudes POST para modificar el carrito
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -85,7 +92,7 @@ public class CarritoComprasServlet extends HttpServlet {
                 int cantidad = Integer.parseInt(request.getParameter("cantidad"));
                 double precioUnitario = Double.parseDouble(request.getParameter("precioUnitario"));
 
-                boolean exito = carritoController.agregarProductoAlCarrito(carrito.getidCarrito(), productoId, cantidad, precioUnitario);
+                boolean exito = carritoController.agregarProductoAlCarrito(carrito.getidCarrito(), usuarioId, productoId, cantidad, precioUnitario);
                 out.print("{\"success\": " + exito + ", \"message\": \"Producto procesado\"}");
 
             } else if ("actualizar".equals(accion)) {
@@ -117,10 +124,10 @@ public class CarritoComprasServlet extends HttpServlet {
     }
 
     /**
-     * Generador manual de JSON para no depender de librerías externas.
-     * Convierte la lista de items y el total en una cadena JSON válida.
+     * Construye la respuesta JSON del carrito usando Gson para un encoding seguro.
      */
     private String construirJsonCarrito(List<ItemCarritos> items, double total) {
+<<<<<<< HEAD
         StringBuilder json = new StringBuilder();
         json.append("{");
         json.append("\"total\": ").append(total).append(",");
@@ -144,3 +151,10 @@ public class CarritoComprasServlet extends HttpServlet {
         return json.toString();
     }   
 }
+=======
+        Map<String, Object> resultado = new HashMap<>();
+        resultado.put("total", total);
+        resultado.put("items", items);
+        return gson.toJson(resultado);
+    }}
+>>>>>>> origin/main

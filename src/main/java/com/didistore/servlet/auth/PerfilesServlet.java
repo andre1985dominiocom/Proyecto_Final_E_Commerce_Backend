@@ -18,12 +18,16 @@ import java.util.List;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permite que el servlet maneje solicitudes a la ruta "/auth/perfiles"
 @WebServlet("/auth/perfiles")
 public class PerfilesServlet extends HttpServlet {
     
     private final Gson gson = new Gson();
     private final PerfilesController perfilesController = new PerfilesController();
 
+    // Maneja solicitudes GET para obtener perfiles.
+    // Si se proporciona un parámetro "idPerfil",
+    // devuelve el perfil correspondiente; de lo contrario, devuelve una lista de todos los perfiles.
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,6 +60,7 @@ public class PerfilesServlet extends HttpServlet {
         }
     }
 
+    // Maneja solicitudes POST para crear un nuevo perfil.
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -73,6 +78,7 @@ public class PerfilesServlet extends HttpServlet {
         response.getWriter().write("{\"message\":\"Perfil creado correctamente\"}");
     }
 
+    // Maneja solicitudes PUT para actualizar un perfil existente.
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -90,6 +96,7 @@ public class PerfilesServlet extends HttpServlet {
         response.getWriter().write("{\"message\":\"Perfil actualizado correctamente\"}");
     }
 
+    // Maneja solicitudes DELETE para eliminar un perfil existente.
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

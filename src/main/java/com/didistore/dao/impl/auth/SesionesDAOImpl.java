@@ -15,8 +15,11 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz ISesionesDAO para realizar operaciones CRUD en la tabla Sesiones de la base de datos.
 public class SesionesDAOImpl implements ISesionesDAO{
 
+    // Implementación del método para insertar una nueva sesión en la base de datos.
     @Override
     public void insertarSesiones(Sesiones sesion) {
         
@@ -38,7 +41,11 @@ public class SesionesDAOImpl implements ISesionesDAO{
                 ps.setString(5, sesion.getip());
                 ps.setString(6, sesion.getuserAgent());
                 ps.setInt(7, sesion.getrevocada());
+<<<<<<< HEAD
                
+=======
+
+>>>>>>> origin/main
                 int filasAfectadas = ps.executeUpdate();
                 
                 if (!con.getAutoCommit()) {
@@ -47,12 +54,13 @@ public class SesionesDAOImpl implements ISesionesDAO{
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Inicio sesión insertado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
-                System.err.println("Error al listar inicio de sesión: " + e.getMessage());
-        }          
+                System.err.println("Error al insertar inicio de sesión: " + e.getMessage());
+        }
     }
 
+    // Implementación del método para listar todas las sesiones de la base de datos.
     @Override
     public List<Sesiones> listarSesiones() {
         
@@ -86,10 +94,11 @@ public class SesionesDAOImpl implements ISesionesDAO{
         return lista;
     }
 
+    // Implementación del método para consultar una sesión específica por su ID en la base de datos.
     @Override
     public Sesiones consultarSesiones(int idSesion) {
         
-         String sql = "SELECT Usuario_ID,"
+        String sql = "SELECT Usuario_ID,"
                 + "Token_sesion,"
                 + "Fecha_Creacion,"
                 + "Fecha_expiracion,"
@@ -115,13 +124,14 @@ public class SesionesDAOImpl implements ISesionesDAO{
                     sesion.setuserAgent(rs.getString("User_agent"));
                     sesion.setrevocada(rs.getInt("Revocada"));
                 }
-            } 
+            }
         } catch (SQLException e) {
             System.err.println("Error al consultar sesiones por ID: " + e.getMessage());
         }
         return sesion;
     }
 
+    // Implementación del método para actualizar una sesión existente en la base de datos.
     @Override
     public void actualizarSesiones(Sesiones sesion) {
             
@@ -153,12 +163,13 @@ public class SesionesDAOImpl implements ISesionesDAO{
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Sesión actualizada correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al actualizar sesión: " + e.getMessage());
-        }               
+        }
     }
 
+    // Implementación del método para eliminar una sesión específica por su ID en la base de datos.
     @Override
     public void eliminarSesiones(int idSesion) {
         
@@ -176,13 +187,14 @@ public class SesionesDAOImpl implements ISesionesDAO{
                 }
 
                 if (filasAfectadas > 0) {
-                    System.out.println("¡Sesióm eliminada correctamente en la BD!");
-                }                          
+                    System.out.println("¡Sesión eliminada correctamente en la BD!");
+                }
             } catch (SQLException e) {
             System.err.println("Error al eliminar sesión: " + e.getMessage());
-        }                   
+        }
     }
 
+    // Implementación del método para obtener la contraseña hasheada de un usuario por su email en la base de datos.
     @Override
     public String obtenerContrasenaHasheadaPorEmail(String email) {
         
@@ -203,4 +215,4 @@ public class SesionesDAOImpl implements ISesionesDAO{
         }
         return null;
     }
-}    
+}

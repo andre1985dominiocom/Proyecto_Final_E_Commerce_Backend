@@ -82,7 +82,7 @@ public class TokensRecuperacionDAOImpl implements ITokensRecuperacionDAO {
                     token.setusado(rs.getBoolean("usado"));
                     token.setintentos(rs.getInt("intentos"));
                 }
-            } 
+            }
         } catch (SQLException e) {
             System.err.println("Error al consultar token por hash: " + e.getMessage());
         }

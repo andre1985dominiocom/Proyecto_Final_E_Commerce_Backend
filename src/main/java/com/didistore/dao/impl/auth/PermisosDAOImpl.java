@@ -15,8 +15,11 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que implementa la interfaz IPermisosDAO para realizar operaciones CRUD en la tabla Permisos de la base de datos.
 public class PermisosDAOImpl implements IPermisosDAO {
-    
+
+    // Implementación del método para insertar un nuevo permiso en la base de datos.
     @Override
     public void insertarPermisos(Permisos permiso) {
         
@@ -28,7 +31,7 @@ public class PermisosDAOImpl implements IPermisosDAO {
             
                 ps.setString(1, permiso.getnombrePermiso());
                 ps.setString(2, permiso.getdescripcionPermiso());
-               
+
                 int filasAfectadas = ps.executeUpdate();
                 
                 if (!con.getAutoCommit()) {
@@ -37,12 +40,13 @@ public class PermisosDAOImpl implements IPermisosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Permiso insertado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
-                System.err.println("Error al listar permiso: " + e.getMessage());
-        }   
+                System.err.println("Error al insertar permiso: " + e.getMessage());
+        }
     }
 
+    // Implementación del método para listar todos los permisos de la base de datos.
     @Override
     public List<Permisos> listarPermisos() {
         
@@ -66,6 +70,7 @@ public class PermisosDAOImpl implements IPermisosDAO {
         return lista;
     }
 
+    // Implementación del método para consultar un permiso específico por su ID.
     @Override
     public Permisos consultarPermisos(int idPermiso) {
         
@@ -92,11 +97,12 @@ public class PermisosDAOImpl implements IPermisosDAO {
         return permiso;
     }
 
+    // Implementación del método para actualizar un permiso existente en la base de datos.
     @Override
     public void actualizarPermisos(Permisos permiso) {
         
-        String sql = "UPDATE Usuarios (SET Nombre_permiso = ?,"
-                + "SET Descripcion_permiso = ?) WHERE ID_Permiso = ?";
+        String sql = "UPDATE Permisos SET Nombre_permiso = ?,"
+                + "Descripcion_permiso = ? WHERE ID_Permiso = ?";
         
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql)) {
@@ -112,12 +118,13 @@ public class PermisosDAOImpl implements IPermisosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Permiso actualizado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al actualizar permiso: " + e.getMessage());
-        }               
+        }
     }
 
+    // Implementación del método para eliminar un permiso de la base de datos por su ID.
     @Override
     public void eliminarPermisos(int idPermiso) {
         
@@ -136,9 +143,9 @@ public class PermisosDAOImpl implements IPermisosDAO {
 
                 if (filasAfectadas > 0) {
                     System.out.println("¡Permiso eliminado correctamente en la BD!");
-                }                          
+                }
             } catch (SQLException e) {
             System.err.println("Error al eliminar permiso: " + e.getMessage());
-        }                   
+        }
     }
-}   
+}

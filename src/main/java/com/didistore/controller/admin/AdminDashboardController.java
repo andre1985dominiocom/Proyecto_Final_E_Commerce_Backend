@@ -15,6 +15,8 @@ import java.io.PrintWriter;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para administrar el dashboard del administrador
 public class AdminDashboardController {
     
     private final IPedidosDAO pedidosDAO = new PedidosDAOImpl();
@@ -26,7 +28,11 @@ public class AdminDashboardController {
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter out = response.getWriter();
 
+<<<<<<< HEAD
             // Llamadas a los DAOs para traer datos reales
+=======
+            // Aquí llamarías a los métodos de tus DAOs para traer datos reales
+>>>>>>> origin/main
             double ventasMes = pedidosDAO.calcularVentasMesActual();
             int pedidosNuevos = pedidosDAO.contarPedidosNuevos();
             int totalUsuarios = usuariosDAO.listarUsuarios().size();

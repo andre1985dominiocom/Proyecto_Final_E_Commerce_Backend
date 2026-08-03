@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir solicitude de tokens de recuperación de contraseña y validación de los mismos
 @WebServlet("/auth/recuperacion")
 public class TokensRecuperacionServlet extends HttpServlet {
     
@@ -29,6 +30,7 @@ public class TokensRecuperacionServlet extends HttpServlet {
     private final TokensRecuperacionController tokenController = new TokensRecuperacionController();
     private final UsuariosDAOImpl usuariosDAO = new UsuariosDAOImpl();
     
+    // GET: Validar token de recuperación
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -62,6 +64,7 @@ public class TokensRecuperacionServlet extends HttpServlet {
         response.getWriter().write(gson.toJson(resultado));
     }
     
+    // POST: Solicitar token de recuperación
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -115,11 +118,12 @@ public class TokensRecuperacionServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
         resultado.put("success", true);
         resultado.put("message", "Token generado correctamente");
-        resultado.put("token", token.gettokenHash());
+        //resultado.put("token", token.gettokenHash());
 
         response.getWriter().write(gson.toJson(resultado));
     }
 
+    // Clase interna para mapear la solicitud de token
     public static class TokenRequest {
         private int usuarioId;
         private String email;

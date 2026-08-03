@@ -18,12 +18,14 @@ import java.util.List;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir el acceso de cualquier origen (CORS) para pruebas locales
 @WebServlet("/catalog/wishlist")
 public class WishlistServlet extends HttpServlet {
     
     private final WishlistController wishlistController = new WishlistController();
     private final Gson gson = new Gson();
 
+    // Manejar solicitudes GET para obtener la lista de deseos
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -55,6 +57,7 @@ public class WishlistServlet extends HttpServlet {
         out.flush();
     }
 
+    // Manejar solicitudes POST para agregar un producto a la lista de deseos
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -81,6 +84,7 @@ public class WishlistServlet extends HttpServlet {
         out.flush();
     }
 
+    // Manejar solicitudes DELETE para eliminar un producto de la lista de deseos
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -109,5 +113,5 @@ public class WishlistServlet extends HttpServlet {
             out.print("{\"status\": \"error\", \"message\": \"Parámetros insuficientes para la eliminación.\"}");
         }
         out.flush();
-    }   
+    }
 }

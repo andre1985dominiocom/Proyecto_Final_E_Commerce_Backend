@@ -10,6 +10,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las operaciones relacionadas con las reseñas de productos.
 public class ResenasController {
     
     private final IResenasDAO resenasDAO;

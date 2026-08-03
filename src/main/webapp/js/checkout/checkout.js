@@ -1,171 +1,99 @@
-import { API_ENDPOINTS, COUPON_DISCOUNTS, STORAGE_KEYS, buildApiUrl } from '../core/config.js';
-import { request } from '../core/http.js';
-import { getJSON, setJSON } from '../core/storage.js';
+import { API_ENDPOINTS, buildApiUrl } from '../core/config.js';
 import { formatCurrency, setButtonLoading, showToast } from '../core/ui.js';
 
-const form = document.getElementById('checkout-form');
+document.addEventListener("DOMContentLoaded", () => {
 
-if (form) {
-  initCheckout();
-}
+    cargarResumen();
 
-function initCheckout() {
-  hydrateSummary();
-  hydrateFormDraft();
-  bindPaymentToggles();
-  bindCardFormatters();
-  form.addEventListener('input', persistDraft);
-  form.addEventListener('submit', submitCheckout);
-}
+    document.getElementById("checkout-form")?.addEventListener("submit", procesarPedido);
+});
 
-function hydrateSummary() {
-  const cart = getJSON(STORAGE_KEYS.cart, []);
-  const list = document.getElementById('checkout-summary-items');
+async function cargarResumen() {
 
-  if (!Array.isArray(cart) || !cart.length) return;
+    try {
 
-  const subtotal = cart.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0);
-  const shipping = subtotal > 0 ? 10000 : 0;
-  const couponCode = localStorage.getItem(STORAGE_KEYS.coupon) || '';
-  const couponDiscount = COUPON_DISCOUNTS[couponCode] || 0;
-  const discount = subtotal * couponDiscount;
-  const total = subtotal + shipping - discount;
+        const response = await fetch(buildApiUrl(`${API_ENDPOINTS.cart}?accion=ver`));
 
-  if (list) {
-    list.innerHTML = cart.map((item) => `
-      <li class="checkout__summary-item">
-        <span class="checkout__summary-item-name">${item.name}</span>
-        <span class="checkout__summary-item-qty">x${item.quantity}</span>
-        <span class="checkout__summary-item-price">${formatCurrency((item.price || 0) * (item.quantity || 1))}</span>
-      </li>
-    `).join('');
-  }
+        const data = await response.json();
 
-  document.getElementById('checkout-summary-subtotal')?.replaceChildren(document.createTextNode(formatCurrency(subtotal)));
-  document.getElementById('checkout-summary-shipping')?.replaceChildren(document.createTextNode(formatCurrency(shipping)));
-  document.getElementById('checkout-summary-discount')?.replaceChildren(document.createTextNode(`-${formatCurrency(discount)}`));
-  document.getElementById('checkout-summary-total')?.replaceChildren(document.createTextNode(formatCurrency(total)));
-}
+        const subtotal = data.total || 0;
+        const envio = 15000;
 
-function bindPaymentToggles() {
-  const radios = document.querySelectorAll('input[name="payment-method"]');
-  const cardFields = document.getElementById('card-fields');
+        document.getElementById("checkout-summary-subtotal").textContent = formatCurrency(subtotal);
+        document.getElementById("checkout-summary-shipping").textContent = formatCurrency(envio);
+        document.getElementById("checkout-summary-total").textContent = formatCurrency(subtotal + envio);
 
-  const update = () => {
-    const selected = document.querySelector('input[name="payment-method"]:checked')?.value;
-    cardFields?.classList.toggle('u-hidden', selected !== 'credit-card');
-  };
+        const lista = document.getElementById("checkout-summary-items");
 
-  radios.forEach((radio) => radio.addEventListener('change', update));
-  update();
-}
+        if (lista && data.items) {
+            lista.innerHTML = data.items.map(item => `
+                <li class="checkout__summary-item">
+                    <span>Producto ${item.productoId}</span>
+                    <span>x${item.cantidad}</span>
+                    <span>${formatCurrency(item.precioUnitario * item.cantidad)}</span>
+                </li>
+            `).join("");
+        }
 
-function bindCardFormatters() {
-  const cardNumber = document.getElementById('card-number');
-  const cardExpiry = document.getElementById('card-expiry');
-
-  cardNumber?.addEventListener('input', () => {
-    cardNumber.value = cardNumber.value.replace(/\D/g, '').slice(0, 16);
-  });
-
-  cardNumber?.addEventListener('blur', () => {
-    cardNumber.value = formatCardNumber(cardNumber.value);
-  });
-
-  cardExpiry?.addEventListener('input', () => {
-    const cleaned = cardExpiry.value.replace(/\D/g, '').slice(0, 4);
-    cardExpiry.value = cleaned.length > 2 ? `${cleaned.slice(0, 2)}/${cleaned.slice(2)}` : cleaned;
-  });
-}
-
-function formatCardNumber(rawValue = '') {
-  return rawValue.replace(/\D/g, '').slice(0, 16).replace(/(.{4})/g, '$1 ').trim();
-}
-
-function persistDraft() {
-  const payload = Object.fromEntries(new FormData(form).entries());
-  setJSON(STORAGE_KEYS.checkoutDraft, payload);
-}
-
-function hydrateFormDraft() {
-  const draft = getJSON(STORAGE_KEYS.checkoutDraft, null);
-  if (!draft) return;
-
-  Object.entries(draft).forEach(([name, value]) => {
-    const input = form.elements.namedItem(name);
-    if (!input) return;
-
-    if (input instanceof RadioNodeList) {
-      Array.from(input).forEach((radio) => {
-        radio.checked = radio.value === value;
-      });
-      return;
+    } catch(error) {
+        console.error("Error cargando resumen del carrito:", error);
     }
 
-    if (input.type === 'checkbox') {
-      input.checked = value === 'on' || value === true || value === 'true';
-      return;
-    }
-
-    input.value = value;
-  });
 }
 
-async function submitCheckout(event) {
-  event.preventDefault();
+async function procesarPedido(e) {
 
-  const submitButton = form.querySelector('button[type="submit"]');
-  // Extraemos los datos del formulario (debe contener un input name="direccionEnvioId")
-  const formData = new FormData(form);
-  
-  setButtonLoading(submitButton, true, 'Confirmando...');
+    e.preventDefault();
 
-  // Adaptamos el envío al formato que espera PedidoServlet.java
-  const params = new URLSearchParams();
-  params.append('accion', 'checkout');
-  
-  // Asegúrate de que en tu HTML tengas un campo con name="direccionEnvioId"
-  params.append('direccionEnvioId', formData.get('direccionEnvioId') || 1); 
-  
-  const couponCode = localStorage.getItem(STORAGE_KEYS.coupon);
-  // Si tienes la lógica de IDs de cupones, la envías aquí:
-  params.append('cuponId', couponCode ? 1 : 0); 
+    const submitButton = document.querySelector('#checkout-form button[type="submit"]');
+    if (submitButton) setButtonLoading(submitButton, true, 'Procesando...');
 
-  try {
-    const response = await fetch(buildApiUrl(API_ENDPOINTS.checkout), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: params
-    });
+    const form = document.getElementById("checkout-form");
 
-    const result = await response.json();
+    const params = new URLSearchParams();
+    params.append("accion", "checkout");
 
-    if (!result.success) {
-      // Manejo de error si el Servlet rechaza la transacción
-      showToast(result.message || 'Error al procesar el pedido.', 'error');
-    } else {
-      showToast('Pedido confirmado correctamente.', 'success');
-      
-      // Limpiamos los borradores visuales
-      localStorage.removeItem(STORAGE_KEYS.checkoutDraft);
-      
-      setTimeout(() => {
-        window.location.href = './confirmation.html';
-      }, 1200);
+    // direccionEnvioId: intentar obtener del campo si existe, si no usar 0
+    const direccionSelect = document.getElementById("direccionEnvioId") || form?.querySelector('[name="direccionEnvioId"]');
+    const direccionId = direccionSelect ? (direccionSelect.value || 0) : 0;
+    params.append("direccionEnvioId", direccionId);
+
+    // Cupon si existe
+    const cuponInput = document.getElementById("coupon-code") || document.getElementById("cupon");
+    if (cuponInput && cuponInput.value) {
+        const cuponValor = cuponInput.value.trim();
+        // Backend espera cuponId numérico; códigos textuales se omiten para evitar NumberFormatException.
+        if (/^\d+$/.test(cuponValor)) {
+            params.append("cuponId", cuponValor);
+        }
     }
-  } catch (error) {
-    console.error("Error en el checkout:", error);
-    // Fallback offline (Excelente práctica que ya tenías)
-    const localOrders = getJSON(STORAGE_KEYS.orders, []);
-    localOrders.push({ id: `LOCAL-${Date.now()}`, status: 'Pendiente_Pago' });
-    setJSON(STORAGE_KEYS.orders, localOrders);
-    showToast('Backend no disponible: pedido guardado localmente.', 'warning');
-  } finally {
-    setButtonLoading(submitButton, false);
-  }
-}
 
-function normalizeDocumentType(value) {
-  const map = { cc: 'CC', foreign_id: 'CE', passport: 'PP', card_id: 'TI' };
-  return map[value] || value;
+    try {
+
+        const response = await fetch(buildApiUrl(API_ENDPOINTS.pedido), {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: params
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+
+            showToast("Pedido creado correctamente", "success");
+
+            setTimeout(() => {
+                window.location.href = "../orders/orders.html";
+            }, 1500);
+        } else {
+
+            showToast(result.message || "Error al crear el pedido", "error");
+        }
+
+    } catch(error) {
+        console.error("Error procesando pedido:", error);
+        showToast("Error procesando pedido", "error");
+    } finally {
+        if (submitButton) setButtonLoading(submitButton, false);
+    }
 }

@@ -21,6 +21,7 @@ import java.util.Map;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir el acceso a este servlet solo a usuarios con rol de administrador
 @WebServlet("/admin/categorias")
 public class AdminCategoriasServlet extends HttpServlet{
     

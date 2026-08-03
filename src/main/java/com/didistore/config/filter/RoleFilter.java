@@ -16,9 +16,12 @@ import java.io.IOException;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permite controlar el acceso a los recursos de la aplicación según el rol del usuario.
 @WebFilter("/*")
 public class RoleFilter extends HttpFilter implements Filter {
 
+    // El método doFilter se encarga de filtrar las solicitudes HTTP
+    // y controlar el acceso a los recursos según el rol del usuario.
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -51,11 +54,11 @@ public class RoleFilter extends HttpFilter implements Filter {
 
         HttpSession session = request.getSession(false);
 
-        if (session == null || session.getAttribute("rol") == null) {
-            chain.doFilter(request, response);
+        if (session == null) {
+            response.sendError(401);
             return;
         }
-
+        
         String rol = String.valueOf(session.getAttribute("rol")).trim().toUpperCase();
 
         if (path.startsWith("/admin/usuarios")
@@ -94,6 +97,7 @@ public class RoleFilter extends HttpFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    // El método denyAccess se encarga de denegar el acceso a los recursos cuando el usuario no tiene permisos.
     private void denyAccess(HttpServletRequest request, HttpServletResponse response, String contextPath)
             throws IOException {
 

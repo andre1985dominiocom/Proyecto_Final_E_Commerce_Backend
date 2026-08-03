@@ -17,6 +17,12 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ * @author Sergio Andrés Álvarez Lache
+ */
+
+// Permitir el acceso a este servlet solo a usuarios con perfil de administrador
 @WebServlet("/admin/usuarios")
 public class UsuariosServlet extends HttpServlet {
     
@@ -27,6 +33,7 @@ public class UsuariosServlet extends HttpServlet {
     private static final String REGEX_LETRAS = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
     private static final String REGEX_DOCUMENTO = "^\\d{10,12}$";
 
+    // Métodos HTTP para manejar las solicitudes de usuarios
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -38,6 +45,7 @@ public class UsuariosServlet extends HttpServlet {
         response.getWriter().write(gson.toJson(lista));
     }
 
+    // Manejo de la creación de un nuevo usuario
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -111,6 +119,7 @@ public class UsuariosServlet extends HttpServlet {
         response.getWriter().write(gson.toJson(resultado));
     }
 
+    // Manejo de la actualización de un usuario existente
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -120,7 +129,9 @@ public class UsuariosServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         BufferedReader reader = request.getReader();
+        
         Usuarios usuario = gson.fromJson(reader, Usuarios.class);
+        Usuarios usuarioBD = usuariosController.consultarUsuarioPorId(usuario.getidUsuario());
 
         Map<String, Object> resultado = new HashMap<>();
 
@@ -131,8 +142,36 @@ public class UsuariosServlet extends HttpServlet {
             response.getWriter().write(gson.toJson(resultado));
             return;
         }
+        
+        if (usuarioBD == null) {
+            resultado.put("success", false);
+            resultado.put("message", "Usuario no existe");
+            response.getWriter().write(gson.toJson(resultado));
+            return;
+        }
+        
+        usuarioBD.setnombre(usuario.getnombre());
+        usuarioBD.setapellido(usuario.getapellido());
+        usuarioBD.setemail(usuario.getemail());
+        usuarioBD.setdocumento(usuario.getdocumento());
+        usuarioBD.setperfilId(usuario.getperfilId());
+        usuarioBD.setestado(usuario.getestado());
+        
+        String password = usuario.getcontrasena();
+        
+        if (password != null && !password.trim().isEmpty()) {
+            
+            if (!password.startsWith("$2a$") &&
+                !password.startsWith("$2b$") &&
+                !password.startsWith("$2y$")) {
+                
+                usuarioBD.setcontrasena(PasswordUtil.encrypt(password));
+            } else {
+                usuarioBD.setcontrasena(password);
+            }
+        }
 
-        usuariosController.actualizarUsuario(usuario);
+        usuariosController.actualizarUsuario(usuarioBD);
 
         response.setStatus(HttpServletResponse.SC_OK);
         resultado.put("success", true);
@@ -140,6 +179,7 @@ public class UsuariosServlet extends HttpServlet {
         response.getWriter().write(gson.toJson(resultado));
     }
 
+    // Manejo de la eliminación de un usuario existente
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

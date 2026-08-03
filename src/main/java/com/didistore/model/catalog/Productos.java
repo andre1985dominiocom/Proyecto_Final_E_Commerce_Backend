@@ -9,6 +9,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa un producto en el catálogo de la tienda.
 public class Productos {
     private int idProducto;
     private String nombreProducto;
@@ -27,8 +29,10 @@ public class Productos {
     private Timestamp fechaActualizacion;
     private String imagenUrl;
     
+    // Constructor vacío para la clase Productos.
     public Productos() {}
     
+    // Constructor que inicializa todos los atributos de la clase Productos.
     public Productos (int idProducto,
             String nombreProducto,
             String descripcioncorta,
@@ -63,7 +67,7 @@ public class Productos {
         this.fechaActualizacion = fechaActualizacion;
         this.imagenUrl = imagenUrl;
 }
-    
+    // Métodos getter y setter para los atributos de la clase Productos.
     public int getidProducto() { return idProducto; }
     public void setidProducto(int idProducto) { this.idProducto = idProducto; }
     

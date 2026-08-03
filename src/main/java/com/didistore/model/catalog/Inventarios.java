@@ -7,6 +7,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa la entidad Inventarios en el catálogo de productos.
 public class Inventarios {
     private int idInventario;
     private int productoId;
@@ -16,8 +18,10 @@ public class Inventarios {
     private Timestamp fechaCreacion;
     private Timestamp fechaActualizacion;
     
+    // Constructor vacío para la clase Inventarios.
     public Inventarios() {}
     
+    // Constructor que inicializa todos los atributos de la clase Inventarios.
     public Inventarios (int idInventario,
             int productoId,
             int stockActual,
@@ -34,7 +38,7 @@ public class Inventarios {
         this.fechaCreacion = fechaCreacion;
         this.fechaActualizacion = fechaActualizacion;
     }
-    
+    // Métodos getter y setter para los atributos de la clase Inventarios.
     public int getidInventario() { return idInventario; }
     public void setidInventario(int idInventario) { this.idInventario = idInventario; }
     

@@ -1,7 +1,9 @@
 
 package com.didistore.controller.sales;
 
+import com.didistore.dao.impl.catalog.InventariosDAOImpl;
 import com.didistore.dao.impl.sales.CarritoComprasDAOImpl;
+import com.didistore.dao.interfaces.catalog.IInventariosDAO;
 import com.didistore.dao.interfaces.sales.ICarritoComprasDAO;
 import com.didistore.model.sales.CarritoCompras;
 import com.didistore.model.sales.ItemCarritos;
@@ -11,6 +13,9 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para la gestión del carrito de compras, incluyendo operaciones
+// como agregar productos, modificar cantidades, eliminar ítems y calcular el total del carrito.
 public class CarritoController {
     
     ICarritoComprasDAO carritoDAO;
@@ -18,6 +23,8 @@ public class CarritoController {
     public CarritoController() {
         this.carritoDAO = new CarritoComprasDAOImpl();
     }
+    
+    public IInventariosDAO inventariosDAO = new InventariosDAOImpl();
     
     public CarritoCompras obtenerOGenerarCarrito(Integer usuarioId, String sesionId) {
         CarritoCompras carrito = null;
@@ -49,12 +56,21 @@ public class CarritoController {
                 carrito = buscarPorSesion(sesionId);
             }
         }
-        return carrito;   
+        return carrito;
     }
     
-    public boolean agregarProductoAlCarrito(int carritoId, int productoId, int cantidad, double precioUnitario) {
+    public boolean agregarProductoAlCarrito(int carritoId, int usuarioId, int productoId, int cantidad, double precioUnitario) {
         // Validar que la cantidad sea coherente
-        if (cantidad <= 0) return false;
+        if (cantidad <= 0) {
+            return false;
+        }
+        
+        boolean disponible = inventariosDAO.hayStockSuficiente(productoId, cantidad);
+        
+        if (!disponible) {
+            System.out.println("Stock insuficiente");
+            return false;
+        }
 
         // Recuperar ítems actuales para verificar duplicados y respetar el UNIQUE KEY de la BD
         List<ItemCarritos> itemsActuales = carritoDAO.listarItems(carritoId);
@@ -67,6 +83,12 @@ public class CarritoController {
         if (itemExistente != null) {
             // Si ya existe, sumamos la cantidad a la fila existente
             int nuevaCantidad = itemExistente.getcantidad() + cantidad;
+            
+            boolean stockNuevo = inventariosDAO.hayStockSuficiente(productoId, nuevaCantidad);
+            
+            if (!stockNuevo) {
+                return false;
+            }
             return carritoDAO.actualizarCantidad(itemExistente.getidItem(), nuevaCantidad);
         } else {
             // Si es un producto nuevo en el carrito, creamos el registro limpio

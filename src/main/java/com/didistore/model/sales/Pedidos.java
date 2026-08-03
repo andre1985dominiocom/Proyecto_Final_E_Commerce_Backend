@@ -8,6 +8,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa un pedido realizado por un usuario en la tienda.
 public class Pedidos {
     private int idPedido;
     private String numeroPedido;
@@ -23,8 +25,10 @@ public class Pedidos {
     private Timestamp fechaPedido;
     private int carritoId;
     
+    // Constructor vacío para la clase Pedidos.
     public Pedidos() {}
     
+    // Constructor que inicializa todos los atributos de la clase Pedidos.
     public Pedidos(int idPedido,
             String numeroPedido,
             int usuarioId,
@@ -54,6 +58,7 @@ public class Pedidos {
         this.carritoId = carritoId;
     }
     
+    // Métodos getter y setter para los atributos de la clase Pedidos.
     public int getidPedido() { return idPedido; }
     public void setidPedido(int idPedido) { this.idPedido = idPedido; }
     

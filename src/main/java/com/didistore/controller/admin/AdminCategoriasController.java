@@ -10,6 +10,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para administrar las categorías en la aplicación.
 public class AdminCategoriasController {
     
     private final ICategoriasDAO categoriasDAO;

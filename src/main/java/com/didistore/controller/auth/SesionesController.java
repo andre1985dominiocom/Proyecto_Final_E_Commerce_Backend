@@ -8,6 +8,8 @@ import com.didistore.dao.interfaces.auth.ISesionesDAO;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las operaciones relacionadas con las sesiones de usuario.
 public class SesionesController {
     
     private final ISesionesDAO sesionesDAO;

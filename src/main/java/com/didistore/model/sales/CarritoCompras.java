@@ -7,6 +7,8 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa un carrito de compras en el sistema.
 public class CarritoCompras {
     private int idCarrito;
     private int usuarioId;
@@ -15,8 +17,10 @@ public class CarritoCompras {
     private Timestamp fechaActualizacion;
     private Timestamp fechaExpiracion;
     
+    // Constructor vacío para crear un objeto CarritoCompras sin inicializar sus atributos.
     public CarritoCompras() {}
     
+    // Constructor que permite inicializar un objeto CarritoCompras con todos sus atributos.
     public CarritoCompras(int idCarrito,
             int usuarioId,
             String sesionId,
@@ -32,6 +36,7 @@ public class CarritoCompras {
         this.fechaExpiracion = fechaExpiracion;
     }
     
+    // Métodos getter y setter para acceder y modificar los atributos del carrito de compras.
     public int getidCarrito() { return idCarrito; }
     public void setidCarrito(int idCarrito) { this.idCarrito = idCarrito; }
     

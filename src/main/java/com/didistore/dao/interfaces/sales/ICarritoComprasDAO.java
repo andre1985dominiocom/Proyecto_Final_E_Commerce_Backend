@@ -9,6 +9,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para el manejo de los carritos de compras y sus items
 public interface ICarritoComprasDAO {
     
      // Carrito de compras
@@ -34,4 +36,6 @@ public interface ICarritoComprasDAO {
     boolean vaciarCarrito(int carritoId);
     
     double obtenerTotal(int carritoId);
+    
+    List<ItemCarritos> obtenerProductosPorUsuario(int usuarioId);
 }

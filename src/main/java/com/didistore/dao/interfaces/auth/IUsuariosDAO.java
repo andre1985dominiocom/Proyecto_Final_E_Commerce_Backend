@@ -25,4 +25,6 @@ public interface IUsuariosDAO {
     void actualizarContrasena(int idUsuario, String nuevaContrasena);
     
     void eliminarUsuarios(int idUsuario);
+    
+    boolean registrarUsuario(Usuarios usuario);
 }

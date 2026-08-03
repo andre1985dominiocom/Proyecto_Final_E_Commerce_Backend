@@ -5,14 +5,18 @@ package com.didistore.model.catalog;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Clase que representa la entidad ImagenesProductos
 public class ImagenesProductos {
     private int idImagen;
     private int productoId;
     private String url;
     private String formato;
     
+    // Constructor vacío que permite crear una instancia de la clase sin inicializar sus atributos
     public ImagenesProductos() {}
     
+    // Constructor que permite crear una instancia de la clase con todos sus atributos inicializados
     public ImagenesProductos (int idImagen,
             int productoId,
             String url,
@@ -23,7 +27,7 @@ public class ImagenesProductos {
         this.url = url;
         this.formato = formato;
     }
-    
+    // Métodos getter y setter para cada atributo de la clase ImagenesProductos
     public int getIdImagen() { return idImagen; }
     public void setIdImagen(int idImagen) { this.idImagen = idImagen; }
     

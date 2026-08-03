@@ -9,9 +9,9 @@ import com.didistore.model.catalog.Resenas;
  *
  * @author Sergio Andrés Álvarez Lache
  */
-public interface IResenasDAO {
 
-    // Métodos para gestionar las reseñas de productos
+// Interfaz para la gestión de reseñas en la base de datos
+public interface IResenasDAO {
 
     void agregarResena(Resenas resena);
 

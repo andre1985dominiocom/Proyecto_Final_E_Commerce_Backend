@@ -14,6 +14,8 @@ import java.io.IOException;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Servlet que actúa como intermediario entre el cliente (front-end)
+// y el controlador de negocio (back-end) para la gestión del historial de estados de pedidos.
 @WebServlet("/sales/historial")
 public class HistorialEstadoPedidosServlet extends HttpServlet {
     

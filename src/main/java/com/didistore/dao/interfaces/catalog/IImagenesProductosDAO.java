@@ -8,13 +8,15 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interface DAO para la entidad ImagenesProductos
 public interface IImagenesProductosDAO {
     
     List<ImagenesProductos> listarImagenes();
     
     List<ImagenesProductos> listarPorProducto(int productoId);
     
-     ImagenesProductos consultarImagenPorId(int idImagen);
+    ImagenesProductos consultarImagenPorId(int idImagen);
     
     boolean insertarImagen(ImagenesProductos imagen);
     

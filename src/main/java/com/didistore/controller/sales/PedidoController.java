@@ -1,7 +1,11 @@
 
 package com.didistore.controller.sales;
 
+import com.didistore.dao.impl.catalog.InventariosDAOImpl;
+import com.didistore.dao.impl.sales.CarritoComprasDAOImpl;
 import com.didistore.dao.impl.sales.PedidosDAOImpl;
+import com.didistore.dao.interfaces.catalog.IInventariosDAO;
+import com.didistore.dao.interfaces.sales.ICarritoComprasDAO;
 import com.didistore.dao.interfaces.sales.IPedidosDAO;
 import com.didistore.model.sales.DetallesPedidos;
 import com.didistore.model.sales.Pedidos;
@@ -13,6 +17,8 @@ import java.util.UUID;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador de Pedidos: Encapsula la lógica de negocio relacionada con la gestión de pedidos.
 public class PedidoController {
     
     private final IPedidosDAO pedidosDAO;
@@ -20,6 +26,9 @@ public class PedidoController {
     public PedidoController() {
         this.pedidosDAO = new PedidosDAOImpl();
     }
+    
+    public ICarritoComprasDAO carritoDAO = new CarritoComprasDAOImpl(); 
+    private final IInventariosDAO inventariosDAO = new InventariosDAOImpl();
 
     /**
      * Lógica central del Checkout: Convierte un resumen de compra y sus detalles
@@ -60,9 +69,22 @@ public class PedidoController {
         nuevoPedido.setcostoEnvio(costoEnvio);
         nuevoPedido.setmontoTotal(montoTotal);
 
+        for (DetallesPedidos detalle : detalles) {
+            
+            if (!inventariosDAO.hayStockSuficiente(detalle.getproductoId(), detalle.getcantidad())) {
+                System.err.println("Stock insuficiente para producto" + detalle.getproductoId());
+                return false;
+            }
+        }
         // 4. Inyección del DAO: Ejecuta la transacción (Guarda Cabecera + Detalles)
-        return pedidosDAO.crearPedido(nuevoPedido, detalles);
+        boolean pedidoCreado = pedidosDAO.crearPedido(nuevoPedido, detalles);
+        
+        if (!pedidoCreado) {
+            return false;
+        }
+        return true;
     }
+    
 
     /**
      * Obtiene todos los pedidos realizados por un usuario específico.
@@ -85,9 +107,6 @@ public class PedidoController {
         return pedidosDAO.listarDetallesPorPedido(pedidoId);
     }
 
-    /**
-     * Permite cambiar el estado de un pedido (Ej: de 'Pendiente_Pago' a 'Pagado' o 'En_Transito').
-     */
     public boolean actualizarEstadoPedido(int pedidoId, EstadoPedidos nuevoEstado) {
         if (nuevoEstado == null) return false;
         return pedidosDAO.actualizarEstado(pedidoId, nuevoEstado);
@@ -107,5 +126,5 @@ public class PedidoController {
             return subtotal * 0.10; 
         }
         return 0.0;
-    }  
+    }
 }

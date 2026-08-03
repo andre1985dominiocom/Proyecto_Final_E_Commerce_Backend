@@ -11,6 +11,7 @@ import java.util.List;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Controlador para manejar las operaciones relacionadas con los permisos.
 public class PermisosController {
     
     private final IPermisosDAO permisosDAO;
@@ -47,5 +48,5 @@ public class PermisosController {
         if (permisoId > 0) {
             permisosDAO.eliminarPermisos(permisoId);
         }
-    }       
+    }
 }

@@ -14,6 +14,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// DAO (Data Access Object) clase para acceder a la tabla "departamentos" en la base de datos
 public class DepartamentosDAO {
     
     public List<Departamentos> listar() {
@@ -28,7 +30,6 @@ public class DepartamentosDAO {
                 Departamentos d = new Departamentos();
                 d.setidDepartamento(rs.getInt("id_Departamento"));
                 d.setdepartamento(rs.getString("departamento"));
-                     
                 lista.add(d);
             }
         } catch (SQLException e) {

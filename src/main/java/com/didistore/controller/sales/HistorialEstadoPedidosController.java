@@ -15,13 +15,13 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para manejar las solicitudes relacionadas con el historial de estados de pedidos.
 public class HistorialEstadoPedidosController {
     
     private final IHistorialEstadoPedidosDAO historialDAO = new HistorialEstadoPedidosDAOImpl();
 
-    /**
-     * Procesa las consultas GET (Listar línea de tiempo o ver el estado actual)
-     */
+    // Procesa las acciones GET (Consultar historial de estados de pedidos)
     public void procesarConsulta(HttpServletRequest request, HttpServletResponse response) {
         try {
             response.setContentType("application/json;charset=UTF-8");
@@ -56,9 +56,7 @@ public class HistorialEstadoPedidosController {
         }
     }
 
-    /**
-     * Procesa las acciones POST (Registrar de forma explícita una auditoría)
-     */
+    // Procesa las acciones POST (Registrar de forma explícita una auditoría)
     public void procesarAccion(HttpServletRequest request, HttpServletResponse response) {
         try {
             response.setContentType("application/json;charset=UTF-8");
@@ -96,5 +94,5 @@ public class HistorialEstadoPedidosController {
                 response.getWriter().print("{\"status\":\"error\", \"message\":\"Datos inválidos en el formulario\"}");
             } catch (Exception ex) { ex.printStackTrace(); }
         }
-    }   
+    }
 }

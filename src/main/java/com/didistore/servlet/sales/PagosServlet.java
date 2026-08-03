@@ -14,11 +14,14 @@ import java.io.IOException;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Servlet que actúa como intermediario entre el cliente (front-end)
+// y el controlador de negocio (back-end) para la gestión de pagos.
 @WebServlet("/sales/pagos")
 public class PagosServlet extends HttpServlet {
     
     private final PagosController controller = new PagosController();
 
+    // Maneja las solicitudes GET y POST delegando la lógica al controlador correspondiente.
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -26,6 +29,7 @@ public class PagosServlet extends HttpServlet {
         controller.procesarConsulta(request, response);
     }
 
+    // Maneja las solicitudes POST y delega la lógica al controlador correspondiente.
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {

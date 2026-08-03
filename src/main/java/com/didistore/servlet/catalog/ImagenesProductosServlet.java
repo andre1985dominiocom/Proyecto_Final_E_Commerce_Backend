@@ -20,12 +20,14 @@ import java.util.Map;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir solicitudes de imagenes de productos desde cualquier origen (CORS)
 @WebServlet("/catalog/imagenes-productos")
 public class ImagenesProductosServlet extends HttpServlet {
     
     private final ImagenesProductosController imagenesController = new ImagenesProductosController();
     private final Gson gson = new Gson();
 
+    // Manejar solicitudes GET para obtener imágenes de productos
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -74,6 +76,7 @@ public class ImagenesProductosServlet extends HttpServlet {
         response.getWriter().write(gson.toJson(lista));
     }
 
+    // Manejar solicitudes POST para insertar nuevas imágenes de productos
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -102,6 +105,7 @@ public class ImagenesProductosServlet extends HttpServlet {
         response.getWriter().write(gson.toJson(resultado));
     }
 
+    // Manejar solicitudes PUT para actualizar imágenes de productos
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -130,6 +134,7 @@ public class ImagenesProductosServlet extends HttpServlet {
         response.getWriter().write(gson.toJson(resultado));
     }
 
+    // Manejar solicitudes DELETE para eliminar imágenes de productos
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -169,5 +174,5 @@ public class ImagenesProductosServlet extends HttpServlet {
         }
 
         response.getWriter().write(gson.toJson(resultado));
-    } 
+    }
 }

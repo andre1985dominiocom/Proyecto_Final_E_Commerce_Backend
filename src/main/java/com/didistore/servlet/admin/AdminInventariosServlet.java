@@ -11,22 +11,26 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Sergio Andrés Álvarez Lache
  */
 
+// Permitir que el servlet maneje solicitudes desde cualquier origen (CORS)
 @WebServlet("/admin/inventarios")
 public class AdminInventariosServlet extends HttpServlet {
     
-    private AdminInventariosController inventariocontroller;
+    private AdminInventariosController inventarioController;
     private Gson gson;
 
+    // --- Inicialización del servlet ---
     @Override
     public void init() throws ServletException {
-        this.inventariocontroller = new AdminInventariosController();
+        this.inventarioController = new AdminInventariosController();
         this.gson = new Gson();
     }
     
@@ -52,7 +56,7 @@ public class AdminInventariosServlet extends HttpServlet {
         try {
             if (idParam != null && !idParam.trim().isEmpty()) {
                 int idInventario = Integer.parseInt(idParam);
-                Inventarios inventario = inventariocontroller.consultarInventariosPorId(idInventario);
+                Inventarios inventario = inventarioController.consultarInventariosPorId(idInventario);
                 
                 if (inventario != null) {
                     response.getWriter().write(gson.toJson(inventario));
@@ -61,7 +65,7 @@ public class AdminInventariosServlet extends HttpServlet {
                     response.getWriter().write("{\"error\": \"Inventario no encontrado\"}");
                 }
             } else {
-                List<Inventarios> lista = inventariocontroller.listarInventario();
+                List<Inventarios> lista = inventarioController.listarInventario();
                 response.getWriter().write(gson.toJson(lista));
             }
         } catch (NumberFormatException e) {
@@ -78,16 +82,77 @@ public class AdminInventariosServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        configurarCabecerasJSON(response);
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
         
-        // El cuerpo del POST viene como un JSON en JavaScript, hay que leerlo como texto raw
-        Inventarios inventarioNuevo = leerJsonDesdeCuerpo(request, Inventarios.class);
+        Map<String, Object> resultado = new HashMap<>();
         
+<<<<<<< HEAD
         // Aquí llamarías a un método de tu controlador para insertar (ej: insertarInventario)
         // Como tu controlador actual maneja actualización, si lo necesitas lo puedes implementar en el DAO.
         response.setStatus(HttpServletResponse.SC_CREATED); // 201
         response.getWriter().write(gson.toJson(
                 java.util.Collections.singletonMap("mensaje", "Funcionalidad POST lista para insertar")));
+=======
+        try {
+            BufferedReader reader = request.getReader();
+            
+            Inventarios inventario = gson.fromJson(reader, Inventarios.class);
+            
+            if (inventario == null || inventario.getproductoId() <= 0 || inventario.getstockActual() < 0
+                    || inventario.getstockMinimo() < 0 || inventario.getstockReservado() < 0) {
+                
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                
+                resultado.put(
+                    "success",
+                    false );
+                
+                resultado.put(
+                    "message",
+                    "Datos de inventario inválidos" );
+                
+                response.getWriter().write(gson.toJson(resultado));
+                
+                return;
+            }
+            
+            boolean creado = inventarioController.crearInventario(inventario);
+            
+            if (creado) {
+                response.setStatus(HttpServletResponse.SC_CREATED);
+                
+                resultado.put(
+                    "success",
+                    true );
+                
+                resultado.put(
+                    "message",
+                    "Inventario creado correctamente" );
+            } else {
+                response.setStatus(HttpServletResponse.SC_CONFLICT);
+                
+                resultado.put(
+                    "success",
+                    false );
+                
+                resultado.put(
+                    "message",
+                    "El producto ya tiene inventario o no existe" );
+            } 
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            
+            resultado.put(
+                "success",
+                false );
+            
+            resultado.put(
+                "message",
+                e.getMessage() );
+        }
+        response.getWriter().write(gson.toJson(resultado));
+>>>>>>> origin/main
     }
 
     /**
@@ -104,7 +169,7 @@ public class AdminInventariosServlet extends HttpServlet {
             // Convertimos el JSON que envía JavaScript directamente a nuestro objeto Java
             Inventarios inventarioEditar = leerJsonDesdeCuerpo(request, Inventarios.class);
             
-            boolean exito = inventariocontroller.actualizarInventario(inventarioEditar);
+            boolean exito = inventarioController.actualizarInventario(inventarioEditar);
             
             if (exito) {
                 response.setStatus(HttpServletResponse.SC_OK); // 200
@@ -138,7 +203,7 @@ public class AdminInventariosServlet extends HttpServlet {
         
         try {
             int idInventario = Integer.parseInt(idParam);
-            boolean eliminado = inventariocontroller.eliminarInventario(idInventario);
+            boolean eliminado = inventarioController.eliminarInventario(idInventario);
             
             if (eliminado) {
                 response.setStatus(HttpServletResponse.SC_OK);
@@ -173,5 +238,5 @@ public class AdminInventariosServlet extends HttpServlet {
             }
         }
         return gson.fromJson(sb.toString(), claseDestino);
-    }   
+    }
 }

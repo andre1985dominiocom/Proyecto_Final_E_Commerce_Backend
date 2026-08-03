@@ -20,6 +20,8 @@ import java.util.Map;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Permitir el acceso a este servlet solo a usuarios con rol de administrador
 @WebServlet("/admin/productos")
 public class AdminProductosServlet extends HttpServlet {
 
@@ -27,6 +29,7 @@ public class AdminProductosServlet extends HttpServlet {
     private final ProductosController catalogProductosController = new ProductosController();
     private final Gson gson = new Gson();
 
+    // Manejar solicitudes GET para obtener productos
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -64,6 +67,7 @@ public class AdminProductosServlet extends HttpServlet {
         }
     }
 
+    // Manejar solicitudes POST para crear un nuevo producto
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -101,6 +105,7 @@ public class AdminProductosServlet extends HttpServlet {
         }
     }
 
+    // Manejar solicitudes PUT para actualizar un producto
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -137,7 +142,7 @@ public class AdminProductosServlet extends HttpServlet {
             response.getWriter().write(gson.toJson(resultado));
         }
     }
-
+    // Manejar solicitudes DELETE para eliminar un producto
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

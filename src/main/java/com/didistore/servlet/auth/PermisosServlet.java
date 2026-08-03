@@ -18,12 +18,16 @@ import java.util.List;
  * @author Sergio Andrés Álvarez Lache
  */
 
+// PermisosServlet es un servlet que maneja las operaciones CRUD para los permisos de la aplicación.
 @WebServlet("/auth/permisos")
 public class PermisosServlet extends HttpServlet {
     
     private final Gson gson = new Gson();
     private final PermisosController permisosController = new PermisosController();
 
+    // doGet maneja las solicitudes GET para obtener permisos.
+    // Si se proporciona un idPermiso, devuelve el permiso correspondiente;
+    // de lo contrario, devuelve la lista completa de permisos.
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,6 +60,7 @@ public class PermisosServlet extends HttpServlet {
         }
     }
 
+    // doPost maneja las solicitudes POST para crear un nuevo permiso.
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -73,6 +78,7 @@ public class PermisosServlet extends HttpServlet {
         response.getWriter().write("{\"message\":\"Permiso creado correctamente\"}");
     }
 
+    // doPut maneja las solicitudes PUT para actualizar un permiso existente.
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -90,6 +96,7 @@ public class PermisosServlet extends HttpServlet {
         response.getWriter().write("{\"message\":\"Permiso actualizado correctamente\"}");
     }
 
+    // doDelete maneja las solicitudes DELETE para eliminar un permiso existente.
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -8,6 +8,9 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Interfaz para el DAO de HistorialEstadoPedidos, define los métodos que se deben implementar
+// para interactuar con la base de datos.
 public interface IHistorialEstadoPedidosDAO {
     
     boolean registrarCambioEstado(HistorialEstadoPedidos historial);

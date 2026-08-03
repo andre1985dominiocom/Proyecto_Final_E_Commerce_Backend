@@ -18,8 +18,11 @@ import java.sql.Timestamp;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Implementación de la interfaz IPagosDAO para la gestión de pagos en la base de datos.
 public class PagosDAOImpl implements IPagosDAO {
 
+    // Implementación del método para registrar un pago en la base de datos.
     @Override
     public boolean registrarPago(Pagos pago) {
         
@@ -39,13 +42,14 @@ public class PagosDAOImpl implements IPagosDAO {
             ps.setTimestamp(9, pago.getfechaCreacion());
             
             int filasAfectadas = ps.executeUpdate();
-            return filasAfectadas > 0;                  
+            return filasAfectadas > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
+    // Implementación del método para actualizar un pago en la base de datos.
     @Override
     public boolean cancelarPago(int idPago) {
         
@@ -62,31 +66,33 @@ public class PagosDAOImpl implements IPagosDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        }      
+        }
     }
 
+    // Implementación del método para buscar un pago por su ID en la base de datos.
     @Override
     public Pagos buscarPorId(int idPago) {
         
         String sql = "SELECT * FROM Pagos WHERE ID_Pago = ?";
         Pagos pago = null;
         
-         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-             
-             ps.setInt(1, idPago);
-             
-             try (ResultSet rs = ps.executeQuery()) {
-                 if (rs.next()) {
-                     pago = mapearPagos(rs);
-                 }
-             }
-         } catch (SQLException e) {
-             e.printStackTrace();
-         }
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idPago);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    pago = mapearPagos(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return pago;
     }
 
+    // Implementación del método para listar todos los pagos asociados a un pedido específico en la base de datos.
     @Override
     public List<Pagos> listarPagosPorVenta(int pedidoId) {
         
@@ -94,7 +100,7 @@ public class PagosDAOImpl implements IPagosDAO {
         List<Pagos> listaPagos = new ArrayList<>();
         
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, pedidoId);
             
@@ -102,13 +108,14 @@ public class PagosDAOImpl implements IPagosDAO {
                 while (rs.next()) {
                     listaPagos.add(mapearPagos(rs));
                 }
-            }   
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return listaPagos;
     }
 
+    // Método privado para mapear los resultados de la consulta a un objeto Pagos.
     private Pagos mapearPagos(ResultSet rs) throws SQLException {
         
         Pagos pago = new Pagos();

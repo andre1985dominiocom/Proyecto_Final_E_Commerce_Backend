@@ -10,6 +10,8 @@ import java.util.List;
  *
  * @author Sergio Andrés Álvarez Lache
  */
+
+// Controlador para la gestión de productos en el panel de administración
 public class AdminProductosController {
     
     private final IProductosDAO productosDAO;

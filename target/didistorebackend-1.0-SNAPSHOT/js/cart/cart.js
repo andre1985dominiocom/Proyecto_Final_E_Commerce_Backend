@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from '../core/config.js';
+import { API_ENDPOINTS, buildApiUrl } from '../core/config.js';
 import { formatCurrency, showToast } from '../core/ui.js';
 import { setCart } from '../core/cart-state.js';
 
@@ -48,7 +48,7 @@ async function fetchCart() {
 
     try {
 
-        const response = await fetch(`${API_ENDPOINTS.cart}?accion=ver`);
+        const response = await fetch(buildApiUrl(`${API_ENDPOINTS.cart}?accion=ver`));
         const text = await response.text();
 
         console.log("RESPUESTA CARRITO:", text);
@@ -90,7 +90,7 @@ async function updateServerCart(accion, idItem = null, cantidad = null) {
 
     try {
 
-        const response = await fetch(API_ENDPOINTS.cart, {
+        const response = await fetch(buildApiUrl(API_ENDPOINTS.cart), {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
