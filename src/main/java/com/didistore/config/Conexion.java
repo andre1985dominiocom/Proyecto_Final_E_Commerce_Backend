@@ -40,16 +40,25 @@ public class Conexion {
         }
     
     // Método para obtener la conexión a la base de datos
+    // Prioridad: variables de entorno (DB_*) > database.properties
     public static Connection getConexion() throws SQLException {
 
-        String dbName = props.getProperty("db.name");
-        String dbUser = props.getProperty("db.user");
-        String dbPassword = props.getProperty("db.password");
-        String dbHost = props.getProperty("db.host");
-        String dbPort = props.getProperty("db.port");
+        String dbName = envOrProp("DB_NAME", "db.name");
+        String dbUser = envOrProp("DB_USER", "db.user");
+        String dbPassword = envOrProp("DB_PASSWORD", "db.password");
+        String dbHost = envOrProp("DB_HOST", "db.host");
+        String dbPort = envOrProp("DB_PORT", "db.port");
 
         String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
 
         return DriverManager.getConnection(url, dbUser, dbPassword);
+    }
+
+    private static String envOrProp(String envKey, String propKey) {
+        String value = System.getenv(envKey);
+        if (value == null || value.isBlank()) {
+            value = props.getProperty(propKey);
+        }
+        return value;
     }
 }

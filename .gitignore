@@ -15,3 +15,7 @@ target/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Credenciales de base de datos (usar database/database.properties.example)
+src/main/resources/database.properties
+

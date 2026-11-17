@@ -269,10 +269,11 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         
         List<ItemCarritos> lista = new ArrayList<>();
     
-    // Consulta SQL: Asume que tu tabla de items tiene relación con CarritoCompras
-    String sql = "SELECT i.* FROM ItemCarritos i " +
-                "JOIN CarritoCompras c ON i.Carrito_Id = c.ID_Carrito " +
-                "WHERE c.usuario_Id = ?";
+    String sql = "SELECT i.ID_Item, i.Carrito_ID, i.Producto_ID, i.Cantidad, i.Precio_unitario, p.nombre_Producto " +
+                "FROM Item_Carrito i " +
+                "INNER JOIN Carrito_compras c ON i.Carrito_ID = c.ID_Carrito " +
+                "INNER JOIN Productos p ON p.id_Producto = i.Producto_ID " +
+                "WHERE c.Usuario_ID = ?";
 
     try (Connection con = Conexion.getConexion();
         PreparedStatement ps = con.prepareStatement(sql)) {
@@ -282,11 +283,11 @@ public class CarritoComprasDAOImpl implements ICarritoComprasDAO {
         
         while (rs.next()) {
             ItemCarritos item = new ItemCarritos();
-            item.setidItem(rs.getInt("id_Item"));
-            item.setcarritoId(rs.getInt("carrito_Id"));
-            item.setproductoId(rs.getInt("producto_Id"));
-            item.setcantidad(rs.getInt("cantidad"));
-            item.setprecioUnitario(rs.getDouble("precio_Unitario"));
+            item.setidItem(rs.getInt("ID_Item"));
+            item.setcarritoId(rs.getInt("Carrito_ID"));
+            item.setproductoId(rs.getInt("Producto_ID"));
+            item.setcantidad(rs.getInt("Cantidad"));
+            item.setprecioUnitario(rs.getDouble("Precio_unitario"));
             item.setnombreProducto(rs.getString("nombre_Producto"));
             
             lista.add(item);
