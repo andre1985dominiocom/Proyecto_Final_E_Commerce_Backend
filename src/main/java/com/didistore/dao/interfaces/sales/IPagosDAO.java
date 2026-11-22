@@ -2,6 +2,7 @@
 package com.didistore.dao.interfaces.sales;
 
 import com.didistore.model.sales.Pagos;
+import com.didistore.model.sales.enums.EstadoPagos;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ public interface IPagosDAO {
     boolean registrarPago(Pagos pago);
     
     boolean cancelarPago(int idPago);
+    
+    boolean actualizarEstadoPago(int idPago, EstadoPagos nuevoEstado);
     
     Pagos buscarPorId(int idPago);
     

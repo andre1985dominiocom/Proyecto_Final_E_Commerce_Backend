@@ -190,20 +190,68 @@ public class PedidosDAOImpl implements IPedidosDAO {
     // ordenados por fecha de pedido descendente.
     @Override
     public List<Pedidos> listarPorUsuario(int usuarioId) {
-        
+        return listarPorUsuarioConFiltros(usuarioId, null, null, null);
+    }
+
+    // RF-17: historial con filtros opcionales de rango de fechas y estado.
+    @Override
+    public List<Pedidos> listarPorUsuarioConFiltros(int usuarioId, String fechaDesde,
+            String fechaHasta, String estado) {
+
         List<Pedidos> lista = new ArrayList<>();
-        // Ordenamos por Fecha_pedido descendente para mostrar primero los más recientes
-        String sql = "SELECT * FROM Pedidos WHERE Usuario_ID = ? ORDER BY Fecha_pedido DESC";
-        
+        StringBuilder sql = new StringBuilder(
+                "SELECT * FROM Pedidos WHERE Usuario_ID = ?");
+        List<Object> params = new ArrayList<>();
+        params.add(usuarioId);
+
+        if (fechaDesde != null && !fechaDesde.isBlank()) {
+            sql.append(" AND Fecha_pedido >= ?");
+            params.add(fechaDesde.length() > 10
+                    ? fechaDesde : fechaDesde + " 00:00:00");
+        }
+        if (fechaHasta != null && !fechaHasta.isBlank()) {
+            sql.append(" AND Fecha_pedido <= ?");
+            params.add(fechaHasta.length() > 10
+                    ? fechaHasta : fechaHasta + " 23:59:59");
+        }
+        if (estado != null && !estado.isBlank()) {
+            sql.append(" AND Estado_pedido = ?");
+            params.add(estado);
+        }
+        sql.append(" ORDER BY Fecha_pedido DESC");
+
         try (Connection con = Conexion.getConexion();
-            PreparedStatement ps = con.prepareStatement(sql)) {
-            
-            ps.setInt(1, usuarioId);
-            
+            PreparedStatement ps = con.prepareStatement(sql.toString())) {
+
+            for (int i = 0; i < params.size(); i++) {
+                Object p = params.get(i);
+                if (p instanceof Integer) {
+                    ps.setInt(i + 1, (Integer) p);
+                } else {
+                    ps.setString(i + 1, String.valueOf(p));
+                }
+            }
+
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     lista.add(mapearPedido(rs));
                 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    @Override
+    public List<Pedidos> listarTodos() {
+        List<Pedidos> lista = new ArrayList<>();
+        String sql = "SELECT * FROM Pedidos ORDER BY Fecha_pedido DESC";
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                lista.add(mapearPedido(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();

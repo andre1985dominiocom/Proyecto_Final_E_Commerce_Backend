@@ -22,7 +22,14 @@ public interface IPedidosDAO {
     Pedidos buscarPorNumeroPedido(String numeroPedido);
     
     List<Pedidos> listarPorUsuario(int usuarioId);
-    
+
+    // RF-17: filtros opcionales por fecha y estado (null = sin filtro).
+    List<Pedidos> listarPorUsuarioConFiltros(int usuarioId, String fechaDesde,
+            String fechaHasta, String estado);
+
+    // Staff: todos los pedidos (panel admin).
+    List<Pedidos> listarTodos();
+
     boolean actualizarEstado(int idPedido, EstadoPedidos nuevoEstado);
     
     // Métodos para Detalles de Pedidos

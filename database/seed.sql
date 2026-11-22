@@ -127,6 +127,15 @@ VALUES
 ('ENVIOGRATIS',  'MontoFijo',  15000.00, 120000.00, 50, 0, '2026-01-01 00:00:00', '2027-12-31 23:59:59', 'Activo');
 
 -- =====================================================================
+-- PROMOCIONES ACTIVAS (banner página principal - CU-CLI-01 / RF-09)
+-- =====================================================================
+INSERT INTO Promociones
+(nombre_promocion, descripcion, tipo_descuento, valor_descuento, producto_id, categoria_id, fecha_inicio, fecha_fin, estado, aplica_con_otros)
+VALUES
+('Temporada de Pijamas', 'Hasta 15% en pijamas seleccionados', 'Porcentaje', 15.00, NULL, 4, '2026-01-01 00:00:00', '2027-12-31 23:59:59', 'Activo', 0),
+('Accesorios al detalle', '$5.000 de descuento en accesorios', 'MontoFijo', 5000.00, NULL, 8, '2026-01-01 00:00:00', '2027-06-30 23:59:59', 'Activo', 1);
+
+-- =====================================================================
 -- PRODUCTO DE EJEMPLO (catálogo no vacío para pruebas visuales)
 -- =====================================================================
 INSERT INTO Productos

@@ -76,6 +76,7 @@ public class DireccionesServlet extends HttpServlet {
 
         try {
             boolean resultado = false;
+            String mensajeError = null;
             switch (action) {
                 case "agregar":
                     Direcciones nuevaDir = new Direcciones();
@@ -86,7 +87,19 @@ public class DireccionesServlet extends HttpServlet {
                     String ciudadParam = request.getParameter("ciudadId");
                     nuevaDir.setciudadId(ciudadParam != null && !ciudadParam.isEmpty() ? Integer.parseInt(ciudadParam) : 0);
                     nuevaDir.setestado(EstadoDirecciones.Activa);
+                    mensajeError = controller.mensajeValidacion(nuevaDir);
+                    if (mensajeError != null) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        response.getWriter().write("{\"success\":false,\"message\":\"" + mensajeError + "\"}");
+                        return;
+                    }
                     resultado = controller.agregarDireccion(nuevaDir);
+                    if (resultado) {
+                        response.setStatus(HttpServletResponse.SC_OK);
+                        response.getWriter().write("{\"success\":true,\"idDireccion\":"
+                                + nuevaDir.getidDireccion() + "}");
+                        return;
+                    }
                     break;
 
                 case "eliminar":
@@ -105,7 +118,11 @@ public class DireccionesServlet extends HttpServlet {
                     return;
             }
             response.setStatus(resultado ? HttpServletResponse.SC_OK : HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"success\":" + resultado + "}");
+            if (resultado) {
+                response.getWriter().write("{\"success\":true}");
+            } else {
+                response.getWriter().write("{\"success\":false,\"message\":\"No se pudo guardar la dirección\"}");
+            }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"success\":false,\"message\":\"Error interno\"}");

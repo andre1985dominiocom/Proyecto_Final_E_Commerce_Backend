@@ -5,6 +5,7 @@ import com.didistore.controller.auth.TokensRecuperacionController;
 import com.didistore.dao.impl.auth.UsuariosDAOImpl;
 import com.didistore.model.auth.TokensRecuperacion;
 import com.didistore.model.auth.Usuarios;
+import com.didistore.util.AuditLog;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -118,7 +119,12 @@ public class TokensRecuperacionServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
         resultado.put("success", true);
         resultado.put("message", "Token generado correctamente");
-        //resultado.put("token", token.gettokenHash());
+        // Demo (sin SMTP): se devuelve el token en la respuesta para continuar el flujo
+        resultado.put("token", token.gettokenHash());
+        resultado.put("expiraEn", fechaExpiracion.getTime());
+
+        AuditLog.registrar(usuarioId, null, "TOKEN_RECUPERACION", "auth", "tokens_recuperacion",
+                token.getidToken(), null, null, request.getRemoteAddr(), "EXITO");
 
         response.getWriter().write(gson.toJson(resultado));
     }

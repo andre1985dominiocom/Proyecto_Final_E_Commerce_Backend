@@ -13,7 +13,7 @@ import com.didistore.model.catalog.Resenas;
 // Interfaz para la gestión de reseñas en la base de datos
 public interface IResenasDAO {
 
-    void agregarResena(Resenas resena);
+    boolean agregarResena(Resenas resena);
 
     boolean eliminarResena(int idResena);
 
@@ -30,4 +30,15 @@ public interface IResenasDAO {
     Resenas obtenerResenaPorUsuarioYProducto(int usuarioId, int productoId);
 
     Resenas consultarResena(int idResena);
+
+    // RF-21: moderación — cambia estado (Pendiente/Aprobada/Rechazada).
+    boolean actualizarEstadoResena(int idResena, String nuevoEstado);
+
+    // RF-21: solo compradores con pedido Entregado pueden reseñar.
+    boolean haCompradoEntregado(int usuarioId, int productoId);
+
+    // RF-21: rating promedio de reseñas aprobadas.
+    double promedioAprobadas(int productoId);
+
+    int contarAprobadas(int productoId);
 }

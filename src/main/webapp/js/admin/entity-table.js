@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, CATALOG_ENDPOINTS, STORAGE_KEYS } from '../core/config.js';
+import { API_ENDPOINTS, CATALOG_ENDPOINTS, STORAGE_KEYS, buildApiUrl } from '../core/config.js';
 import { request } from '../core/http.js';
 import { ADMIN_MOCK_DATA } from '../core/mock-data.js';
 import { getJSON, setJSON } from '../core/storage.js';
@@ -8,16 +8,20 @@ const root = document.querySelector('[data-admin-entity]');
 const READ_ENDPOINTS = {
   products: CATALOG_ENDPOINTS.productos,
   categories: CATALOG_ENDPOINTS.categorias,
-  orders: API_ENDPOINTS.orders,
-  promotions: API_ENDPOINTS.promotions
+  orders: `${API_ENDPOINTS.orders}?accion=todos`,
+  promotions: API_ENDPOINTS.adminPromociones
 };
 const DELETE_QUERY_PARAMS = {
   products: 'idProducto',
-  categories: 'idCategoria'
+  categories: 'idCategoria',
+  promotions: 'idPromocion'
 };
 
 if (root) {
   initEntityPage(root.dataset.adminEntity);
+  if (root.dataset.adminEntity === 'promotions') {
+    initPromotionsForm();
+  }
 }
 
 async function initEntityPage(entity) {
@@ -30,7 +34,9 @@ async function initEntityPage(entity) {
   if (!tbody) return;
 
   const storage = getJSON(STORAGE_KEYS.adminData, {});
-  const apiPath = API_ENDPOINTS[entity] || '';
+  const apiPath = entity === 'promotions'
+    ? API_ENDPOINTS.adminPromociones
+    : (API_ENDPOINTS[entity] || '');
   const readPath = READ_ENDPOINTS[entity] || apiPath;
   const pageSize = 5;
 
@@ -56,9 +62,17 @@ async function initEntityPage(entity) {
 
   if (response.ok && Array.isArray(response.data)) {
     state.rows = ensureEntityIds(entity, response.data);
+  } else if (response.ok && response.data && Array.isArray(response.data.pedidos)) {
+    state.rows = ensureEntityIds(entity, response.data.pedidos);
+  } else if (response.ok && response.data && Array.isArray(response.data.resenas)) {
+    state.rows = ensureEntityIds(entity, response.data.resenas);
+  } else if (response.ok && response.data && Array.isArray(response.data.promociones)) {
+    state.rows = ensureEntityIds(entity, response.data.promociones);
   } else {
     state.rows = ensureEntityIds(entity, storage[entity] || ADMIN_MOCK_DATA[entity] || []);
-    showToast('Modo local activo para esta sección del panel admin.', 'warning');
+    if (entity !== 'promotions') {
+      showToast('Modo local activo para esta sección del panel admin.', 'warning');
+    }
   }
 
   storage[entity] = state.rows;
@@ -95,7 +109,7 @@ async function initEntityPage(entity) {
     tbody.querySelectorAll('button[data-delete-id]').forEach((button) => {
       button.addEventListener('click', async () => {
         const id = button.dataset.deleteId;
-        const deleted = await deleteEntity(entity, apiPath, id);
+        const deleted = await deleteEntity(entity, apiPath || readPath, id);
 
         if (!deleted) {
           return;
@@ -105,6 +119,47 @@ async function initEntityPage(entity) {
         storage[entity] = state.rows;
         setJSON(STORAGE_KEYS.adminData, storage);
         applyFilters();
+      });
+    });
+
+    // RF-12/14: cambio de estado de pedido (staff) desde el panel admin
+    tbody.querySelectorAll('button[data-cambiar-id]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const id = button.dataset.cambiarId;
+        const select = tbody.querySelector(`[data-estado-select="${CSS.escape(id)}"]`);
+        const estadoNuevo = select?.value;
+        if (!estadoNuevo) return;
+
+        const params = new URLSearchParams();
+        params.append('accion', 'cambiar');
+        params.append('pedidoId', id);
+        params.append('estadoNuevo', estadoNuevo);
+        params.append('notas', 'Cambio desde panel admin');
+
+        button.disabled = true;
+        try {
+          const res = await fetch(buildApiUrl(`${API_ENDPOINTS.estadosPedido}`), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data.success) {
+            showToast(data.message || 'Estado actualizado', 'success');
+            const row = state.rows.find((r) => String(getRowId(r)) === id);
+            if (row) {
+              row.estado = estadoNuevo;
+              row.status = estadoNuevo;
+            }
+            applyFilters();
+          } else {
+            showToast(data.message || 'No se pudo cambiar el estado', 'error');
+            button.disabled = false;
+          }
+        } catch {
+          showToast('Error de conexión', 'error');
+          button.disabled = false;
+        }
       });
     });
   }
@@ -157,8 +212,10 @@ async function deleteEntity(entity, apiPath, id) {
 
 function getEntityId(entity, row) {
   if (entity === 'orders' && (row.id || row.idPedido || row.code)) return row.id || row.idPedido || row.code;
-  if (entity === 'promotions' && (row.id || row.code || row.codigo)) return row.id || row.code || row.codigo;
-  if (entity === 'categories' && (row.id || row.idCategoria)) return row.id || row.idCategoria;
+  if (entity === 'promotions' && (row.idPromocion || row.id || row.code || row.codigo)) {
+    return row.idPromocion || row.id || row.code || row.codigo;
+  }
+  if (entity === 'categories' && (row.idCategoria || row.id)) return row.idCategoria || row.id;
   if (entity === 'products' && (row.idProducto || row.id || row.sku)) return row.idProducto || row.id || row.sku;
   return row.__localId;
 }
@@ -231,32 +288,124 @@ function renderCategoryRow(category) {
 
 function renderOrderRow(order) {
   const id = String(getEntityId('orders', order));
+  const numero = order.numeroPedido || order.code || '-';
+  const fecha = (order.fecha || order.date || '-').toString().slice(0, 10);
+  const estado = order.estado || order.status || '-';
+  const total = order.montoTotal || order.total || 0;
+  const cliente = order.customer || order.cliente
+    || (order.usuarioId ? `Usuario #${order.usuarioId}` : '-');
+  const items = order.items || order.productos || '-';
+
+  const estados = [
+    'Pendiente_Pago', 'Pagado', 'En_Preparacion', 'Despachado',
+    'En_Transito', 'Entregado', 'Cancelado', 'Devuelto'
+  ];
+
   return `
     <tr>
       <td>${order.id || order.idPedido || '-'}</td>
-      <td>${order.customer || order.cliente || '-'}</td>
-      <td>${order.date || order.fecha || '-'}</td>
-      <td>${order.items || order.productos || '-'}</td>
-      <td>${formatCurrency(order.total || order.montoTotal)}</td>
-      <td><span class="admin-badge ${statusBadge(order.status || order.estado)}">${order.status || order.estado || '-'}</span></td>
-      <td><div class="admin-table__actions"><button class="admin-btn admin-btn--secondary admin-btn--small">Detalle</button><button class="admin-btn admin-btn--danger admin-btn--small" data-delete-id="${id}">Quitar</button></div></td>
+      <td>${escapeCell(cliente)}<br><small>${escapeCell(numero)}</small></td>
+      <td>${escapeCell(fecha)}</td>
+      <td>${escapeCell(String(items))}</td>
+      <td>${formatCurrency(Number(total) || 0)}</td>
+      <td><span class="admin-badge ${statusBadge(estado)}">${escapeCell(estado)}</span></td>
+      <td>
+        <div class="admin-table__actions">
+          <select class="admin-search__input" data-estado-select="${id}" style="max-width:150px;padding:0.25rem;font-size:0.8rem;">
+            ${estados.map((e) => `<option value="${e}" ${e === estado ? 'selected' : ''}>${e}</option>`).join('')}
+          </select>
+          <button class="admin-btn admin-btn--primary admin-btn--small" data-cambiar-id="${id}">Cambiar</button>
+          <a class="admin-btn admin-btn--secondary admin-btn--small"
+             href="../../html/orders/order-detail.html?id=${id}">Detalle</a>
+        </div>
+      </td>
     </tr>
   `;
 }
 
-function renderPromotionRow(promotion) {
-  const id = String(getEntityId('promotions', promotion));
+function escapeCell(s) {
+  if (s === null || s === undefined) return '-';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderPromotionRow(p) {
+  const id = String(getEntityId('promotions', p));
+  const nombre = p.nombrePromocion || p.name || p.nombre || '-';
+  const tipo = p.tipoDescuento || p.type || p.tipo || '-';
+  const valor = p.valorDescuento ?? p.discount ?? p.descuento ?? '-';
+  const inicio = (p.fechaInicio || p.start || p.inicio || '-').toString().slice(0, 10);
+  const fin = (p.fechaFin || p.end || p.fin || '-').toString().slice(0, 10);
+  const estado = p.estado || p.status || '-';
+
   return `
     <tr>
-      <td>${promotion.id || '-'}</td>
-      <td>${promotion.name || promotion.nombre || '-'}</td>
-      <td>${promotion.code || promotion.codigo || '-'}</td>
-      <td><span class="admin-promo-discount">${promotion.discount || promotion.descuento || '-'}</span></td>
-      <td>${promotion.type || promotion.tipo || '-'}</td>
-      <td>${promotion.start || promotion.inicio || '-'}</td>
-      <td>${promotion.end || promotion.fin || '-'}</td>
-      <td><span class="admin-badge ${statusBadge(promotion.status || promotion.estado)}">${promotion.status || promotion.estado || '-'}</span></td>
+      <td>${p.idPromocion || p.id || '-'}</td>
+      <td>${nombre}</td>
+      <td>${tipo}</td>
+      <td><span class="admin-promo-discount">${tipo === 'Porcentaje' ? valor + '%' : formatCurrency(Number(valor) || 0)}</span></td>
+      <td>${tipo}</td>
+      <td>${inicio}</td>
+      <td>${fin}</td>
+      <td><span class="admin-badge ${statusBadge(estado)}">${estado}</span></td>
       <td><div class="admin-table__actions"><button class="admin-btn admin-btn--danger admin-btn--small" data-delete-id="${id}">Eliminar</button></div></td>
     </tr>
   `;
+}
+
+// =========================
+// Formulario Crear Promoción → POST /admin/promociones
+// =========================
+function initPromotionsForm() {
+  const form = document.querySelector('.admin-widget--form-wide form');
+  if (!form || form.dataset.bound === '1') return;
+  form.dataset.bound = '1';
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const nombre = document.getElementById('promo-name')?.value?.trim();
+    const descuento = Number(document.getElementById('promo-discount')?.value || 0);
+    const tipoRaw = document.getElementById('promo-type')?.value || 'percentage';
+    const inicio = document.getElementById('promo-start')?.value;
+    const fin = document.getElementById('promo-end')?.value;
+    const codigo = document.getElementById('promo-code')?.value?.trim() || '';
+
+    if (!nombre || !descuento || !inicio || !fin) {
+      showToast('Completa los campos obligatorios', 'error');
+      return;
+    }
+
+    // El backend Tipos: Porcentaje | MontoFijo
+    const tipoDescuento = tipoRaw === 'fixed' ? 'MontoFijo' : 'Porcentaje';
+
+    const body = {
+      nombrePromocion: nombre,
+      descripcion: codigo ? `Código: ${codigo}` : nombre,
+      tipoDescuento,
+      valorDescuento: descuento,
+      productoId: 0,
+      categoriaId: 0,
+      fechaInicio: inicio + 'T00:00:00',
+      fechaFin: fin + 'T23:59:59',
+      estado: 'Activo',
+      aplicaConOtros: 0
+    };
+
+    const result = await request(API_ENDPOINTS.adminPromociones, {
+      method: 'POST',
+      body
+    });
+
+    if (result.ok) {
+      showToast(result.data?.message || 'Promoción creada correctamente', 'success');
+      form.reset();
+      setTimeout(() => window.location.reload(), 800);
+    } else {
+      showToast(result.error || 'No se pudo crear la promoción', 'error');
+    }
+  });
 }

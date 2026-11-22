@@ -25,6 +25,15 @@ public interface IUsuariosDAO {
     void actualizarContrasena(int idUsuario, String nuevaContrasena);
     
     void eliminarUsuarios(int idUsuario);
-    
+
+    // RF-13: anonimiza PII conservando historial transaccional (derecho al olvido).
+    boolean anonimizarUsuario(int idUsuario);
+
+    boolean tienePedidosActivos(int idUsuario);
+
     boolean registrarUsuario(Usuarios usuario);
+    
+    void registrarIntentoFallido(int idUsuario, int intentos, java.sql.Timestamp bloqueadoHasta);
+    
+    void limpiarIntentosFallidos(int idUsuario, java.sql.Timestamp fechaUltimoLogin);
 }

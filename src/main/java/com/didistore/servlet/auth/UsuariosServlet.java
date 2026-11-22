@@ -3,6 +3,7 @@ package com.didistore.servlet.auth;
 
 import com.didistore.controller.auth.UsuariosController;
 import com.didistore.model.auth.Usuarios;
+import com.didistore.util.AuditLog;
 import com.didistore.util.PasswordUtil;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -113,6 +114,13 @@ public class UsuariosServlet extends HttpServlet {
         
         usuariosController.insertarUsuario(nuevoUsuario);
 
+        AuditLog.registrar(obtenerUsuarioId(request), obtenerEmail(request),
+                "CREATE", "auth", "usuarios", null, null,
+                gson.toJson(new HashMap<String, Object>() {{
+                    put("email", nuevoUsuario.getemail());
+                    put("perfilId", nuevoUsuario.getperfilId());
+                }}), request.getRemoteAddr(), "EXITO");
+
         response.setStatus(HttpServletResponse.SC_CREATED);
         resultado.put("success", true);
         resultado.put("message", "Usuario creado correctamente");
@@ -129,9 +137,8 @@ public class UsuariosServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         BufferedReader reader = request.getReader();
-        
+
         Usuarios usuario = gson.fromJson(reader, Usuarios.class);
-        Usuarios usuarioBD = usuariosController.consultarUsuarioPorId(usuario.getidUsuario());
 
         Map<String, Object> resultado = new HashMap<>();
 
@@ -142,7 +149,9 @@ public class UsuariosServlet extends HttpServlet {
             response.getWriter().write(gson.toJson(resultado));
             return;
         }
-        
+
+        Usuarios usuarioBD = usuariosController.consultarUsuarioPorId(usuario.getidUsuario());
+
         if (usuarioBD == null) {
             resultado.put("success", false);
             resultado.put("message", "Usuario no existe");
@@ -173,13 +182,24 @@ public class UsuariosServlet extends HttpServlet {
 
         usuariosController.actualizarUsuario(usuarioBD);
 
+        AuditLog.registrar(obtenerUsuarioId(request), obtenerEmail(request),
+                "UPDATE", "auth", "usuarios", usuario.getidUsuario(),
+                gson.toJson(new HashMap<String, Object>() {{
+                    put("estado", usuarioBD.getestado() != null ? usuarioBD.getestado().name() : null);
+                }}),
+                gson.toJson(new HashMap<String, Object>() {{
+                    put("estado", usuario.getestado() != null ? usuario.getestado().name() : null);
+                    put("perfilId", usuario.getperfilId());
+                }}), request.getRemoteAddr(), "EXITO");
+
         response.setStatus(HttpServletResponse.SC_OK);
         resultado.put("success", true);
         resultado.put("message", "Usuario actualizado correctamente");
         response.getWriter().write(gson.toJson(resultado));
     }
 
-    // Manejo de la eliminación de un usuario existente
+    // RF-13: eliminar = anonimizar (derecho al olvido), conserva historial transaccional.
+    // FA-2: requiere motivo en query param para auditoría.
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -189,6 +209,7 @@ public class UsuariosServlet extends HttpServlet {
 
         Map<String, Object> resultado = new HashMap<>();
         String id = request.getParameter("idUsuario");
+        String motivo = request.getParameter("motivo");
 
         if (id == null || id.trim().isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -198,13 +219,50 @@ public class UsuariosServlet extends HttpServlet {
             return;
         }
 
+        if (motivo == null || motivo.trim().length() < 5) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resultado.put("success", false);
+            resultado.put("message", "Debe indicar un motivo de eliminación (mínimo 5 caracteres)");
+            response.getWriter().write(gson.toJson(resultado));
+            return;
+        }
+
         try {
             int idUsuario = Integer.parseInt(id);
-            usuariosController.eliminarUsuario(idUsuario);
+            Usuarios antes = usuariosController.consultarUsuarioPorId(idUsuario);
 
-            response.setStatus(HttpServletResponse.SC_OK);
-            resultado.put("success", true);
-            resultado.put("message", "Usuario eliminado correctamente");
+            if (antes == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resultado.put("success", false);
+                resultado.put("message", "Usuario no encontrado");
+                response.getWriter().write(gson.toJson(resultado));
+                return;
+            }
+
+            Map<String, Object> res = usuariosController.anonimizarUsuario(idUsuario);
+
+            AuditLog.registrar(obtenerUsuarioId(request), obtenerEmail(request),
+                    "DELETE", "auth", "usuarios", idUsuario,
+                    antes != null ? gson.toJson(new HashMap<String, Object>() {{
+                        put("email", antes.getemail());
+                        put("nombre", antes.getnombre());
+                    }}) : null,
+                    gson.toJson(new HashMap<String, Object>() {{
+                        put("anonimizado", true);
+                        put("motivo", motivo.trim());
+                    }}), request.getRemoteAddr(),
+                    Boolean.TRUE.equals(res.get("success")) ? "EXITO" : "FALLIDO");
+
+            if (Boolean.TRUE.equals(res.get("success"))) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                resultado.put("success", true);
+                resultado.put("message", res.get("message"));
+                resultado.put("idUsuario", idUsuario);
+            } else {
+                response.setStatus(HttpServletResponse.SC_CONFLICT);
+                resultado.put("success", false);
+                resultado.put("message", res.get("message"));
+            }
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resultado.put("success", false);
@@ -212,5 +270,16 @@ public class UsuariosServlet extends HttpServlet {
         }
 
         response.getWriter().write(gson.toJson(resultado));
+    }
+
+    private Integer obtenerUsuarioId(HttpServletRequest request) {
+        jakarta.servlet.http.HttpSession session = request.getSession(false);
+        return session != null ? (Integer) session.getAttribute("usuarioId") : null;
+    }
+
+    private String obtenerEmail(HttpServletRequest request) {
+        jakarta.servlet.http.HttpSession session = request.getSession(false);
+        Object email = session != null ? session.getAttribute("email") : null;
+        return email != null ? email.toString() : null;
     }
 }

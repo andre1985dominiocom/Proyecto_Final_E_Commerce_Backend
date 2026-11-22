@@ -52,17 +52,24 @@ public class PagosDAOImpl implements IPagosDAO {
     // Implementación del método para actualizar un pago en la base de datos.
     @Override
     public boolean cancelarPago(int idPago) {
-        
+        return actualizarEstadoPago(idPago, EstadoPagos.Expirado);
+    }
+
+    @Override
+    public boolean actualizarEstadoPago(int idPago, EstadoPagos nuevoEstado) {
+        if (nuevoEstado == null) {
+            return false;
+        }
         String sql = "UPDATE Pagos SET Estado_pago = ? WHERE ID_Pago = ?";
-        
+
         try (Connection con = Conexion.getConexion();
         PreparedStatement ps = con.prepareStatement(sql)) {
-            
-            ps.setString(1, EstadoPagos.Expirado.name());
+
+            ps.setString(1, nuevoEstado.name());
             ps.setInt(2, idPago);
-            
+
             int filasAfectadas = ps.executeUpdate();
-            return filasAfectadas > 0; 
+            return filasAfectadas > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -133,7 +140,7 @@ public class PagosDAOImpl implements IPagosDAO {
         pago.setmonto(rs.getDouble("Monto"));
         pago.setreferenciaTransaccion(rs.getString("Referencia_transaccion"));
         pago.setreferenciaInterna(rs.getString("Referencia_interna"));
-        pago.setdatosPasarela(rs.getString("Referencia_pasarela"));
+        pago.setdatosPasarela(rs.getString("Datos_pasarela"));
         pago.setfechaPago(rs.getTimestamp("Fecha_pago"));
         pago.setfechaCreacion(rs.getTimestamp("Fecha_creacion"));
         

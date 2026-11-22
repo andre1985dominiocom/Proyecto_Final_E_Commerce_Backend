@@ -4,7 +4,6 @@ package com.didistore.config.filter;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,12 +15,9 @@ import java.io.IOException;
  * @author Sergio Andrés Álvarez Lache
  */
 
-// Permite controlar el acceso a los recursos de la aplicación según el rol del usuario.
-@WebFilter("/*")
+// Control de acceso por rol. Registrado en WEB-INF/web.xml (va después de AuthFilter).
 public class RoleFilter extends HttpFilter implements Filter {
 
-    // El método doFilter se encarga de filtrar las solicitudes HTTP
-    // y controlar el acceso a los recursos según el rol del usuario.
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -29,8 +25,27 @@ public class RoleFilter extends HttpFilter implements Filter {
         String contextPath = request.getContextPath();
         String uri = request.getRequestURI();
         String path = uri.substring(contextPath.length());
-        
-        if (path.startsWith("/css/") || path.startsWith("/js/") || 
+        String method = request.getMethod();
+        boolean isSafeMethod = "GET".equals(method) || "HEAD".equals(method) || "OPTIONS".equals(method);
+
+        // Estáticos y catálogo en lectura: sin control de rol.
+        // Escritura de imágenes de producto: solo ADMIN/EMPLEADO.
+        if (path.startsWith("/catalog/imagenes-productos")) {
+            if (isSafeMethod) {
+                chain.doFilter(request, response);
+                return;
+            }
+            HttpSession session = request.getSession(false);
+            String rol = session != null ? String.valueOf(session.getAttribute("rol")).trim().toUpperCase() : "";
+            if (!"ADMIN".equals(rol) && !"EMPLEADO".equals(rol)) {
+                denyAccess(request, response, contextPath);
+                return;
+            }
+            chain.doFilter(request, response);
+            return;
+        }
+
+        if (path.startsWith("/css/") || path.startsWith("/js/") ||
             path.startsWith("/assets/") || path.startsWith("/catalog/")) {
             chain.doFilter(request, response);
             return;
@@ -42,10 +57,9 @@ public class RoleFilter extends HttpFilter implements Filter {
                 path.equals("/login") ||
                 path.equals("/logout") ||
                 path.startsWith("/html/auth/") ||
-                path.startsWith("/css/") ||
-                path.startsWith("/js/") ||
-                path.startsWith("/assets/") ||
-                path.startsWith("/catalog/");
+                path.startsWith("/auth/recuperacion") ||
+                path.startsWith("/auth/validar-token") ||
+                path.startsWith("/auth/restablecer-password");
 
         if (publicResource) {
             chain.doFilter(request, response);
@@ -55,10 +69,13 @@ public class RoleFilter extends HttpFilter implements Filter {
         HttpSession session = request.getSession(false);
 
         if (session == null) {
-            response.sendError(401);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{\"success\":false,\"message\":\"Sesión no iniciada\"}");
             return;
         }
-        
+
         String rol = String.valueOf(session.getAttribute("rol")).trim().toUpperCase();
 
         if (path.startsWith("/admin/usuarios")
@@ -97,7 +114,6 @@ public class RoleFilter extends HttpFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-    // El método denyAccess se encarga de denegar el acceso a los recursos cuando el usuario no tiene permisos.
     private void denyAccess(HttpServletRequest request, HttpServletResponse response, String contextPath)
             throws IOException {
 

@@ -45,6 +45,13 @@
                         <div class="checkout__section">
                             <h2 class="checkout__section-title">Dirección de Envío</h2>
                             <form class="checkout__form" id="checkout-form" action="#" method="post">
+                                <div class="checkout__form-group checkout__form-group--full" style="margin-bottom:1rem;">
+                                    <label for="direccion-envio-select" class="checkout__label">Dirección guardada:</label>
+                                    <select id="direccion-envio-select" name="direccion-envio-select" class="checkout__input">
+                                        <option value="">Usar dirección del formulario</option>
+                                    </select>
+                                </div>
+
                                 <div class="checkout__form-row">
                                     <div class="checkout__form-group">
                                         <label for="first-name" class="checkout__label">Nombre:</label>
@@ -132,19 +139,9 @@
                                             <option value="cali">Cali</option>
                                             <option value="barranquilla">Barranquilla</option>
                                             <option value="cartagena">Cartagena</option>
-                                            <option value="cucuta">San José de Cúcuta</option>
                                             <option value="bucaramanga">Bucaramanga</option>
                                             <option value="pereira">Pereira</option>
                                             <option value="manizales">Manizales</option>
-                                            <option value="armenia">Armenia</option>
-                                            <option value="neiva">Neiva</option>
-                                            <option value="ibague">Ibagué</option>
-                                            <option value="villavicencio">Villavicencio</option>
-                                            <option value="popayan">Popayán</option>
-                                            <option value="santamarta">Santa Marta</option>
-                                            <option value="monteria">Montería</option>
-                                            <option value="valledupar">Valledupar</option>
-                                            <option value="pasto">Pasto</option>
                                         </select>
                                     </div>
                                 </div>
@@ -163,15 +160,39 @@
                                 <div class="checkout__form-row">
                                     <div class="checkout__form-group">
                                         <label for="codepost" class="checkout__label">Código Postal:</label>
-                                        <input type="text" id="codepost" name="codepost" class="checkout__input" placeholder="Código postal">
+                                        <input type="text" id="codepost" name="codepost" class="checkout__input" placeholder="6 dígitos (ej: 110111)" maxlength="6" pattern="\d{6}">
                                     </div>
                                     <div class="checkout__form-group">
                                         <label for="reference" class="checkout__label">Referencia de Entrega:</label>
                                         <input type="text" id="reference" name="reference" class="checkout__input" placeholder="Punto de referencia">
                                     </div>
                                 </div>
+
+                                <div class="checkout__form-group checkout__form-group--full" style="margin-top:0.75rem;">
+                                    <label for="coupon-code" class="checkout__label">Cupón de descuento:</label>
+                                    <input type="text" id="coupon-code" name="coupon-code" class="checkout__input" placeholder="Ej: BIENVENIDA10" autocomplete="off">
+                                </div>
                         </div>
                         <!-- End Shipping Address section -->
+
+                        <!-- Shipping Method -->
+                        <div class="checkout__section">
+                            <h2 class="checkout__section-title">Método de Envío</h2>
+                            <div class="checkout__payment-methods" id="shipping-methods">
+                                <label class="checkout__payment-option">
+                                    <input type="radio" name="metodoEnvio" value="Estandar" class="checkout__payment-radio" checked>
+                                    <span class="checkout__payment-label">Estándar (5-7 días) — <span id="shipping-cost-estandar">$0</span></span>
+                                </label>
+                                <label class="checkout__payment-option">
+                                    <input type="radio" name="metodoEnvio" value="Express" class="checkout__payment-radio">
+                                    <span class="checkout__payment-label">Express (2-3 días) — <span id="shipping-cost-express">$0</span></span>
+                                </label>
+                            </div>
+                            <p id="shipping-free-note" class="checkout__terms-label u-hidden" style="margin-top:0.5rem;color:#16a34a;">
+                                Envío estándar gratis en compras ≥ $100.000
+                            </p>
+                        </div>
+                        <!-- End Shipping Method -->
 
                         <!-- Payment Method -->
                         <div class="checkout__section">

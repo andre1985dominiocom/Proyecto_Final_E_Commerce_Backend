@@ -1,16 +1,21 @@
 
 package com.didistore.controller.sales;
 
+import com.didistore.controller.logistics.EnviosController;
+import com.didistore.controller.marketing.CuponesController;
 import com.didistore.dao.impl.catalog.InventariosDAOImpl;
 import com.didistore.dao.impl.sales.CarritoComprasDAOImpl;
 import com.didistore.dao.impl.sales.PedidosDAOImpl;
 import com.didistore.dao.interfaces.catalog.IInventariosDAO;
 import com.didistore.dao.interfaces.sales.ICarritoComprasDAO;
 import com.didistore.dao.interfaces.sales.IPedidosDAO;
+import com.didistore.model.marketing.Cupones;
 import com.didistore.model.sales.DetallesPedidos;
 import com.didistore.model.sales.Pedidos;
 import com.didistore.model.sales.enums.EstadoPedidos;
+import com.didistore.util.AuditLog;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -22,6 +27,8 @@ import java.util.UUID;
 public class PedidoController {
     
     private final IPedidosDAO pedidosDAO;
+    private final CuponesController cuponesController = new CuponesController();
+    private final EnviosController enviosController = new EnviosController();
 
     public PedidoController() {
         this.pedidosDAO = new PedidosDAOImpl();
@@ -33,15 +40,54 @@ public class PedidoController {
     /**
      * Lógica central del Checkout: Convierte un resumen de compra y sus detalles
      * en un Pedido real persistido en la base de datos.
+     * Acepta cuponId o cuponCodigo (RF-09); valida vigencia/usos y calcula el descuento real.
+     * Crea el registro de Envío asociado (Fase 3).
      */
-    public boolean procesarCheckout(int usuarioId, int direccionEnvioId, double subtotal, double costoEnvio, List<DetallesPedidos> detalles, int cuponId) {
-        
+    public boolean procesarCheckout(int usuarioId, int direccionEnvioId, double subtotal,
+            double costoEnvio, List<DetallesPedidos> detalles, int cuponId, String cuponCodigo) {
+        return procesarCheckout(usuarioId, direccionEnvioId, subtotal, costoEnvio, detalles,
+                cuponId, cuponCodigo, EnviosController.METODO_ESTANDAR);
+    }
+
+    /**
+     * Checkout con método de envío explícito (Estandar/Express).
+     */
+    public boolean procesarCheckout(int usuarioId, int direccionEnvioId, double subtotal,
+            double costoEnvio, List<DetallesPedidos> detalles, int cuponId, String cuponCodigo,
+            String metodoEnvio) {
+
         // Validaciones de negocio preventivas
         if (detalles == null || detalles.isEmpty()) {
             return false; 
         }
         if (subtotal < 0 || costoEnvio < 0) {
             return false;
+        }
+
+        // Resolver cupón: por id o por código (RF-09)
+        Cupones cupon = null;
+        double descuento = 0.0;
+
+        if (cuponId > 0) {
+            cupon = cuponesController.buscarPorId(cuponId);
+        } else if (cuponCodigo != null && !cuponCodigo.isBlank()) {
+            Map<String, Object> validacion = cuponesController.validarYCalcular(cuponCodigo, subtotal);
+            if (Boolean.TRUE.equals(validacion.get("success"))) {
+                cupon = (Cupones) validacion.get("cupon");
+                descuento = (Double) validacion.get("descuento");
+            } else {
+                System.err.println("Cupón rechazado en checkout: " + validacion.get("message"));
+                return false;
+            }
+        }
+
+        if (cupon != null && cuponId > 0) {
+            Map<String, Object> validacion = cuponesController.validarYCalcular(cupon.getcodigo(), subtotal);
+            if (!Boolean.TRUE.equals(validacion.get("success"))) {
+                System.err.println("Cupón rechazado en checkout: " + validacion.get("message"));
+                return false;
+            }
+            descuento = (Double) validacion.get("descuento");
         }
 
         Pedidos nuevoPedido = new Pedidos();
@@ -54,13 +100,12 @@ public class PedidoController {
         nuevoPedido.setdireccionEnvioId(direccionEnvioId);
         nuevoPedido.setestadoPedido(EstadoPedidos.Pendiente_Pago); // Estado inicial por defecto
         
-        if (cuponId > 0) {
-            nuevoPedido.setcuponId(cuponId);
+        if (cupon != null) {
+            nuevoPedido.setcuponId(cupon.getidCupon());
         }
 
         // 3. Lógica Financiera (Snapshots para la BD)
-        double descuento = calcularDescuento(subtotal, cuponId); // Método auxiliar interno
-        double iva = (subtotal - descuento) * 0.19; // Asumiendo un IVA del 19%
+        double iva = (subtotal - descuento) * 0.19; // IVA 19% Colombia
         double montoTotal = (subtotal - descuento) + iva + costoEnvio;
 
         nuevoPedido.setsubTotal(subtotal);
@@ -82,6 +127,23 @@ public class PedidoController {
         if (!pedidoCreado) {
             return false;
         }
+
+        // 5. Registrar envío asociado (Fase 3) y uso del cupón (RF-09) + auditoría
+        Pedidos creado = pedidosDAO.buscarPorNumeroPedido(nuevoPedido.getnumeroPedido());
+        if (creado != null) {
+            enviosController.crearEnvioTrasCheckout(creado.getidPedido(), direccionEnvioId, metodoEnvio);
+            // Historial inicial del pedido (RF-12): null → Pendiente_Pago
+            new EstadoPedidoController().registrarCreacion(creado.getidPedido(), usuarioId);
+        }
+
+        if (cupon != null) {
+            cuponesController.registrarUso(cupon.getidCupon());
+            AuditLog.registrar(usuarioId, null, "CUPON_APLICADO", "sales", "cupones",
+                    cupon.getidCupon(), null, cupon.getcodigo(), null, "EXITO");
+        }
+        AuditLog.registrar(usuarioId, null, "CHECKOUT", "sales", "pedidos",
+                null, null, nuevoPedido.getnumeroPedido(), null, "EXITO");
+
         return true;
     }
     
@@ -91,6 +153,17 @@ public class PedidoController {
      */
     public List<Pedidos> obtenerHistorialUsuario(int usuarioId) {
         return pedidosDAO.listarPorUsuario(usuarioId);
+    }
+
+    // RF-17: historial con filtros de fecha y estado.
+    public List<Pedidos> obtenerHistorialUsuario(int usuarioId, String fechaDesde,
+            String fechaHasta, String estado) {
+        return pedidosDAO.listarPorUsuarioConFiltros(usuarioId, fechaDesde, fechaHasta, estado);
+    }
+
+    // Staff: listado completo de pedidos para panel admin.
+    public List<Pedidos> listarTodosPedidos() {
+        return pedidosDAO.listarTodos();
     }
     
     /**
@@ -112,19 +185,23 @@ public class PedidoController {
         return pedidosDAO.actualizarEstado(pedidoId, nuevoEstado);
     }
 
-    // =========================================================================
-    // Métodos Auxiliares Internos
-    // =========================================================================
+    // Compatibilidad con firmas anteriores (sin cuponCodigo).
+    public boolean procesarCheckout(int usuarioId, int direccionEnvioId, double subtotal,
+            double costoEnvio, List<DetallesPedidos> detalles, int cuponId) {
+        return procesarCheckout(usuarioId, direccionEnvioId, subtotal, costoEnvio, detalles, cuponId, null);
+    }
 
     /**
-     * Simulación de lógica de negocio para descuentos.
-     * En un entorno real, aquí consultarías a tu CuponesDAO.
+     * Verifica que el pedido pertenezca al usuario (anti-IDOR para rastreo).
      */
-    private double calcularDescuento(double subtotal, int cuponId) {
-        if (cuponId > 0) {
-            // Ejemplo: si hay cupón, se aplica un 10% de descuento ficticio
-            return subtotal * 0.10; 
-        }
-        return 0.0;
+    public boolean pedidoPerteneceAUsuario(int pedidoId, int usuarioId) {
+        Pedidos p = pedidosDAO.buscarPorId(pedidoId);
+        return p != null && p.getusuarioId() == usuarioId;
+    }
+
+    /** Último pedido del usuario (para devolver pedidoId tras checkout). */
+    public Pedidos buscarUltimoPedidoUsuario(int usuarioId) {
+        List<Pedidos> lista = pedidosDAO.listarPorUsuario(usuarioId);
+        return lista.isEmpty() ? null : lista.get(0);
     }
 }

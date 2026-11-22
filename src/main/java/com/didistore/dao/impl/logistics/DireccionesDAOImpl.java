@@ -99,7 +99,7 @@ public class DireccionesDAOImpl implements IDireccionesDAO {
         String sql = "INSERT INTO Direcciones (Direccion, Barrio, Referencia, Ciudad_ID, Usuario_ID, Estado, Fecha_creacion, Es_principal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection con = Conexion.getConexion();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             
                 ps.setString(1, direccion.getdireccion());
                 ps.setString(2, direccion.getbarrio());
@@ -117,7 +117,11 @@ public class DireccionesDAOImpl implements IDireccionesDAO {
                 int filasAfectadas = ps.executeUpdate();
                 
                 if (filasAfectadas > 0) {
-                    System.out.println("¡Dirección insertada correctamente en la BD!");
+                    try (java.sql.ResultSet keys = ps.getGeneratedKeys()) {
+                        if (keys.next()) {
+                            direccion.setidDireccion(keys.getInt(1));
+                        }
+                    }
                     return true;
                 }
             } catch (SQLException e) {

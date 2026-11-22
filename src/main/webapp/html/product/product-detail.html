@@ -181,17 +181,38 @@
                 <div id="reviews" class="product-detail__tab-content">
                     <h3 class="product-detail__tab-title">Reseñas de Clientes</h3>
                     <div class="product-detail__rating-summary">
-                        <span class="product-detail__rating-score">4.5</span>
-                        <span class="product-detail__rating-stars">★★★★½</span>
-                        <span class="product-detail__rating-count">(4 reseñas)</span>
+                        <span class="product-detail__rating-score" id="resena-promedio">—</span>
+                        <span class="product-detail__rating-stars" id="resena-estrellas-promedio">☆☆☆☆☆</span>
+                        <span class="product-detail__rating-count" id="resena-total">(0 reseñas)</span>
                     </div>
-                    <div class="product-detail__review">
-                        <p class="product-detail__review-author">María G. — <span class="product-detail__review-stars">★★★★★</span></p>
-                        <p class="product-detail__review-text">Excelente producto, muy buena calidad. Lo recomiendo totalmente.</p>
+
+                    <!-- RF-21: formulario (solo compradores verificados) -->
+                    <div id="resena-form-wrap" style="display:none;margin:1rem 0;padding:1rem;background:#f6f6f6;border-radius:8px;">
+                        <h4 id="resena-form-title">Deja tu reseña</h4>
+                        <form id="resena-form">
+                            <label style="display:block;margin-bottom:0.5rem;">
+                                Calificación
+                                <select id="resena-calificacion" required style="padding:0.4rem;border:1px solid #ccc;border-radius:4px;">
+                                    <option value="5">5 — Excelente</option>
+                                    <option value="4">4 — Muy bueno</option>
+                                    <option value="3">3 — Regular</option>
+                                    <option value="2">2 — Malo</option>
+                                    <option value="1">1 — Muy malo</option>
+                                </select>
+                            </label>
+                            <label style="display:block;margin-bottom:0.5rem;">
+                                Comentario (10–500 caracteres)
+                                <textarea id="resena-comentario" required minlength="10" maxlength="500" rows="3"
+                                          style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:4px;"></textarea>
+                            </label>
+                            <input type="hidden" id="resena-id" value="">
+                            <button type="submit" class="btn btn--primary" id="resena-submit">Enviar reseña</button>
+                            <span id="resena-hint" style="font-size:0.85rem;opacity:0.8;margin-left:0.5rem;"></span>
+                        </form>
                     </div>
-                    <div class="product-detail__review">
-                        <p class="product-detail__review-author">Carlos M. — <span class="product-detail__review-stars">★★★★☆</span></p>
-                        <p class="product-detail__review-text">Muy buen producto, llegó en perfecto estado y en tiempo récord.</p>
+
+                    <div id="resena-lista">
+                        <p style="opacity:0.7;">Cargando reseñas...</p>
                     </div>
                 </div>
             </section>

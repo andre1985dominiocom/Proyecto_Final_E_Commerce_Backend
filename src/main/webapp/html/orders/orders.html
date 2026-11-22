@@ -28,56 +28,42 @@
         <div class="orders container" id="order-container">
             <h1 class="orders__title">Mis Pedidos</h1>
 
-            <div class="orders__list">
+            <!-- RF-17: filtros por fecha y estado -->
+            <form class="orders__filters" id="orders-filters" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:flex-end;">
+                <label style="display:flex;flex-direction:column;font-size:0.85rem;gap:0.25rem;">
+                    Desde
+                    <input type="date" id="filter-fecha-desde" name="fechaDesde"
+                           style="padding:0.4rem;border:1px solid #ccc;border-radius:4px;">
+                </label>
+                <label style="display:flex;flex-direction:column;font-size:0.85rem;gap:0.25rem;">
+                    Hasta
+                    <input type="date" id="filter-fecha-hasta" name="fechaHasta"
+                           style="padding:0.4rem;border:1px solid #ccc;border-radius:4px;">
+                </label>
+                <label style="display:flex;flex-direction:column;font-size:0.85rem;gap:0.25rem;">
+                    Estado
+                    <select id="filter-estado" name="estado"
+                            style="padding:0.4rem;border:1px solid #ccc;border-radius:4px;">
+                        <option value="">Todos</option>
+                        <option value="Pendiente_Pago">Pendiente de pago</option>
+                        <option value="Pagado">Pagado</option>
+                        <option value="En_Preparacion">En preparación</option>
+                        <option value="Despachado">Despachado</option>
+                        <option value="En_Transito">En tránsito</option>
+                        <option value="Entregado">Entregado</option>
+                        <option value="Cancelado">Cancelado</option>
+                        <option value="Devuelto">Devuelto</option>
+                    </select>
+                </label>
+                <button type="submit" class="btn btn--primary">Filtrar</button>
+                <button type="button" class="btn btn--secondary" id="filter-clear">Limpiar</button>
+            </form>
 
-                <div class="orders__item">
-                    <div class="orders__item-header">
-                        <span class="orders__number">Pedido #001234</span>
-                        <span class="orders__date">15 de marzo de 2026</span>
-                        <span class="orders__status orders__status--entregado">Entregado</span>
-                    </div>
-                    <div class="orders__item-body">
-                        <p class="orders__summary">3 productos</p>
-                        <p class="orders__total">Total: <strong>$185.000</strong></p>
-                    </div>
-                    <div class="orders__item-footer">
-                        <a href="order-detail.html?id=001234" class="orders__detail-link">Ver detalle</a>
-                    </div>
-                </div>
-
-                <div class="orders__item">
-                    <div class="orders__item-header">
-                        <span class="orders__number">Pedido #001198</span>
-                        <span class="orders__date">2 de febrero de 2026</span>
-                        <span class="orders__status orders__status--en-camino">En camino</span>
-                    </div>
-                    <div class="orders__item-body">
-                        <p class="orders__summary">1 producto</p>
-                        <p class="orders__total">Total: <strong>$75.000</strong></p>
-                    </div>
-                    <div class="orders__item-footer">
-                        <a href="order-detail.html?id=001198" class="orders__detail-link">Ver detalle</a>
-                    </div>
-                </div>
-
-                <div class="orders__item">
-                    <div class="orders__item-header">
-                        <span class="orders__number">Pedido #001047</span>
-                        <span class="orders__date">10 de enero de 2026</span>
-                        <span class="orders__status orders__status--cancelado">Cancelado</span>
-                    </div>
-                    <div class="orders__item-body">
-                        <p class="orders__summary">2 productos</p>
-                        <p class="orders__total">Total: <strong>$120.000</strong></p>
-                    </div>
-                    <div class="orders__item-footer">
-                        <a href="order-detail.html?id=001047" class="orders__detail-link">Ver detalle</a>
-                    </div>
-                </div>
-
+            <div class="orders__list" id="orders-container">
+                <p>Cargando pedidos...</p>
             </div>
 
-            <div class="orders__empty" style="display:none;">
+            <div class="orders__empty" id="orders-empty" style="display:none;">
                 <p class="orders__empty-text">Aún no tienes pedidos realizados.</p>
                 <a href="../catalog/catalog.html" class="orders__shop-link">Ir a la tienda</a>
             </div>

@@ -59,7 +59,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
 
         List<Usuarios> lista = new ArrayList<>();
 
-        String sql = "SELECT id_Usuario, email, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login FROM usuarios";
+        String sql = "SELECT id_Usuario, email, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login, intentos_fallidos, bloqueado_hasta FROM usuarios";
 
         try (Connection con = Conexion.getConexion();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -91,6 +91,8 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
                 usuario.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
                 usuario.setfechaActualizacion(rs.getTimestamp("fecha_actualizacion"));
                 usuario.setfechaUltimoLogin(rs.getTimestamp("fecha_ultimo_login"));
+                usuario.setintentosFallidos(rs.getInt("intentos_fallidos"));
+                usuario.setbloqueadoHasta(rs.getTimestamp("bloqueado_hasta"));
 
                 lista.add(usuario);
             }
@@ -106,7 +108,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
     @Override
     public Usuarios consultarUsuariosPorId(int idUsuario) {
 
-        String sql = "SELECT id_Usuario, email, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login FROM usuarios WHERE id_Usuario = ?";
+        String sql = "SELECT id_Usuario, email, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login, intentos_fallidos, bloqueado_hasta FROM usuarios WHERE id_Usuario = ?";
 
         Usuarios usuario = null;
 
@@ -142,6 +144,8 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
                     usuario.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
                     usuario.setfechaActualizacion(rs.getTimestamp("fecha_actualizacion"));
                     usuario.setfechaUltimoLogin(rs.getTimestamp("fecha_ultimo_login"));
+                    usuario.setintentosFallidos(rs.getInt("intentos_fallidos"));
+                    usuario.setbloqueadoHasta(rs.getTimestamp("bloqueado_hasta"));
                 }
             }
 
@@ -156,7 +160,7 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
     @Override
     public Usuarios consultarUsuariosPorEmail(String email) {
 
-        String sql = "SELECT id_Usuario, email, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login FROM usuarios WHERE email = ?";
+        String sql = "SELECT id_Usuario, email, nombre, apellido, documento, tipo_documento, perfil_id, estado, email_verificado, fecha_creacion, fecha_actualizacion, fecha_ultimo_login, intentos_fallidos, bloqueado_hasta FROM usuarios WHERE email = ?";
 
         Usuarios usuario = null;
 
@@ -192,6 +196,8 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
                     usuario.setfechaCreacion(rs.getTimestamp("fecha_creacion"));
                     usuario.setfechaActualizacion(rs.getTimestamp("fecha_actualizacion"));
                     usuario.setfechaUltimoLogin(rs.getTimestamp("fecha_ultimo_login"));
+                    usuario.setintentosFallidos(rs.getInt("intentos_fallidos"));
+                    usuario.setbloqueadoHasta(rs.getTimestamp("bloqueado_hasta"));
                 }
             }
 
@@ -292,6 +298,74 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
             System.err.println("Error al eliminar usuario: " + e.getMessage());
         }
     }
+
+    // RF-13: derecha al olvido — borra PII (nombre, email, documento, teléfonos,
+    // direcciones) y conserva pedidos/historial con el ID anonimizado.
+    @Override
+    public boolean anonimizarUsuario(int idUsuario) {
+        String sqlUsuarios = "UPDATE usuarios SET nombre = ?, apellido = ?, email = ?, documento = NULL, "
+                + "estado = 'Inactivo', intentos_fallidos = 0, bloqueado_hasta = NULL, "
+                + "fecha_actualizacion = ? WHERE id_Usuario = ?";
+        String sqlTelefonos = "DELETE FROM telefonos WHERE Usuario_ID = ?";
+        String sqlDirecciones = "DELETE FROM Direcciones WHERE Usuario_ID = ?";
+        String sqlSesiones = "DELETE FROM Sesiones WHERE Usuario_ID = ?";
+
+        try (Connection con = Conexion.getConexion()) {
+            boolean originalAutoCommit = con.getAutoCommit();
+            con.setAutoCommit(false);
+
+            try (PreparedStatement ps = con.prepareStatement(sqlUsuarios)) {
+                ps.setString(1, "Usuario");
+                ps.setString(2, "#" + idUsuario);
+                // Email único sintético sin PII (constraint UNIQUE).
+                ps.setString(3, "usuario" + idUsuario + "@anonimizado.local");
+                ps.setTimestamp(4, new java.sql.Timestamp(System.currentTimeMillis()));
+                ps.setInt(5, idUsuario);
+                if (ps.executeUpdate() == 0) {
+                    con.rollback();
+                    con.setAutoCommit(originalAutoCommit);
+                    return false;
+                }
+            }
+
+            try (PreparedStatement ps = con.prepareStatement(sqlTelefonos)) {
+                ps.setInt(1, idUsuario);
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = con.prepareStatement(sqlDirecciones)) {
+                ps.setInt(1, idUsuario);
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = con.prepareStatement(sqlSesiones)) {
+                ps.setInt(1, idUsuario);
+                ps.executeUpdate();
+            }
+
+            con.commit();
+            con.setAutoCommit(originalAutoCommit);
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Error al anonimizar usuario: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // RF-13 / CU-ADM: bloquea anonimización si hay pedidos sin resolver.
+    @Override
+    public boolean tienePedidosActivos(int idUsuario) {
+        String sql = "SELECT COUNT(*) FROM Pedidos WHERE Usuario_ID = ? "
+                + "AND Estado_pedido IN ('Pendiente_Pago','Pagado','En_Preparacion','Despachado','En_Transito')";
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idUsuario);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al consultar pedidos activos: " + e.getMessage());
+            return true;
+        }
+    }
     
     @Override 
     public boolean registrarUsuario(Usuarios usuario) {
@@ -319,6 +393,44 @@ public class UsuariosDAOImpl implements IUsuariosDAO {
         } catch (Exception e) {
             System.err.println("Error al registrar usuario: " + e.getMessage());
             return false;
+        }
+    }
+
+    // RF-01: registra un intento fallido de login y bloquea la cuenta al alcanzar el límite.
+    @Override
+    public void registrarIntentoFallido(int idUsuario, int intentos, java.sql.Timestamp bloqueadoHasta) {
+        String sql = "UPDATE usuarios SET intentos_fallidos = ?, bloqueado_hasta = ?, fecha_actualizacion = ? WHERE id_Usuario = ?";
+
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, intentos);
+            ps.setTimestamp(2, bloqueadoHasta);
+            ps.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis()));
+            ps.setInt(4, idUsuario);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error al registrar intento fallido: " + e.getMessage());
+        }
+    }
+
+    // RF-01: limpia los intentos fallidos tras un login exitoso.
+    @Override
+    public void limpiarIntentosFallidos(int idUsuario, java.sql.Timestamp fechaUltimoLogin) {
+        String sql = "UPDATE usuarios SET intentos_fallidos = 0, bloqueado_hasta = NULL, fecha_ultimo_login = ?, fecha_actualizacion = ? WHERE id_Usuario = ?";
+
+        try (Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+
+            java.sql.Timestamp ahora = new java.sql.Timestamp(System.currentTimeMillis());
+            ps.setTimestamp(1, fechaUltimoLogin != null ? fechaUltimoLogin : ahora);
+            ps.setTimestamp(2, ahora);
+            ps.setInt(3, idUsuario);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error al limpiar intentos fallidos: " + e.getMessage());
         }
     }
 }

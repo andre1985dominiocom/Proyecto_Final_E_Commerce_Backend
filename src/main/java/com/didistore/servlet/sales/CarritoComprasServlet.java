@@ -57,8 +57,25 @@ public class CarritoComprasServlet extends HttpServlet {
                 List<ItemCarritos> items = carritoController.obtenerItemsDelCarrito(carrito.getidCarrito());
                 double total = carritoController.calcularTotalCarrito(carrito.getidCarrito());
 
-                // Construimos una respuesta JSON estructurada manualmente (o usa Gson/Jackson)
-                String jsonResponse = construirJsonCarrito(items, total);
+                // Incluir cupón aplicado en sesión (RF-09) para el panel de resumen
+                String cuponCodigo = session.getAttribute("cuponCodigo") != null
+                        ? session.getAttribute("cuponCodigo").toString() : null;
+                double descuento = 0.0;
+                if (cuponCodigo != null) {
+                    com.didistore.controller.marketing.CuponesController cuponesController =
+                            new com.didistore.controller.marketing.CuponesController();
+                    java.util.Map<String, Object> validacion =
+                            cuponesController.validarYCalcular(cuponCodigo, total);
+                    if (Boolean.TRUE.equals(validacion.get("success"))) {
+                        descuento = (Double) validacion.get("descuento");
+                    } else {
+                        session.removeAttribute("cuponCodigo");
+                        session.removeAttribute("cuponId");
+                        cuponCodigo = null;
+                    }
+                }
+
+                String jsonResponse = construirJsonCarrito(items, total, cuponCodigo, descuento);
                 out.print(jsonResponse);
             } else {
                 out.print("{\"success\": false, \"message\": \"Acción GET no válida\"}");
@@ -109,7 +126,46 @@ public class CarritoComprasServlet extends HttpServlet {
 
             } else if ("vaciar".equals(accion)) {
                 boolean exito = carritoController.vaciarCarritoCompleto(carrito.getidCarrito());
+                session.removeAttribute("cuponCodigo");
+                session.removeAttribute("cuponId");
                 out.print("{\"success\": " + exito + ", \"message\": \"Carrito vaciado\"}");
+
+            } else if ("aplicar-cupon".equals(accion)) {
+                // RF-09: validar cupón y guardarlo en sesión para el checkout
+                String codigo = request.getParameter("codigo");
+                String subtotalParam = request.getParameter("subtotal");
+                double subtotal = 0.0;
+                try {
+                    if (subtotalParam != null && !subtotalParam.isBlank()) {
+                        subtotal = Double.parseDouble(subtotalParam);
+                    } else {
+                        subtotal = carritoController.calcularTotalCarrito(carrito.getidCarrito());
+                    }
+                } catch (NumberFormatException ignored) {}
+
+                com.didistore.controller.marketing.CuponesController cuponesController =
+                        new com.didistore.controller.marketing.CuponesController();
+                java.util.Map<String, Object> validacion =
+                        cuponesController.validarYCalcular(codigo, subtotal);
+
+                if (Boolean.TRUE.equals(validacion.get("success"))) {
+                    session.setAttribute("cuponCodigo", codigo.trim().toUpperCase());
+                    Object cupon = validacion.get("cupon");
+                    if (cupon instanceof com.didistore.model.marketing.Cupones c) {
+                        session.setAttribute("cuponId", c.getidCupon());
+                    }
+                    response.setStatus(HttpServletResponse.SC_OK);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    session.removeAttribute("cuponCodigo");
+                    session.removeAttribute("cuponId");
+                }
+                out.print(gson.toJson(validacion));
+
+            } else if ("quitar-cupon".equals(accion)) {
+                session.removeAttribute("cuponCodigo");
+                session.removeAttribute("cuponId");
+                out.print("{\"success\": true, \"message\": \"Cupón retirado\"}");
 
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -125,11 +181,16 @@ public class CarritoComprasServlet extends HttpServlet {
 
     /**
      * Construye la respuesta JSON del carrito usando Gson para un encoding seguro.
+     * Incluye cupón aplicado y descuento (RF-09) para el resumen del panel.
      */
-    private String construirJsonCarrito(List<ItemCarritos> items, double total) {
+    private String construirJsonCarrito(List<ItemCarritos> items, double total,
+            String cuponCodigo, double descuento) {
         Map<String, Object> resultado = new HashMap<>();
         resultado.put("total", total);
         resultado.put("items", items);
+        resultado.put("cuponCodigo", cuponCodigo);
+        resultado.put("descuento", descuento);
+        resultado.put("totalConDescuento", Math.max(0, total - descuento));
         return gson.toJson(resultado);
     }
 }

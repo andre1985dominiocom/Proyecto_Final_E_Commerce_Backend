@@ -1,6 +1,7 @@
 
 package com.didistore.servlet.auth;
 
+import com.didistore.util.AuditLog;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,7 +30,13 @@ public class LogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if(session != null){
-
+            Object usuarioId = session.getAttribute("usuarioId");
+            Object email = session.getAttribute("email");
+            AuditLog.registrar(
+                    usuarioId instanceof Integer ? (Integer) usuarioId : null,
+                    email != null ? email.toString() : null,
+                    "LOGOUT", "auth", "sesiones", null, null, null,
+                    request.getRemoteAddr(), "EXITO");
             session.invalidate();
         }
 

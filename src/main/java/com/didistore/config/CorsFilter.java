@@ -8,7 +8,6 @@ import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -17,8 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 // Por esta razón no se requiere configuración CORS.
 // En una futura migración a una arquitectura desacoplada (SPA + API REST)
 // se implementará un CorsFilter configurable mediante archivo de propiedades.
+// Registrado en WEB-INF/web.xml (último del chain: AuthFilter → RoleFilter → CorsFilter).
 
-@WebFilter("/*")
 public class CorsFilter implements Filter {
 
     @Override

@@ -335,6 +335,7 @@ CREATE TABLE Envios (
     ID_Envio               INT AUTO_INCREMENT PRIMARY KEY,
     Pedido_ID              INT          NOT NULL UNIQUE,
     Direccion_ID           INT          NULL,
+    metodo_envio           VARCHAR(20)  NULL,  -- Estandar, Express
     transportadora         VARCHAR(30)  NULL,  -- Servientrega, Coordinadora, Deprisa, Otro
     numero_guia            VARCHAR(50)  NULL UNIQUE,
     estado                 VARCHAR(20)  NOT NULL DEFAULT 'Pendiente',

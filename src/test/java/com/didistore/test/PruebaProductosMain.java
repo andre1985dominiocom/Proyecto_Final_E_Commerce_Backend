@@ -36,6 +36,6 @@ public class PruebaProductosMain {
         
         System.out.println("Intentado registrar producto en MySQL... ");
         productoDAO.insertarProductos(nuevoProducto);
-        System.out.println("¡Proceso de inserción finalizado con éxito!");        
+        System.out.println("¡Proceso de inserción finalizado con éxito!");
     }
 }

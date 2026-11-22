@@ -25,6 +25,8 @@ public class Usuarios {
     private Timestamp fechaCreacion;
     private Timestamp fechaActualizacion;
     private Timestamp fechaUltimoLogin;
+    private int intentosFallidos;
+    private Timestamp bloqueadoHasta;
     
     // Constructor vacío y constructor con parámetros para facilitar la creación de objetos Usuarios.
     public Usuarios() {}
@@ -57,6 +59,8 @@ public class Usuarios {
         this.fechaCreacion = fechaCreacion;
         this.fechaActualizacion = fechaActualizacion;
         this.fechaUltimoLogin = fechaUltimoLogin;
+        this.intentosFallidos = 0;
+        this.bloqueadoHasta = null;
     }
     
     // Métodos getter y setter para cada atributo, permitiendo el acceso y modificación de los datos de los usuarios.
@@ -98,4 +102,10 @@ public class Usuarios {
     
     public Timestamp getfechaUltimoLogin() { return fechaUltimoLogin; }
     public void setfechaUltimoLogin(Timestamp fechaUltimoLogin) { this.fechaUltimoLogin = fechaUltimoLogin; }
+    
+    public int getintentosFallidos() { return intentosFallidos; }
+    public void setintentosFallidos(int intentosFallidos) { this.intentosFallidos = intentosFallidos; }
+    
+    public Timestamp getbloqueadoHasta() { return bloqueadoHasta; }
+    public void setbloqueadoHasta(Timestamp bloqueadoHasta) { this.bloqueadoHasta = bloqueadoHasta; }
 }

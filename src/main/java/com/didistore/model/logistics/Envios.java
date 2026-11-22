@@ -16,6 +16,7 @@ public class Envios {
     private int idEnvio;
     private int pedidoId;
     private int direccionId;
+    private String metodoEnvio; // Estandar, Express
     private TransportadoraEnvios transportadora;
     private String numeroGuia;
     private EstadoEnvios estado;
@@ -33,6 +34,7 @@ public class Envios {
     public Envios (int idEnvio,
             int pedidoId,
             int direccionId,
+            String metodoEnvio,
             TransportadoraEnvios transportadora,
             String numeroGuia,
             EstadoEnvios estado,
@@ -46,6 +48,7 @@ public class Envios {
         this.idEnvio = idEnvio;
         this.pedidoId = pedidoId;
         this.direccionId = direccionId;
+        this.metodoEnvio = metodoEnvio;
         this.transportadora = transportadora;
         this.numeroGuia = numeroGuia;
         this.estado = estado;
@@ -66,6 +69,9 @@ public class Envios {
     
     public int getdireccionId() { return direccionId; }
     public void setdireccionId(int direccionId) { this.direccionId = direccionId; }
+    
+    public String getmetodoEnvio() { return metodoEnvio; }
+    public void setmetodoEnvio(String metodoEnvio) { this.metodoEnvio = metodoEnvio; }
     
     public TransportadoraEnvios gettransportadora() { return transportadora; }
     public void settransportadora(TransportadoraEnvios transportadora) { this.transportadora = transportadora; }
