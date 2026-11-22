@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 // Banner de promociones activas para la página principal (CU-CLI-01 / RF-09).
@@ -17,7 +18,15 @@ import java.util.List;
 public class PromocionesBannerServlet extends HttpServlet {
 
     private final PromocionesController promocionesController = new PromocionesController();
-    private final Gson gson = new Gson();
+    // Gson por defecto no puede reflejar java.time.LocalDateTime en Java 17+ (módulos).
+    private final Gson gson = new com.google.gson.GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class,
+                    (com.google.gson.JsonSerializer<LocalDateTime>) (src, type, context) ->
+                            new com.google.gson.JsonPrimitive(src.toString()))
+            .registerTypeAdapter(LocalDateTime.class,
+                    (com.google.gson.JsonDeserializer<LocalDateTime>) (json, type, context) ->
+                            LocalDateTime.parse(json.getAsString()))
+            .create();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

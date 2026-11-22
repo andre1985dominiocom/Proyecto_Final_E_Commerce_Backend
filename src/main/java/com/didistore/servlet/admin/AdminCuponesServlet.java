@@ -23,7 +23,15 @@ import java.util.Map;
 public class AdminCuponesServlet extends HttpServlet {
 
     private final CuponesController cuponesController = new CuponesController();
-    private final Gson gson = new Gson();
+    // Gson por defecto no puede reflejar java.time.LocalDateTime en Java 17+ (módulos).
+    private final Gson gson = new com.google.gson.GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class,
+                    (com.google.gson.JsonSerializer<LocalDateTime>) (src, type, context) ->
+                            new com.google.gson.JsonPrimitive(src.toString()))
+            .registerTypeAdapter(LocalDateTime.class,
+                    (com.google.gson.JsonDeserializer<LocalDateTime>) (json, type, context) ->
+                            LocalDateTime.parse(json.getAsString()))
+            .create();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
