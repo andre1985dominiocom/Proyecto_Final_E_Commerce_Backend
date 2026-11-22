@@ -1,6 +1,5 @@
 import { API_ENDPOINTS, CATALOG_ENDPOINTS, STORAGE_KEYS, buildApiUrl } from '../core/config.js';
 import { request } from '../core/http.js';
-import { ADMIN_MOCK_DATA } from '../core/mock-data.js';
 import { getJSON, setJSON } from '../core/storage.js';
 import { formatCurrency, renderStateRow, showToast } from '../core/ui.js';
 
@@ -69,10 +68,13 @@ async function initEntityPage(entity) {
   } else if (response.ok && response.data && Array.isArray(response.data.promociones)) {
     state.rows = ensureEntityIds(entity, response.data.promociones);
   } else {
-    state.rows = ensureEntityIds(entity, storage[entity] || ADMIN_MOCK_DATA[entity] || []);
-    if (entity !== 'promotions') {
-      showToast('Modo local activo para esta sección del panel admin.', 'warning');
-    }
+    // La API falló: NO ocultar el error detrás de datos mock.
+    state.rows = [];
+    const detail = response.error || response.message || `HTTP ${response.status ?? 'error'}`;
+    renderStateRow(tbody, `No se pudo cargar la información del servidor (${detail}).`, 'error', columnsCount);
+    showToast(`Error al cargar datos del servidor: ${detail}`, 'error');
+    if (pagination) pagination.innerHTML = '';
+    return;
   }
 
   storage[entity] = state.rows;
