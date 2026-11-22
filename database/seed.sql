@@ -149,8 +149,8 @@ INSERT INTO Inventarios (Producto_ID, Stock_actual, Stock_minimo, Stock_reservad
 (2, 30, 3, 0);
 
 INSERT INTO Imagenes_Productos (producto_id, url, formato) VALUES
-(1, '/assets/images/products/pijama-rosa.jpg', 'JPG'),
-(2, '/assets/images/products/cosmetiquera-floral.jpg', 'JPG');
+(1, '/assets/images/products/pijama_sapitos.png', 'PNG'),
+(2, '/assets/images/products/bolso-rumania-negro-2.jpg', 'JPG');
 
 -- Verificación rápida
 SELECT 'Seed completado' AS resultado;
