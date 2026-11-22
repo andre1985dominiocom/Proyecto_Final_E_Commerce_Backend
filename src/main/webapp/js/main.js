@@ -41,12 +41,19 @@ if (token) {
 }
 
 document.querySelectorAll('[data-logout-link], [data-logout-action="true"]').forEach((element) => {
-  element.addEventListener('click', async (event) => {
+  if (element.dataset.logoutBound === 'true') return;
+  element.dataset.logoutBound = 'true';
+
+  element.addEventListener('click', (event) => {
     event.preventDefault();
-    try {
-      await fetch(buildApiUrl(API_ENDPOINTS.logout), { method: 'POST' });
-    } catch (_) {}
+    // Limpiar ANTES de la petición: evita bloquear la página si fetch tarda.
     clearSession();
-    window.location.href = buildAppUrl('/html/auth/login.html');
+    try {
+      fetch(buildApiUrl(API_ENDPOINTS.logout), {
+        method: 'POST',
+        keepalive: true
+      }).catch(() => {});
+    } catch (_) {}
+    window.location.replace(buildAppUrl('/html/auth/login.html'));
   });
 });

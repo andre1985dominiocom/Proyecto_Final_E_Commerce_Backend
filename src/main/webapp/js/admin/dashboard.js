@@ -58,12 +58,19 @@ function setupLogout() {
     '[data-action="logout"], [data-logout-link]');
 
   logoutButtons.forEach((button) => {
-    button.addEventListener('click', async (event) => {
+    if (button.dataset.logoutBound === 'true') return;
+    button.dataset.logoutBound = 'true';
+
+    button.addEventListener('click', (event) => {
       event.preventDefault();
-      try {
-        await fetch(buildApiUrl(API_ENDPOINTS.logout), { method: 'POST' });
-      } catch (_) { /* sesión local igual se limpia */ }
+      // Limpiar sesión ANTES de cualquier red: si fetch cuelga, la página no se bloquea.
       clearSession();
+      try {
+        fetch(buildApiUrl(API_ENDPOINTS.logout), {
+          method: 'POST',
+          keepalive: true
+        }).catch(() => {});
+      } catch (_) { /* la sesión local ya se limpió */ }
       window.location.replace(buildAppUrl('/html/auth/login.html'));
     });
   });
