@@ -1,4 +1,4 @@
-import { buildAppUrl } from '../core/config.js';
+import { API_ENDPOINTS, buildAppUrl, buildApiUrl } from '../core/config.js';
 import { canAccessAdminView, isAdmin, isAuthenticated } from '../core/guards.js';
 import { getSession, clearSession } from '../core/session.js';
 import { showToast } from '../core/ui.js';
@@ -7,13 +7,14 @@ document.addEventListener('DOMContentLoaded', initDashboardAccess);
 
 function initDashboardAccess() {
   if (!isAuthenticated()) {
-    window.location.href = buildAppUrl('/html/admin/dashboard.html');
+    // Sin sesión → login (NO recargar el dashboard: eso provocaba bucle)
+    window.location.replace(buildAppUrl('/html/auth/login.html'));
     return;
   }
 
   if (!canAccessAdminView()) {
     showToast('No tienes permisos para acceder al panel administrativo.', 'error');
-    window.location.href = buildAppUrl('/index.html');
+    window.location.replace(buildAppUrl('/index.html'));
     return;
   }
 
@@ -52,12 +53,18 @@ function setupUserInfo() {
 }
 
 function setupLogout() {
-  const logoutButtons = document.querySelectorAll('[data-action="logout"]');
+  // Soporta data-action="logout" y data-logout-link (usados en distintas vistas admin)
+  const logoutButtons = document.querySelectorAll(
+    '[data-action="logout"], [data-logout-link]');
 
   logoutButtons.forEach((button) => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', async (event) => {
+      event.preventDefault();
+      try {
+        await fetch(buildApiUrl(API_ENDPOINTS.logout), { method: 'POST' });
+      } catch (_) { /* sesión local igual se limpia */ }
       clearSession();
-      window.location.href = buildAppUrl('/html/admin/dashboard.html');
+      window.location.replace(buildAppUrl('/html/auth/login.html'));
     });
   });
 }
